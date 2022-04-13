@@ -1,17 +1,12 @@
 import dotenv from 'dotenv';
-
 dotenv.config();
-
 const { HOSTNAME, PORT, DB_URI, JWT_PRIVATE_KEY } = process.env;
-
 const SERVER_HOSTNAME = HOSTNAME || 'localhost';
-const SERVER_PORT = PORT || 3001;
-
+const SERVER_PORT = PORT || 3003;
 const SERVER = {
   hostname: SERVER_HOSTNAME,
   port: SERVER_PORT,
 };
-
 export default {
   server: SERVER,
   dbUri:

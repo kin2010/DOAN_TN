@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Error } from 'mongoose';
 import configs from './appConfig';
 import log from '../utils/logger';
 
@@ -15,4 +15,16 @@ const connectToDb = async () => {
   }
 };
 
+// var mysql = require('mysql');
+
+// var con = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'yourusername',
+//   password: 'yourpassword',
+// });
+
+// con.connect(function (err) {
+//   if (err) throw err;
+//   console.log('Connected!');
+// });
 export default connectToDb;
