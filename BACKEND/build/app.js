@@ -68,9 +68,10 @@ var google_auth_library_1 = require("google-auth-library");
 var user_model_1 = __importDefault(require("./models/user.model"));
 var appConfig_1 = __importDefault(require("./configs/appConfig"));
 var database_1 = __importDefault(require("./configs/database"));
-var error_1 = __importDefault(require("./middlewares/error"));
+var error_middleware_1 = __importDefault(require("./middlewares/error.middleware"));
 var logger_1 = __importDefault(require("./utils/logger"));
 var APIError_1 = __importDefault(require("./utils/APIError"));
+var routers_1 = __importDefault(require("./routers"));
 var app = (0, express_1.default)();
 var httpServer = http.createServer(app);
 (0, morgan_1.default)('tiny');
@@ -135,11 +136,12 @@ app.post('/auth/google', function (req, res) { return __awaiter(void 0, void 0, 
 app.get('/', function (req, res) {
     res.send('Hello World!');
 });
+app.use('/doan', routers_1.default);
 /** Logging the request **/
 app.use((0, morgan_1.default)(':remote-addr :method :url :status :response-time ms'));
 /** Error handling **/
-app.use(error_1.default.routeNotFound);
-app.use(error_1.default.handler);
+app.use(error_middleware_1.default.routeNotFound);
+app.use(error_middleware_1.default.handler);
 /** Create the server **/
 httpServer.listen(appConfig_1.default.server.port, function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {

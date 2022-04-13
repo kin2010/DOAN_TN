@@ -8,10 +8,10 @@ import { OAuth2Client } from 'google-auth-library';
 import User from './models/user.model';
 import configs from './configs/appConfig';
 import connectToDb from './configs/database';
-import errorMiddleware from './middlewares/error';
+import errorMiddleware from './middlewares/error.middleware';
 import log from './utils/logger';
 import APIError from './utils/APIError';
-
+import route from './routers';
 const app: Application = express();
 const httpServer = http.createServer(app);
 morgan('tiny');
@@ -81,6 +81,8 @@ app.post('/auth/google', async (req, res) => {
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
+app.use('/doan', route);
 
 /** Logging the request **/
 app.use(morgan(':remote-addr :method :url :status :response-time ms'));
