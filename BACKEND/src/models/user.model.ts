@@ -15,7 +15,7 @@ export interface IUser extends Document {
   createdAt: Date;
   updatedAt: Date;
   isMatchPassword: (userPassword: string) => Promise<boolean>;
-  displayUser: () => TUserDisplay[];
+  displayUser: () => TUserDisplay;
 }
 export type TUserDisplay = Omit<
   IUser,
@@ -61,6 +61,12 @@ const UserSchema = new Schema(
   },
   { timestamps: true },
 );
-
+UserSchema.methods.isMatchPassword = function (candidatePassword: string) {
+  const user = this as IUser;
+  return bcrypt.compare(candidatePassword, user.password);
+};
+UserSchema.methods.displayUser = function () {
+  return this as TUserDisplay;
+};
 const User = model<IUser>('User', UserSchema);
 export default User;

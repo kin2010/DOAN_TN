@@ -39,96 +39,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthService = void 0;
 var http_status_1 = __importDefault(require("http-status"));
 var models_1 = require("../models");
 var APIError_1 = __importDefault(require("../utils/APIError"));
-var bcrypt_1 = __importDefault(require("bcrypt"));
-var appConfig_1 = __importDefault(require("../configs/appConfig"));
-var SendEmail_1 = __importDefault(require("../utils/SendEmail"));
-var otp_1 = require("../utils/otp");
-var AuthService = /** @class */ (function () {
-    function AuthService() {
+var RoleSerivce = /** @class */ (function () {
+    function RoleSerivce() {
     }
     var _a;
-    _a = AuthService;
-    AuthService.Register = function (_b) {
-        var fullName = _b.fullName, email = _b.email, password = _b.password;
+    _a = RoleSerivce;
+    RoleSerivce.create = function (_b) {
+        var roleName = _b.roleName;
         return __awaiter(void 0, void 0, void 0, function () {
-            var user, passwordEncode, role, newUser, otp;
+            var isExistRole, newRole;
             return __generator(_a, function (_c) {
                 switch (_c.label) {
-                    case 0: return [4 /*yield*/, models_1.User.findOne({ email: email })];
+                    case 0: return [4 /*yield*/, models_1.Role.findOne({ roleName: roleName })];
                     case 1:
-                        user = _c.sent();
-                        if (user) {
+                        isExistRole = _c.sent();
+                        if (isExistRole) {
                             throw new APIError_1.default({
-                                message: 'Email already exists',
-                                status: http_status_1.default.BAD_REQUEST,
+                                message: 'Role is already exists',
+                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
                             });
                         }
-                        return [4 /*yield*/, bcrypt_1.default.hash(password, appConfig_1.default.bcryptSaltRounds)];
+                        return [4 /*yield*/, models_1.Role.create({ roleName: roleName })];
                     case 2:
-                        passwordEncode = _c.sent();
-                        return [4 /*yield*/, models_1.Role.findOne({ name: 'Customer' })];
-                    case 3:
-                        role = _c.sent();
-                        if (!role) {
+                        newRole = _c.sent();
+                        if (!newRole) {
                             throw new APIError_1.default({
-                                message: 'Internal server error',
+                                message: 'Cannot create new role',
                                 status: http_status_1.default.INTERNAL_SERVER_ERROR,
                             });
                         }
-                        newUser = {
-                            email: email,
-                            password: passwordEncode,
-                            fullName: fullName,
-                            role: role._id,
-                        };
-                        return [4 /*yield*/, models_1.User.create(newUser)];
-                    case 4:
-                        _c.sent();
-                        return [4 /*yield*/, (0, otp_1.generateOTP)()];
-                    case 5:
-                        otp = _c.sent();
-                        return [4 /*yield*/, (0, SendEmail_1.default)(email, otp)];
-                    case 6:
-                        _c.sent();
-                        return [2 /*return*/];
+                        return [2 /*return*/, newRole];
                 }
             });
         });
     };
-    AuthService.login = function (_b) {
-        var email = _b.email, password = _b.password;
-        return __awaiter(void 0, void 0, void 0, function () {
-            var user, isMatch;
-            return __generator(_a, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, models_1.User.findOne({ email: email })];
-                    case 1:
-                        user = _c.sent();
-                        if (!user) {
-                            throw new APIError_1.default({
-                                message: 'User is not found',
-                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
-                            });
-                        }
-                        if (user) {
-                            isMatch = user.isMatchPassword(password);
-                            if (!isMatch) {
-                                throw new APIError_1.default({
-                                    message: 'Password not match ',
-                                    status: http_status_1.default.INTERNAL_SERVER_ERROR,
-                                });
-                            }
-                        }
-                        return [2 /*return*/, user];
-                }
-            });
-        });
-    };
-    AuthService.verify = function () { };
-    return AuthService;
+    return RoleSerivce;
 }());
-exports.AuthService = AuthService;
+exports.default = RoleSerivce;
