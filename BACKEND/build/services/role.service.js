@@ -76,6 +76,11 @@ var RoleSerivce = /** @class */ (function () {
             });
         });
     };
+    RoleSerivce.getAll = function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(_a, function (_b) {
+            return [2 /*return*/, models_1.Role.find({}).sort({ createdAt: -1 }).lean()];
+        });
+    }); };
     return RoleSerivce;
 }());
 exports.default = RoleSerivce;

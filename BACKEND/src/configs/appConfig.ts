@@ -8,6 +8,8 @@ const {
   SENDGRID_API_KEY,
   EMAIL_ADMIN,
   TEMPLATE_ID_EMAIL,
+  USER_NODER_MAIL,
+  PASSWORD_NODE_MAIL,
 } = process.env;
 const SERVER_HOSTNAME = HOSTNAME || 'localhost';
 const SERVER_PORT = PORT || 3004;
@@ -19,9 +21,11 @@ const SENDGRID = {
   key:
     SENDGRID_API_KEY ||
     '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',
-  email: EMAIL_ADMIN || 'kin2000vippro@gmail.com',
+  email: EMAIL_ADMIN || 'kinle2k7@gmail.com',
   template: TEMPLATE_ID_EMAIL || 'd-06a37ca9dc66457c86e978b640d57bea',
 };
+const userNodemail = USER_NODER_MAIL || 'kinle2k7@gmail.com';
+const passwordNodemail = PASSWORD_NODE_MAIL || 'kindeptrai';
 export default {
   server: SERVER,
   dbUri:
@@ -30,4 +34,6 @@ export default {
   bcryptSaltRounds: 10,
   jwtPrivateKey: JWT_PRIVATE_KEY || 'doantotnghiep@',
   sendGrid: SENDGRID,
+  userNodemail,
+  passwordNodemail,
 };

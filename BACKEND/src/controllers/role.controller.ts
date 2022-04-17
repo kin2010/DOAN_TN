@@ -15,11 +15,21 @@ export default class RoleController {
   ): Promise<void> => {
     try {
       log.info(req);
-      //console.log(req);
       const newRole = await RoleSerivce.create({ ...req.body });
       res.status(httpStatus.OK).json(newRole).end();
     } catch (error) {
-      //log.info(error as string);
+      next(error);
+    }
+  };
+  static getAll = async (
+    req: Request<IRoleRequest, Query, Params>,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const roles = await RoleSerivce.getAll();
+      res.status(httpStatus.OK).json(roles).end();
+    } catch (error) {
       next(error);
     }
   };

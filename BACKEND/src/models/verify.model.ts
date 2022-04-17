@@ -7,7 +7,7 @@ export interface IVerify extends Document {
   verifiedAt: Date;
   createdAt: Date;
   updatedAt: Date;
-  expriedAt: Date;
+  expiredAt: Date;
 }
 const VerifySchema = new Schema(
   {

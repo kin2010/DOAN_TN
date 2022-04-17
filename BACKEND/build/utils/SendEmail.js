@@ -39,10 +39,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendMailNodeMaier = void 0;
 var mail_1 = __importDefault(require("@sendgrid/mail"));
 var http_status_1 = __importDefault(require("http-status"));
 var APIError_1 = __importDefault(require("../utils/APIError"));
+var nodemailer = require('nodemailer');
 var appConfig_1 = __importDefault(require("../configs/appConfig"));
+var logger_1 = __importDefault(require("./logger"));
+var appConfig_2 = __importDefault(require("../configs/appConfig"));
 var sendEmail = function (email, otp) { return __awaiter(void 0, void 0, void 0, function () {
     var msg, err_1;
     return __generator(this, function (_a) {
@@ -54,6 +58,7 @@ var sendEmail = function (email, otp) { return __awaiter(void 0, void 0, void 0,
                     templateId: appConfig_1.default.sendGrid.template,
                     dynamic_template_data: { otp: otp },
                 };
+                logger_1.default.info(msg);
                 mail_1.default.setApiKey(appConfig_1.default.sendGrid.key);
                 _a.label = 1;
             case 1:
@@ -64,6 +69,7 @@ var sendEmail = function (email, otp) { return __awaiter(void 0, void 0, void 0,
                 return [3 /*break*/, 4];
             case 3:
                 err_1 = _a.sent();
+                logger_1.default.info(err_1);
                 throw new APIError_1.default({
                     message: 'Error Send Email',
                     status: http_status_1.default.FORBIDDEN,
@@ -72,4 +78,53 @@ var sendEmail = function (email, otp) { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); };
+var sendMailNodeMaier = function (email, otp) { return __awaiter(void 0, void 0, void 0, function () {
+    var transporter, mainOptions, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                transporter = nodemailer.createTransport({
+                    // config mail server
+                    service: 'Gmail',
+                    auth: {
+                        user: appConfig_2.default.userNodemail,
+                        pass: appConfig_2.default.passwordNodemail,
+                    },
+                });
+                mainOptions = {
+                    // thiết lập đối tượng, nội dung gửi mail
+                    from: 'Website mỹ phẩm ',
+                    to: email,
+                    subject: 'Test Nodemailer',
+                    text: 'You recieved message from ',
+                    html: "\n    <!DOCTYPE html>\n<html>\n  <head>\n    \n   \n    <style>\n    .wrap{\n      padding:30px;\n      max-width: 900px;\n      border:10px solid pink;\n    }\n    h1{\n      text-align: center;\n    }\n    img{\n      display:block;\n      margin:0 auto;\n    }\n      h2{\n        color:pink;\n      }\n      p{\n        color: pink;\n      }\n       h3{\n      border:3px solid pink;\n      width:fit-content;\n      padding:10px 15px;\n      margin:0 auto;\n    }\n    .otp{\n      color:green;\n      font-size: 30px;\n    }\n    </style>\n  </head>\n  <body>\n    <div class='wrap'>\n      <h1>Thanks You !</h1>\n      <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqFv-L7kcWafx-hmaN-EkU-bI-rGYl6fAKq2s04nmRKREUXci_zvw_XoszuGuwxAs75mE&usqp=CAU'alt='noimg'/>\n      <h2> C\u1EA3m \u01A1n <i>" + email + "</i> \u0111\u00E3 s\u1EED d\u1EE5ng d\u1ECBch v\u1EE5 c\u1EE7a ch\u00FAng t\u00F4i </h2>\n     <p>\u0110\u00E2y l\u00E0 m\u00E3 <strong>OTP</strong> \u0111\u1EC3 b\u1EA1n truy c\u1EADp website:</p> \n      <hr/>\n      <h3><span class='otp'>" + otp + "</span></h3>\n    </div>\n     \n  </body>\n</html>\n    ",
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, transporter.sendMail(mainOptions, function (error) {
+                        if (error) {
+                            throw new APIError_1.default({
+                                message: 'Error Send Email',
+                                status: http_status_1.default.FORBIDDEN,
+                            });
+                        }
+                        else {
+                            logger_1.default.info('send successfully');
+                        }
+                    })];
+            case 2:
+                _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _a.sent();
+                throw new APIError_1.default({
+                    message: 'Error Send Email',
+                    status: http_status_1.default.FORBIDDEN,
+                });
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+exports.sendMailNodeMaier = sendMailNodeMaier;
 exports.default = sendEmail;

@@ -14,6 +14,7 @@ export interface IUser extends Document {
   role: string;
   createdAt: Date;
   updatedAt: Date;
+  isVerify: boolean;
   isMatchPassword: (userPassword: string) => Promise<boolean>;
   displayUser: () => TUserDisplay;
 }
@@ -57,6 +58,10 @@ const UserSchema = new Schema(
     gender: {
       type: String,
       enum: [GENDER.NOGENDER, GENDER.MALE, GENDER.FEMALE],
+    },
+    isVerify: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true },

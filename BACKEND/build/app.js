@@ -72,6 +72,7 @@ var error_middleware_1 = __importDefault(require("./middlewares/error.middleware
 var logger_1 = __importDefault(require("./utils/logger"));
 var APIError_1 = __importDefault(require("./utils/APIError"));
 var routers_1 = __importDefault(require("./routers"));
+var nodemailer = require('nodemailer');
 var app = (0, express_1.default)();
 var httpServer = http.createServer(app);
 (0, morgan_1.default)('tiny');
@@ -155,3 +156,22 @@ httpServer.listen(appConfig_1.default.server.port, function () { return __awaite
         }
     });
 }); });
+// sgMail.setApiKey(configs.sendGrid.key);
+// const msg = {
+//   from: 'kinle2k7@gmail.com',
+//   to: 'kin2000vippro@gmail.com',
+//   html: '<div>kakaka</div>',
+//   subject: 'hellozzz',
+//   text: 'hellozz',
+//   dynamic_template_data: {
+//     otp: 11817,
+//   },
+// };
+// sgMail
+//   .send(msg)
+//   .then(() => {
+//     console.log('Email sent');
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });

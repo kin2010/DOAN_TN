@@ -50,25 +50,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var role_service_1 = __importDefault(require("../services/role.service"));
 var http_status_1 = __importDefault(require("http-status"));
-var logger_1 = __importDefault(require("../utils/logger"));
-var RoleController = /** @class */ (function () {
-    function RoleController() {
+var auth_service_1 = __importDefault(require("../services/auth.service"));
+var AuthController = /** @class */ (function () {
+    function AuthController() {
     }
     var _a;
-    _a = RoleController;
-    RoleController.create = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var newRole, error_1;
+    _a = AuthController;
+    AuthController.register = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var error_1;
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    logger_1.default.info(req);
-                    return [4 /*yield*/, role_service_1.default.create(__assign({}, req.body))];
+                    return [4 /*yield*/, auth_service_1.default.Register(__assign({}, req.body))];
                 case 1:
-                    newRole = _b.sent();
-                    res.status(http_status_1.default.OK).json(newRole).end();
+                    _b.sent();
+                    res.status(http_status_1.default.CREATED).end();
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _b.sent();
@@ -78,25 +76,26 @@ var RoleController = /** @class */ (function () {
             }
         });
     }); };
-    RoleController.getAll = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var roles, error_2;
+    AuthController.verifyEmail = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var e_1;
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, role_service_1.default.getAll()];
+                    return [4 /*yield*/, auth_service_1.default.verifyEmail(__assign({}, req.body))];
                 case 1:
-                    roles = _b.sent();
-                    res.status(http_status_1.default.OK).json(roles).end();
+                    _b.sent();
+                    res.status(http_status_1.default.OK).json({
+                        message: 'Verify successfully',
+                    });
                     return [3 /*break*/, 3];
                 case 2:
-                    error_2 = _b.sent();
-                    next(error_2);
-                    return [3 /*break*/, 3];
+                    e_1 = _b.sent();
+                    return [2 /*return*/, next(e_1)];
                 case 3: return [2 /*return*/];
             }
         });
     }); };
-    return RoleController;
+    return AuthController;
 }());
-exports.default = RoleController;
+exports.default = AuthController;

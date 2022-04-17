@@ -41,6 +41,10 @@ var UserSchema = new mongoose_1.Schema({
         type: String,
         enum: [exports.GENDER.NOGENDER, exports.GENDER.MALE, exports.GENDER.FEMALE],
     },
+    isVerify: {
+        type: Boolean,
+        default: false,
+    },
 }, { timestamps: true });
 UserSchema.methods.isMatchPassword = function (candidatePassword) {
     var user = this;

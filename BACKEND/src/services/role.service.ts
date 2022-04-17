@@ -24,4 +24,7 @@ export default class RoleSerivce {
     }
     return newRole;
   };
+  static getAll = async (): Promise<IRole[]> => {
+    return Role.find({}).sort({ createdAt: -1 }).lean();
+  };
 }

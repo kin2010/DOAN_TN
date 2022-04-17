@@ -5,6 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var role_route_1 = __importDefault(require("./role.route"));
+var auth_route_1 = __importDefault(require("./auth.route"));
 var route = express_1.default.Router();
 route.use('/role', role_route_1.default);
+route.use('/auth', auth_route_1.default);
 exports.default = route;

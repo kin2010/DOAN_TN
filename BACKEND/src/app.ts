@@ -12,6 +12,8 @@ import errorMiddleware from './middlewares/error.middleware';
 import log from './utils/logger';
 import APIError from './utils/APIError';
 import route from './routers';
+import sgMail from '@sendgrid/mail';
+var nodemailer = require('nodemailer');
 const app: Application = express();
 const httpServer = http.createServer(app);
 morgan('tiny');
@@ -99,3 +101,23 @@ httpServer.listen(configs.server.port, async () => {
 
   await connectToDb();
 });
+
+// sgMail.setApiKey(configs.sendGrid.key);
+// const msg = {
+//   from: 'kinle2k7@gmail.com',
+//   to: 'kin2000vippro@gmail.com',
+//   html: '<div>kakaka</div>',
+//   subject: 'hellozzz',
+//   text: 'hellozz',
+//   dynamic_template_data: {
+//     otp: 11817,
+//   },
+// };
+// sgMail
+//   .send(msg)
+//   .then(() => {
+//     console.log('Email sent');
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });
