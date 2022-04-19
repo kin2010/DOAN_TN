@@ -8,4 +8,7 @@ var auth_controller_1 = __importDefault(require("../controllers/auth.controller"
 var router = express_1.default.Router();
 router.route('/register').post(auth_controller_1.default.register);
 router.route('/verify').post(auth_controller_1.default.verifyEmail);
+router.route('/login').post(auth_controller_1.default.login);
+router.route('/changepassword').post(auth_controller_1.default.changePassword);
+router.route('/sendphone').post(auth_controller_1.default.sendPhone);
 exports.default = router;

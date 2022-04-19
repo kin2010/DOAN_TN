@@ -7,6 +7,9 @@ import sendEmail, { sendMailNodeMaier } from '../utils/SendEmail';
 import { generateOTP } from '../utils/otp';
 import log from '../utils/logger';
 import moment from 'moment';
+import JWT from '../utils/jwt';
+import { TUserDisplay } from '../models/user.model';
+import { sendPhone } from '../utils/sendPhone';
 export interface IRegisterParams {
   fullName: string;
   password: string;
@@ -19,6 +22,15 @@ export interface ILoginParams {
 export interface IVerifyParams {
   email: string;
   otp: string;
+}
+export interface IChangePasswordParams {
+  email: string;
+  password: string;
+  newPassword: string;
+}
+export interface ISendPhoneParams {
+  otp: string;
+  phone: string;
 }
 export default class AuthService {
   static Register = async ({
@@ -71,25 +83,7 @@ export default class AuthService {
     await Verify.create({ email, otp, expiredAt });
     await sendMailNodeMaier(email, otp);
   };
-  static login = async ({ email, password }: ILoginParams): Promise<IUser> => {
-    const user = await User.findOne({ email });
-    if (!user) {
-      throw new APIError({
-        message: 'User is not found',
-        status: httpStatus.INTERNAL_SERVER_ERROR,
-      });
-    }
-    if (user) {
-      const isMatch = user.isMatchPassword(password);
-      if (!isMatch) {
-        throw new APIError({
-          message: 'Password not match ',
-          status: httpStatus.INTERNAL_SERVER_ERROR,
-        });
-      }
-    }
-    return user;
-  };
+
   static verifyEmail = async ({ email, otp }: IVerifyParams): Promise<void> => {
     const user = User.findOne({ email });
     if (!user) {
@@ -130,5 +124,77 @@ export default class AuthService {
 
     await Verify.findOneAndUpdate({ email }, { verifiedAt: new Date() });
     await User.findOneAndUpdate({ email }, { isVerify: true });
+  };
+  static login = async ({
+    email,
+    password,
+  }: ILoginParams): Promise<{
+    user: TUserDisplay;
+    token: string;
+  }> => {
+    const user = await User.findOne({ email }).limit(1);
+
+    if (!user) {
+      throw new APIError({
+        message: 'User not found',
+        status: httpStatus.NOT_FOUND,
+      });
+    }
+    if (!user.isVerify) {
+      throw new APIError({
+        message: 'User is not verify',
+        status: httpStatus.BAD_REQUEST,
+      });
+    }
+    const isMatchPassword = await user.isMatchPassword(password);
+    if (!isMatchPassword) {
+      throw new APIError({
+        message: 'Invalid Password',
+        status: httpStatus.BAD_REQUEST,
+      });
+    }
+    const token = JWT.sign({ _id: user._id });
+    return {
+      user: user.displayUser(),
+      token,
+    };
+  };
+  static changePassword = async ({
+    email,
+    password,
+    newPassword,
+  }: IChangePasswordParams): Promise<void> => {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new APIError({
+        message: 'User not found',
+        status: httpStatus.NOT_FOUND,
+      });
+    }
+    const isMatchPassword = await user.isMatchPassword(password);
+    if (!isMatchPassword) {
+      throw new APIError({
+        message: 'Invalid Password',
+        status: httpStatus.BAD_REQUEST,
+      });
+    }
+    if (password === newPassword) {
+      throw new APIError({
+        message: 'Password is matched with previous password',
+        status: httpStatus.BAD_REQUEST,
+      });
+    }
+    const newHashPassword = await bcrypt.hash(
+      newPassword,
+      appConfig.bcryptSaltRounds,
+    );
+    await User.findOneAndUpdate({ email }, { password: newHashPassword });
+  };
+  static sendPhone = async ({
+    otp,
+    phone,
+  }: ISendPhoneParams): Promise<void> => {
+    await sendPhone({ otp, phone });
   };
 }

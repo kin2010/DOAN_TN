@@ -175,3 +175,8 @@ httpServer.listen(appConfig_1.default.server.port, function () { return __awaite
 //   .catch((error) => {
 //     console.error(error);
 //   });
+// const send = async () => {
+//   //await sendPhone({ otp: 'dmm :))', phone: '932526706' });
+//   await sendPhone({ otp: 'dmm :))', phone: '333428011' });
+// };
+// send();

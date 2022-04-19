@@ -13,6 +13,7 @@ import log from './utils/logger';
 import APIError from './utils/APIError';
 import route from './routers';
 import sgMail from '@sendgrid/mail';
+import { sendPhone } from './utils/sendPhone';
 var nodemailer = require('nodemailer');
 const app: Application = express();
 const httpServer = http.createServer(app);
@@ -121,3 +122,9 @@ httpServer.listen(configs.server.port, async () => {
 //   .catch((error) => {
 //     console.error(error);
 //   });
+
+// const send = async () => {
+//   //await sendPhone({ otp: 'dmm :))', phone: '932526706' });
+//   await sendPhone({ otp: 'dmm :))', phone: '333428011' });
+// };
+// send();

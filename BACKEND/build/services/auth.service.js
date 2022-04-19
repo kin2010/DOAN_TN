@@ -47,6 +47,8 @@ var appConfig_1 = __importDefault(require("../configs/appConfig"));
 var SendEmail_1 = require("../utils/SendEmail");
 var otp_1 = require("../utils/otp");
 var moment_1 = __importDefault(require("moment"));
+var jwt_1 = __importDefault(require("../utils/jwt"));
+var sendPhone_1 = require("../utils/sendPhone");
 var AuthService = /** @class */ (function () {
     function AuthService() {
     }
@@ -119,35 +121,6 @@ var AuthService = /** @class */ (function () {
             });
         });
     };
-    AuthService.login = function (_b) {
-        var email = _b.email, password = _b.password;
-        return __awaiter(void 0, void 0, void 0, function () {
-            var user, isMatch;
-            return __generator(_a, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, models_1.User.findOne({ email: email })];
-                    case 1:
-                        user = _c.sent();
-                        if (!user) {
-                            throw new APIError_1.default({
-                                message: 'User is not found',
-                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
-                            });
-                        }
-                        if (user) {
-                            isMatch = user.isMatchPassword(password);
-                            if (!isMatch) {
-                                throw new APIError_1.default({
-                                    message: 'Password not match ',
-                                    status: http_status_1.default.INTERNAL_SERVER_ERROR,
-                                });
-                            }
-                        }
-                        return [2 /*return*/, user];
-                }
-            });
-        });
-    };
     AuthService.verifyEmail = function (_b) {
         var email = _b.email, otp = _b.otp;
         return __awaiter(void 0, void 0, void 0, function () {
@@ -196,6 +169,99 @@ var AuthService = /** @class */ (function () {
                         _c.sent();
                         return [4 /*yield*/, models_1.User.findOneAndUpdate({ email: email }, { isVerify: true })];
                     case 3:
+                        _c.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AuthService.login = function (_b) {
+        var email = _b.email, password = _b.password;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var user, isMatchPassword, token;
+            return __generator(_a, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, models_1.User.findOne({ email: email }).limit(1)];
+                    case 1:
+                        user = _c.sent();
+                        if (!user) {
+                            throw new APIError_1.default({
+                                message: 'User not found',
+                                status: http_status_1.default.NOT_FOUND,
+                            });
+                        }
+                        if (!user.isVerify) {
+                            throw new APIError_1.default({
+                                message: 'User is not verify',
+                                status: http_status_1.default.BAD_REQUEST,
+                            });
+                        }
+                        return [4 /*yield*/, user.isMatchPassword(password)];
+                    case 2:
+                        isMatchPassword = _c.sent();
+                        if (!isMatchPassword) {
+                            throw new APIError_1.default({
+                                message: 'Invalid Password',
+                                status: http_status_1.default.BAD_REQUEST,
+                            });
+                        }
+                        token = jwt_1.default.sign({ _id: user._id });
+                        return [2 /*return*/, {
+                                user: user.displayUser(),
+                                token: token,
+                            }];
+                }
+            });
+        });
+    };
+    AuthService.changePassword = function (_b) {
+        var email = _b.email, password = _b.password, newPassword = _b.newPassword;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var user, isMatchPassword, newHashPassword;
+            return __generator(_a, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, models_1.User.findOne({ email: email })];
+                    case 1:
+                        user = _c.sent();
+                        if (!user) {
+                            throw new APIError_1.default({
+                                message: 'User not found',
+                                status: http_status_1.default.NOT_FOUND,
+                            });
+                        }
+                        return [4 /*yield*/, user.isMatchPassword(password)];
+                    case 2:
+                        isMatchPassword = _c.sent();
+                        if (!isMatchPassword) {
+                            throw new APIError_1.default({
+                                message: 'Invalid Password',
+                                status: http_status_1.default.BAD_REQUEST,
+                            });
+                        }
+                        if (password === newPassword) {
+                            throw new APIError_1.default({
+                                message: 'Password is matched with previous password',
+                                status: http_status_1.default.BAD_REQUEST,
+                            });
+                        }
+                        return [4 /*yield*/, bcrypt_1.default.hash(newPassword, appConfig_1.default.bcryptSaltRounds)];
+                    case 3:
+                        newHashPassword = _c.sent();
+                        return [4 /*yield*/, models_1.User.findOneAndUpdate({ email: email }, { password: newHashPassword })];
+                    case 4:
+                        _c.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AuthService.sendPhone = function (_b) {
+        var otp = _b.otp, phone = _b.phone;
+        return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(_a, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, (0, sendPhone_1.sendPhone)({ otp: otp, phone: phone })];
+                    case 1:
                         _c.sent();
                         return [2 /*return*/];
                 }

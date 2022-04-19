@@ -76,6 +76,25 @@ var AuthController = /** @class */ (function () {
             }
         });
     }); };
+    AuthController.login = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var _b, user, token, error_2;
+        return __generator(_a, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    _c.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, auth_service_1.default.login(__assign({}, req.body))];
+                case 1:
+                    _b = _c.sent(), user = _b.user, token = _b.token;
+                    res.json({ user: user, token: token }).status(http_status_1.default.OK).end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_2 = _c.sent();
+                    next(error_2);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
     AuthController.verifyEmail = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var e_1;
         return __generator(_a, function (_b) {
@@ -92,6 +111,56 @@ var AuthController = /** @class */ (function () {
                 case 2:
                     e_1 = _b.sent();
                     return [2 /*return*/, next(e_1)];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    AuthController.changePassword = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var error_3;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, auth_service_1.default.changePassword(__assign({}, req.body))];
+                case 1:
+                    _b.sent();
+                    res
+                        .status(http_status_1.default.OK)
+                        .json({
+                        message: 'Change Password is successfully',
+                        status: 200,
+                    })
+                        .end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_3 = _b.sent();
+                    next(error_3);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    AuthController.sendPhone = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var error_4;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, auth_service_1.default.sendPhone(__assign({}, req.body))];
+                case 1:
+                    _b.sent();
+                    res
+                        .status(http_status_1.default.OK)
+                        .json({
+                        message: 'Phone sent message',
+                        status: 200,
+                    })
+                        .end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_4 = _b.sent();
+                    next(error_4);
+                    return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
         });

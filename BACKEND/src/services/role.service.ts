@@ -5,9 +5,13 @@ import log from '../utils/logger';
 
 export interface IRoleParams {
   roleName: string;
+  description: string;
 }
 export default class RoleSerivce {
-  static create = async ({ roleName }: IRoleParams): Promise<IRole> => {
+  static create = async ({
+    roleName,
+    description,
+  }: IRoleParams): Promise<IRole> => {
     const isExistRole = await Role.findOne({ roleName: roleName });
     if (isExistRole) {
       throw new APIError({

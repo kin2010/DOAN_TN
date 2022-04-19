@@ -6,6 +6,7 @@ import httpStatus from 'http-status';
 import log from '../utils/logger';
 export interface IRoleRequest {
   roleName: IRole['roleName'];
+  description: IRole['description'];
 }
 export default class RoleController {
   static create = async (
