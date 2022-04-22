@@ -39,48 +39,62 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ProductService = void 0;
 var http_status_1 = __importDefault(require("http-status"));
 var models_1 = require("../models");
 var APIError_1 = __importDefault(require("../utils/APIError"));
-var RoleSerivce = /** @class */ (function () {
-    function RoleSerivce() {
+var ProductService = /** @class */ (function () {
+    function ProductService() {
     }
     var _a;
-    _a = RoleSerivce;
-    RoleSerivce.create = function (_b) {
-        var roleName = _b.roleName, description = _b.description;
+    _a = ProductService;
+    ProductService.create = function (_b) {
+        var name = _b.name, description = _b.description, trademark = _b.trademark, price = _b.price, detailImage = _b.detailImage, avatar = _b.avatar;
         return __awaiter(void 0, void 0, void 0, function () {
-            var isExistRole, newRole;
+            var newProduct;
             return __generator(_a, function (_c) {
                 switch (_c.label) {
-                    case 0: return [4 /*yield*/, models_1.Role.findOne({ roleName: roleName })];
+                    case 0: return [4 /*yield*/, models_1.Product.create({
+                            name: name,
+                            description: description,
+                            trademark: trademark,
+                            price: price,
+                            detailImage: detailImage,
+                            avatar: avatar,
+                        })];
                     case 1:
-                        isExistRole = _c.sent();
-                        if (isExistRole) {
+                        newProduct = _c.sent();
+                        if (!newProduct) {
                             throw new APIError_1.default({
-                                message: 'Role is already exists',
-                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
+                                message: 'Cannot create product',
+                                status: http_status_1.default.BAD_REQUEST,
                             });
                         }
-                        return [4 /*yield*/, models_1.Role.create({ roleName: roleName })];
-                    case 2:
-                        newRole = _c.sent();
-                        if (!newRole) {
-                            throw new APIError_1.default({
-                                message: 'Cannot create new role',
-                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
-                            });
-                        }
-                        return [2 /*return*/, newRole];
+                        return [2 /*return*/, newProduct];
                 }
             });
         });
     };
-    RoleSerivce.getAll = function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(_a, function (_b) {
-            return [2 /*return*/, models_1.Role.find({}).sort({ createdAt: -1 }).lean()];
+    ProductService.getById = function (_b) {
+        var _id = _b._id;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var product;
+            return __generator(_a, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, models_1.Product.findById(_id)];
+                    case 1:
+                        product = _c.sent();
+                        if (!product) {
+                            throw new APIError_1.default({
+                                message: 'Product not found',
+                                status: http_status_1.default.BAD_REQUEST,
+                            });
+                        }
+                        return [2 /*return*/, product];
+                }
+            });
         });
-    }); };
-    return RoleSerivce;
+    };
+    return ProductService;
 }());
-exports.default = RoleSerivce;
+exports.ProductService = ProductService;

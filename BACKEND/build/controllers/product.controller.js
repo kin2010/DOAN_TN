@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -40,47 +51,52 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var http_status_1 = __importDefault(require("http-status"));
-var models_1 = require("../models");
-var APIError_1 = __importDefault(require("../utils/APIError"));
-var RoleSerivce = /** @class */ (function () {
-    function RoleSerivce() {
+var product_service_1 = require("../services/product.service");
+var logger_1 = __importDefault(require("../utils/logger"));
+var ProductController = /** @class */ (function () {
+    function ProductController() {
     }
     var _a;
-    _a = RoleSerivce;
-    RoleSerivce.create = function (_b) {
-        var roleName = _b.roleName, description = _b.description;
-        return __awaiter(void 0, void 0, void 0, function () {
-            var isExistRole, newRole;
-            return __generator(_a, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, models_1.Role.findOne({ roleName: roleName })];
-                    case 1:
-                        isExistRole = _c.sent();
-                        if (isExistRole) {
-                            throw new APIError_1.default({
-                                message: 'Role is already exists',
-                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
-                            });
-                        }
-                        return [4 /*yield*/, models_1.Role.create({ roleName: roleName })];
-                    case 2:
-                        newRole = _c.sent();
-                        if (!newRole) {
-                            throw new APIError_1.default({
-                                message: 'Cannot create new role',
-                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
-                            });
-                        }
-                        return [2 /*return*/, newRole];
-                }
-            });
-        });
-    };
-    RoleSerivce.getAll = function () { return __awaiter(void 0, void 0, void 0, function () {
+    _a = ProductController;
+    ProductController.create = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var response, error_1;
         return __generator(_a, function (_b) {
-            return [2 /*return*/, models_1.Role.find({}).sort({ createdAt: -1 }).lean()];
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, product_service_1.ProductService.create(__assign({}, req.body))];
+                case 1:
+                    response = _b.sent();
+                    res.json(response).status(http_status_1.default.OK);
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_1 = _b.sent();
+                    next(error_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
         });
     }); };
-    return RoleSerivce;
+    ProductController.getById = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var response, error_2;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    logger_1.default.info(req);
+                    return [4 /*yield*/, product_service_1.ProductService.getById({ _id: req.params._id })];
+                case 1:
+                    response = _b.sent();
+                    res.json(response).status(http_status_1.default.OK).end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_2 = _b.sent();
+                    next(error_2);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    return ProductController;
 }());
-exports.default = RoleSerivce;
+exports.default = ProductController;

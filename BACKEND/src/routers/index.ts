@@ -1,7 +1,11 @@
 import express from 'express';
 import RoleRoute from './role.route';
 import AuthRoute from './auth.route';
+import ProductRoute from './product.route';
+import TrademarkRoute from './trademark.route';
 const route = express.Router();
 route.use('/role', RoleRoute);
 route.use('/auth', AuthRoute);
+route.use('/products', ProductRoute);
+route.use('/trademark', TrademarkRoute);
 export default route;

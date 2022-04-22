@@ -1,16 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = require("mongoose");
-var RoleSchema = new mongoose_1.Schema({
-    roleName: {
+var TrademarkSchema = new mongoose_1.Schema({
+    name: {
         type: String,
         required: true,
     },
     description: {
         type: String,
     },
-}, {
-    timestamps: true,
-});
-var Role = (0, mongoose_1.model)('Role', RoleSchema);
-exports.default = Role;
+}, { timestamps: true });
+var Trademark = (0, mongoose_1.model)('Trademark', TrademarkSchema);
+exports.default = Trademark;

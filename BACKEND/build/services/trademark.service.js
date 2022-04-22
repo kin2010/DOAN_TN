@@ -35,52 +35,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var http_status_1 = __importDefault(require("http-status"));
 var models_1 = require("../models");
-var APIError_1 = __importDefault(require("../utils/APIError"));
-var RoleSerivce = /** @class */ (function () {
-    function RoleSerivce() {
+var TrademarkService = /** @class */ (function () {
+    function TrademarkService() {
     }
     var _a;
-    _a = RoleSerivce;
-    RoleSerivce.create = function (_b) {
-        var roleName = _b.roleName, description = _b.description;
+    _a = TrademarkService;
+    TrademarkService.create = function (_b) {
+        var name = _b.name, description = _b.description;
         return __awaiter(void 0, void 0, void 0, function () {
-            var isExistRole, newRole;
+            var trade;
             return __generator(_a, function (_c) {
                 switch (_c.label) {
-                    case 0: return [4 /*yield*/, models_1.Role.findOne({ roleName: roleName })];
+                    case 0: return [4 /*yield*/, models_1.Trademark.create({ name: name, description: description })];
                     case 1:
-                        isExistRole = _c.sent();
-                        if (isExistRole) {
-                            throw new APIError_1.default({
-                                message: 'Role is already exists',
-                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
-                            });
-                        }
-                        return [4 /*yield*/, models_1.Role.create({ roleName: roleName })];
-                    case 2:
-                        newRole = _c.sent();
-                        if (!newRole) {
-                            throw new APIError_1.default({
-                                message: 'Cannot create new role',
-                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
-                            });
-                        }
-                        return [2 /*return*/, newRole];
+                        trade = _c.sent();
+                        return [2 /*return*/, trade];
                 }
             });
         });
     };
-    RoleSerivce.getAll = function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(_a, function (_b) {
-            return [2 /*return*/, models_1.Role.find({}).sort({ createdAt: -1 }).lean()];
-        });
-    }); };
-    return RoleSerivce;
+    return TrademarkService;
 }());
-exports.default = RoleSerivce;
+exports.default = TrademarkService;
