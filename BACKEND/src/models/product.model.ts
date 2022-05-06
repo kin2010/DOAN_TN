@@ -9,6 +9,7 @@ export interface IProduct extends Document {
   avatar: string;
   stock: number;
   category: string;
+  subCategory: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,7 +24,8 @@ const ProductSchema = new Schema(
       required: true,
     },
     trademark: {
-      type: String,
+      type: 'ObjectId',
+      ref: 'Trademark',
       required: true,
     },
     price: {
@@ -45,7 +47,11 @@ const ProductSchema = new Schema(
     },
     category: {
       type: 'ObjectId',
-      ref: 'category',
+      ref: 'Category',
+    },
+    subCategory: {
+      type: 'ObjectId',
+      ref: 'SubCategory',
     },
   },
   {

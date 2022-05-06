@@ -12,3 +12,9 @@ export type { IProduct } from './product.model';
 
 export { default as Trademark } from './trademark.model';
 export type { ITrademark } from './trademark.model';
+
+export { default as Category } from './category.model';
+export type { ICategory } from './category.model';
+
+export { default as SubCategory } from './subCategory.model';
+export type { ISubCategory } from './subCategory.model';

@@ -83,11 +83,11 @@ var ProductController = /** @class */ (function () {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    logger_1.default.info(req);
                     return [4 /*yield*/, product_service_1.ProductService.getById({ _id: req.params._id })];
                 case 1:
                     response = _b.sent();
                     res.json(response).status(http_status_1.default.OK).end();
+                    logger_1.default.info(response);
                     return [3 /*break*/, 3];
                 case 2:
                     error_2 = _b.sent();

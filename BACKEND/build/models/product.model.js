@@ -11,7 +11,8 @@ var ProductSchema = new mongoose_1.Schema({
         required: true,
     },
     trademark: {
-        type: String,
+        type: 'ObjectId',
+        ref: 'Trademark',
         required: true,
     },
     price: {
@@ -33,7 +34,11 @@ var ProductSchema = new mongoose_1.Schema({
     },
     category: {
         type: 'ObjectId',
-        ref: 'category',
+        ref: 'Category',
+    },
+    subCategory: {
+        type: 'ObjectId',
+        ref: 'SubCategory',
     },
 }, {
     timestamps: true,

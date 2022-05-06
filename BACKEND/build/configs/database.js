@@ -52,10 +52,7 @@ var connectToDb = function () { return __awaiter(void 0, void 0, void 0, functio
                         useNewUrlParser: true,
                         useUnifiedTopology: true,
                     })];
-            case 1:
-                _a.sent();
-                logger_1.default.info('Connect to database successfully');
-                return [3 /*break*/, 3];
+            case 1: return [2 /*return*/, _a.sent()];
             case 2:
                 e_1 = _a.sent();
                 logger_1.default.error('Can not connect to database', e_1);

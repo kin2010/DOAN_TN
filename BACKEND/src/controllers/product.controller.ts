@@ -10,6 +10,8 @@ export interface IRequestCreateBody {
   price: number;
   detailImage: string[];
   avatar: string;
+  category: string;
+  subCategory: string;
 }
 export interface IRequestFindOne {
   _id: string;
@@ -33,9 +35,9 @@ export default class ProductController {
     next: NextFunction,
   ) => {
     try {
-      log.info(req);
       const response = await ProductService.getById({ _id: req.params._id });
       res.json(response).status(httpStatus.OK).end();
+      log.info(response);
     } catch (error) {
       next(error);
     }

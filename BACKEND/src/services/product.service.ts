@@ -9,6 +9,8 @@ export interface ICreateProductParams {
   price: number;
   detailImage: string[];
   avatar: string;
+  category: string;
+  subCategory: string;
 }
 export interface IGetOneProductParams {
   _id: string;
@@ -21,6 +23,8 @@ export class ProductService {
     price,
     detailImage,
     avatar,
+    category,
+    subCategory,
   }: ICreateProductParams): Promise<IProduct> => {
     const newProduct = await Product.create({
       name,
@@ -29,6 +33,8 @@ export class ProductService {
       price,
       detailImage,
       avatar,
+      category,
+      subCategory,
     });
     if (!newProduct) {
       throw new APIError({
@@ -39,7 +45,21 @@ export class ProductService {
     return newProduct;
   };
   static getById = async ({ _id }: IGetOneProductParams): Promise<IProduct> => {
-    const product = await Product.findById(_id);
+    const product = await Product.findById(_id).populate([
+      {
+        path: 'trademark',
+        select: 'name',
+      },
+      {
+        path: 'category',
+        select: 'name description',
+      },
+      {
+        path: 'subCategory',
+        select: 'name description',
+      },
+    ]);
+
     if (!product) {
       throw new APIError({
         message: 'Product not found',

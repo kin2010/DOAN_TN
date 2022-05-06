@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,81 +46,41 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductService = void 0;
-var http_status_1 = __importDefault(require("http-status"));
 var models_1 = require("../models");
-var APIError_1 = __importDefault(require("../utils/APIError"));
-var ProductService = /** @class */ (function () {
-    function ProductService() {
+var CategoryService = /** @class */ (function () {
+    function CategoryService() {
     }
     var _a;
-    _a = ProductService;
-    ProductService.create = function (_b) {
-        var name = _b.name, description = _b.description, trademark = _b.trademark, price = _b.price, detailImage = _b.detailImage, avatar = _b.avatar, category = _b.category, subCategory = _b.subCategory;
+    _a = CategoryService;
+    CategoryService.create = function (_b) {
+        var body = _b.body;
         return __awaiter(void 0, void 0, void 0, function () {
-            var newProduct;
+            var category;
             return __generator(_a, function (_c) {
                 switch (_c.label) {
-                    case 0: return [4 /*yield*/, models_1.Product.create({
-                            name: name,
-                            description: description,
-                            trademark: trademark,
-                            price: price,
-                            detailImage: detailImage,
-                            avatar: avatar,
-                            category: category,
-                            subCategory: subCategory,
-                        })];
+                    case 0: return [4 /*yield*/, models_1.Category.create(__assign({}, body))];
                     case 1:
-                        newProduct = _c.sent();
-                        if (!newProduct) {
-                            throw new APIError_1.default({
-                                message: 'Cannot create product',
-                                status: http_status_1.default.BAD_REQUEST,
-                            });
-                        }
-                        return [2 /*return*/, newProduct];
+                        category = _c.sent();
+                        return [2 /*return*/, category];
                 }
             });
         });
     };
-    ProductService.getById = function (_b) {
-        var _id = _b._id;
+    CategoryService.createSubCategory = function (_b) {
+        var body = _b.body;
         return __awaiter(void 0, void 0, void 0, function () {
-            var product;
+            var subcategory;
             return __generator(_a, function (_c) {
                 switch (_c.label) {
-                    case 0: return [4 /*yield*/, models_1.Product.findById(_id).populate([
-                            {
-                                path: 'trademark',
-                                select: 'name',
-                            },
-                            {
-                                path: 'category',
-                                select: 'name description',
-                            },
-                            {
-                                path: 'subCategory',
-                                select: 'name description',
-                            },
-                        ])];
+                    case 0: return [4 /*yield*/, models_1.SubCategory.create(__assign({}, body))];
                     case 1:
-                        product = _c.sent();
-                        if (!product) {
-                            throw new APIError_1.default({
-                                message: 'Product not found',
-                                status: http_status_1.default.BAD_REQUEST,
-                            });
-                        }
-                        return [2 /*return*/, product];
+                        subcategory = _c.sent();
+                        return [2 /*return*/, subcategory];
                 }
             });
         });
     };
-    return ProductService;
+    return CategoryService;
 }());
-exports.ProductService = ProductService;
+exports.default = CategoryService;
