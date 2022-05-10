@@ -5,6 +5,7 @@ export interface ICategoryCreateParams {
 export interface ISubCategoryCreateParams {
   body: Omit<ISubCategory, 'createdAt' | 'updatedAt'>;
 }
+
 export default class CategoryService {
   static create = async ({
     body,
@@ -17,5 +18,9 @@ export default class CategoryService {
   }: ISubCategoryCreateParams): Promise<ISubCategory> => {
     const subcategory = await SubCategory.create({ ...body });
     return subcategory;
+  };
+  static getAll = async (): Promise<ICategory[]> => {
+    const categories = await Category.find({});
+    return categories;
   };
 }

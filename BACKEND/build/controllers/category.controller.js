@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -46,52 +35,37 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var models_1 = require("../models");
-var CategoryService = /** @class */ (function () {
-    function CategoryService() {
+exports.CategoryController = void 0;
+var http_status_1 = __importDefault(require("http-status"));
+var category_service_1 = __importDefault(require("../services/category.service"));
+var CategoryController = /** @class */ (function () {
+    function CategoryController() {
     }
     var _a;
-    _a = CategoryService;
-    CategoryService.create = function (_b) {
-        var body = _b.body;
-        return __awaiter(void 0, void 0, void 0, function () {
-            var category;
-            return __generator(_a, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, models_1.Category.create(__assign({}, body))];
-                    case 1:
-                        category = _c.sent();
-                        return [2 /*return*/, category];
-                }
-            });
-        });
-    };
-    CategoryService.createSubCategory = function (_b) {
-        var body = _b.body;
-        return __awaiter(void 0, void 0, void 0, function () {
-            var subcategory;
-            return __generator(_a, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, models_1.SubCategory.create(__assign({}, body))];
-                    case 1:
-                        subcategory = _c.sent();
-                        return [2 /*return*/, subcategory];
-                }
-            });
-        });
-    };
-    CategoryService.getAll = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var categories;
+    _a = CategoryController;
+    CategoryController.getAll = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var response, error_1;
         return __generator(_a, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, models_1.Category.find({})];
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, category_service_1.default.getAll()];
                 case 1:
-                    categories = _b.sent();
-                    return [2 /*return*/, categories];
+                    response = _b.sent();
+                    res.status(http_status_1.default.OK).json(response).end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_1 = _b.sent();
+                    next(error_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
     }); };
-    return CategoryService;
+    return CategoryController;
 }());
-exports.default = CategoryService;
+exports.CategoryController = CategoryController;

@@ -69,47 +69,59 @@ module.exports = {
   },
 
   async down(db, client) {
-    await db.collection('categorys').insertMany([
+    await db.collection('categories').insertMany([
       {
-        name: 'Chăm sóc da',
-        categoryId: ObjectId('6266ca55d04373e272735557'),
-        description: 'category ok',
+        name: 'Trang điểm',
+        description: 'new category',
       },
       {
-        name: 'Tẩy trang',
-        categoryId: ObjectId('6266ca55d04373e272735557'),
-        description: 'category ok',
+        name: 'Dưỡng thể',
+        description: 'new category',
       },
       {
-        name: 'Sửa rửa mặt',
-        categoryId: ObjectId('6266ca55d04373e272735557'),
-        description: 'category ok',
+        name: 'Chăm sóc tóc',
+        description: 'new category',
       },
-      {
-        name: 'Tẩy tế bào chết',
-        categoryId: ObjectId('6266ca55d04373e272735557'),
-        description: 'category ok',
-      },
-      {
-        name: 'Kem chống nắng',
-        categoryId: ObjectId('6266ca55d04373e272735557'),
-        description: 'category ok',
-      },
-      {
-        name: 'Dưỡng mát',
-        categoryId: ObjectId('6266ca55d04373e272735557'),
-        description: 'category ok',
-      },
-      {
-        name: 'Dưỡng ẩm',
-        categoryId: ObjectId('6266ca55d04373e272735557'),
-        description: 'category ok',
-      },
-      {
-        name: 'Dưỡng trắng',
-        categoryId: ObjectId('6266ca55d04373e272735557'),
-        description: 'category ok',
-      },
+      // {
+      //   name: 'Chăm sóc da',
+      //   categoryId: ObjectId('6266ca55d04373e272735557'),
+      //   description: 'category ok',
+      // },
+      // {
+      //   name: 'Tẩy trang',
+      //   categoryId: ObjectId('6266ca55d04373e272735557'),
+      //   description: 'category ok',
+      // },
+      // {
+      //   name: 'Sửa rửa mặt',
+      //   categoryId: ObjectId('6266ca55d04373e272735557'),
+      //   description: 'category ok',
+      // },
+      // {
+      //   name: 'Tẩy tế bào chết',
+      //   categoryId: ObjectId('6266ca55d04373e272735557'),
+      //   description: 'category ok',
+      // },
+      // {
+      //   name: 'Kem chống nắng',
+      //   categoryId: ObjectId('6266ca55d04373e272735557'),
+      //   description: 'category ok',
+      // },
+      // {
+      //   name: 'Dưỡng mát',
+      //   categoryId: ObjectId('6266ca55d04373e272735557'),
+      //   description: 'category ok',
+      // },
+      // {
+      //   name: 'Dưỡng ẩm',
+      //   categoryId: ObjectId('6266ca55d04373e272735557'),
+      //   description: 'category ok',
+      // },
+      // {
+      //   name: 'Dưỡng trắng',
+      //   categoryId: ObjectId('6266ca55d04373e272735557'),
+      //   description: 'category ok',
+      // },
     ]);
   },
 };
