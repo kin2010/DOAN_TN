@@ -92,6 +92,17 @@ var CategoryService = /** @class */ (function () {
             }
         });
     }); };
+    CategoryService.getAllSub = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var subCategories;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, models_1.SubCategory.find({})];
+                case 1:
+                    subCategories = _b.sent();
+                    return [2 /*return*/, subCategories];
+            }
+        });
+    }); };
     return CategoryService;
 }());
 exports.default = CategoryService;

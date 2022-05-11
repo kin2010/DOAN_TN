@@ -15,4 +15,16 @@ export class CategoryController {
       next(error);
     }
   };
+  static getAllSub = async (
+    req: Request<Query, Params>,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const response = await CategoryService.getAllSub();
+      res.status(httpStatus.OK).json(response).end();
+    } catch (error) {
+      next(error);
+    }
+  };
 }

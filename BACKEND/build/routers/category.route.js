@@ -10,4 +10,5 @@ var router = express_1.default.Router();
 router.route('').post(category_service_1.default.create);
 router.route('/addSub').post(category_service_1.default.createSubCategory);
 router.route('/getall').get(category_controller_1.CategoryController.getAll);
+router.route('/getallsub').get(category_controller_1.CategoryController.getAllSub);
 exports.default = router;

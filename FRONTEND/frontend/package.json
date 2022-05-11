@@ -30,6 +30,7 @@
     "history": "^5.0.1",
     "moment-timezone": "^0.5.34",
     "node-sass": "^6.0.1",
+    "query-string": "^7.1.1",
     "react": "^18.1.0",
     "react-bootstrap": "^2.0.0-rc.0",
     "react-chartist": "^0.14.4",

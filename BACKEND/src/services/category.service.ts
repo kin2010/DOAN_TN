@@ -23,4 +23,8 @@ export default class CategoryService {
     const categories = await Category.find({});
     return categories;
   };
+  static getAllSub = async (): Promise<ISubCategory[]> => {
+    const subCategories = await SubCategory.find({});
+    return subCategories;
+  };
 }

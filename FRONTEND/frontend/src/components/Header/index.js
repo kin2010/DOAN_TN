@@ -1,20 +1,44 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Container, Row, Col, Navbar, NavDropdown, Nav } from 'react-bootstrap';
 import './index.css';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Dropdown from '../Dropdown';
+import { useDispatch } from 'react-redux';
+import { getAllCategories, getAllSub } from '../../Slice/CategorySlice';
+import { unwrapResult } from '@reduxjs/toolkit';
 const Header = () => {
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const showDrop = () => {
     setShow(true);
   };
   const refDropdown = useRef(null);
   const hideDrop = (hide) => {
-    // console.log(e.target, refDropdown);
-    // setShow(false);
     setShow(hide);
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const action = await dispatch(getAllCategories());
+        const res = unwrapResult(action);
+        console.log('cate', res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const fetchData2 = async () => {
+      try {
+        const action = await dispatch(getAllSub());
+        const res = unwrapResult(action);
+        console.log('sub', res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+    fetchData2();
+  }, []);
   return (
     <>
       <header>

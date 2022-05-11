@@ -1,0 +1,17 @@
+.price {
+  color: #ec3857;
+}
+.chip {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 0 8px 0 8px !important;
+}
+.product {
+  cursor: pointer;
+  padding: 0 15px 0 15px;
+  border-radius: 25px !important;
+}
+.product:hover {
+  opacity: 0.6;
+}

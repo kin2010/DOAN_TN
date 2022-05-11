@@ -26,43 +26,23 @@ module.exports = {
 
     await db.collection('subcategories').insertMany([
       {
-        name: 'Chăm sóc da',
-        categoryId: ObjectId('627499aa630c7314184823ab'),
+        name: 'Sữa Tắm',
+        categoryId: ObjectId('6279c88ce232736a0b5851c7'),
         description: 'category ok',
       },
       {
-        name: 'Tẩy trang',
-        categoryId: ObjectId('627499aa630c7314184823ab'),
+        name: 'Dưỡng Trăng',
+        categoryId: ObjectId('6279c88ce232736a0b5851c7'),
         description: 'category ok',
       },
       {
-        name: 'Sửa rửa mặt',
-        categoryId: ObjectId('627499aa630c7314184823ab'),
+        name: 'Dưỡng Ẩm',
+        categoryId: ObjectId('6279c88ce232736a0b5851c7'),
         description: 'category ok',
       },
       {
-        name: 'Tẩy tế bào chết',
-        categoryId: ObjectId('627499aa630c7314184823ab'),
-        description: 'category ok',
-      },
-      {
-        name: 'Kem chống nắng',
-        categoryId: ObjectId('627499aa630c7314184823ab'),
-        description: 'category ok',
-      },
-      {
-        name: 'Dưỡng mát',
-        categoryId: ObjectId('627499aa630c7314184823ab'),
-        description: 'category ok',
-      },
-      {
-        name: 'Dưỡng ẩm',
-        categoryId: ObjectId('627499aa630c7314184823ab'),
-        description: 'category ok',
-      },
-      {
-        name: 'Dưỡng trắng',
-        categoryId: ObjectId('627499aa630c7314184823ab'),
+        name: 'Chống Nắng',
+        categoryId: ObjectId('6279c88ce232736a0b5851c7'),
         description: 'category ok',
       },
     ]);

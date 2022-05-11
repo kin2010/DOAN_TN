@@ -1,35 +1,39 @@
 import axios from 'axios';
-import { apiURL } from '../Context/constant';
-import { LOCAL_STORAGE_TOKEN_NAME, USER_ROLE } from '../Context/Constants';
-export const getBaseURL = () => {
-  return axios.create({
-    baseURL: apiURL,
-  });
-};
+import queryString from 'query-string';
+import { getToken } from '../Utils/Common';
 
-export const getUser = () => {
-  const userStr = localStorage.getItem('user');
-  if (userStr) return JSON.parse(userStr);
-  else return null;
-};
+// Set up default config for http requests here
+// Please have a look at here `https://github.com/axios/axios#request- config` for the full list of configs
+const axiosClient = axios.create({
+  baseURL: process.env.API_URL,
+  headers: {
+    'content-type': 'application/json',
+  },
+  paramsSerializer: (params) => queryString.stringify(params),
+});
 
-export const getToken = () => {
-  return localStorage.getItem(LOCAL_STORAGE_TOKEN_NAME) || null;
-};
+axiosClient.interceptors.request.use(async (config) => {
+  const token = await getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
 
-export const getTokenType = () => {
-  return localStorage.getItem('type') || null;
-};
+  return config;
+});
 
-export const setUserSession = (token, type) => {
-  localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, token);
-  localStorage.setItem('type', type);
-};
+axiosClient.interceptors.response.use(
+  (response) => {
+    console.log(response, 'res');
+    if (response && response.data) {
+      return response.data;
+    }
 
-export const removeUserSession = () => {
-  localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
-};
+    return response;
+  },
+  (error) => {
+    // Handle errors
+    throw error;
+  },
+);
 
-export const getRoleID = () => {
-  return localStorage.getItem(USER_ROLE) || null;
-};
+export default axiosClient;
