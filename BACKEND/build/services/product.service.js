@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -43,6 +54,7 @@ exports.ProductService = void 0;
 var http_status_1 = __importDefault(require("http-status"));
 var models_1 = require("../models");
 var APIError_1 = __importDefault(require("../utils/APIError"));
+var logger_1 = __importDefault(require("../utils/logger"));
 var ProductService = /** @class */ (function () {
     function ProductService() {
     }
@@ -106,6 +118,47 @@ var ProductService = /** @class */ (function () {
                             });
                         }
                         return [2 /*return*/, product];
+                }
+            });
+        });
+    };
+    ProductService.getAll = function (_b) {
+        var query = _b.query, category = _b.category, subCategory = _b.subCategory;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var productConditions, skip, limit, products;
+            return __generator(_a, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        productConditions = {};
+                        if (category) {
+                            productConditions.category = category;
+                        }
+                        if (subCategory) {
+                            productConditions.subCategory = subCategory;
+                        }
+                        skip = query.skip, limit = query.limit;
+                        logger_1.default.info(limit.toString(), skip.toString(), category, subCategory);
+                        return [4 /*yield*/, models_1.Product.find(__assign({}, productConditions))
+                                .limit(limit)
+                                .skip(skip)
+                                .sort({ createdAt: -1 })
+                                .populate([
+                                {
+                                    path: 'trademark',
+                                    select: 'name',
+                                },
+                                {
+                                    path: 'category',
+                                    select: 'name',
+                                },
+                                {
+                                    path: 'subCategory',
+                                    select: 'name',
+                                },
+                            ])];
+                    case 1:
+                        products = _c.sent();
+                        return [2 /*return*/, products];
                 }
             });
         });

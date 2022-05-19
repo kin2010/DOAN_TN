@@ -97,6 +97,33 @@ var ProductController = /** @class */ (function () {
             }
         });
     }); };
+    ProductController.getAll = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var products, error_3;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    logger_1.default.info(req);
+                    return [4 /*yield*/, product_service_1.ProductService.getAll({
+                            query: {
+                                limit: Number(req.query.limit),
+                                skip: Number(req.query.skip) || 0,
+                            },
+                            category: req.query.category,
+                            subCategory: req.query.subCategory,
+                        })];
+                case 1:
+                    products = _b.sent();
+                    res.json(products);
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_3 = _b.sent();
+                    next(error_3);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
     return ProductController;
 }());
 exports.default = ProductController;

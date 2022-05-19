@@ -10,8 +10,8 @@ export default function Rating(props) {
             rating >= 1
               ? 'text-warning fa-solid fa-star'
               : rating >= 0.5
-              ? 'text-warning fa-solid fa-star-half-alt'
-              : 'text-warning far fa-star'
+              ? 'text-warning fa-solid fa-star-half-stroke'
+              : 'text-warning fa-regular fa-star'
           }
         ></i>
       </span>
@@ -19,10 +19,10 @@ export default function Rating(props) {
         <i
           className={
             rating >= 2
-              ? 'text-warning fa-solid fa-star'
+              ? 'text-warning  fa-solid fa-star'
               : rating >= 1.5
-              ? 'text-warning fa-solid fa-star-half-alt'
-              : 'text-warning far fa-star'
+              ? 'text-warning fa-solid fa-star-half-stroke'
+              : 'text-warning fa-regular fa-star'
           }
         ></i>
       </span>
@@ -30,10 +30,10 @@ export default function Rating(props) {
         <i
           className={
             rating >= 3
-              ? 'text-warning fa-solid fa-star'
+              ? 'text-warning  fa-solid fa-star'
               : rating >= 2.5
-              ? 'text-warning fa-solid fa-star-half-alt'
-              : 'text-warning far fa-star'
+              ? 'text-warning fa-solid fa-star-half-stroke'
+              : 'text-warning fa-regular fa-star'
           }
         ></i>
       </span>
@@ -41,10 +41,10 @@ export default function Rating(props) {
         <i
           className={
             rating >= 4
-              ? 'text-warning fa-solid fa-star'
+              ? 'text-warning  fa-solid fa-star'
               : rating >= 3.5
-              ? 'text-warning fa-solid fa-star-half-alt'
-              : 'text-warning far fa-star'
+              ? 'text-warning fa-solid fa-star-half-stroke'
+              : 'text-warning fa-regular fa-star'
           }
         ></i>
       </span>
@@ -52,10 +52,10 @@ export default function Rating(props) {
         <i
           className={
             rating >= 5
-              ? 'text-warning fa-solid fa-star'
+              ? 'text-warning  fa-solid fa-star'
               : rating >= 4.5
-              ? 'text-warning fa-solid fa-star-half-alt'
-              : 'text-warning far fa-star'
+              ? 'text-warning fa-solid fa-star-half-stroke'
+              : 'text-warning fa-regular fa-star'
           }
         ></i>
       </span>

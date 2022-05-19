@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import { IProduct, Product } from '../models';
 import APIError from '../utils/APIError';
+import log from '../utils/logger';
 
 export interface ICreateProductParams {
   name: string;
@@ -12,8 +13,20 @@ export interface ICreateProductParams {
   category: string;
   subCategory: string;
 }
+interface IProductConditionGetAll {
+  category?: string;
+  subCategory?: string;
+}
 export interface IGetOneProductParams {
   _id: string;
+}
+export interface IGetAllProductParams {
+  query: {
+    limit: number;
+    skip: number;
+  };
+  category: string;
+  subCategory: string;
 }
 export class ProductService {
   static create = async ({
@@ -67,5 +80,40 @@ export class ProductService {
       });
     }
     return product;
+  };
+  static getAll = async ({
+    query,
+    category,
+    subCategory,
+  }: IGetAllProductParams): Promise<IProduct[]> => {
+    const productConditions: IProductConditionGetAll = {};
+    if (category) {
+      productConditions.category = category;
+    }
+    if (subCategory) {
+      productConditions.subCategory = subCategory;
+    }
+    const { skip, limit } = query;
+    log.info(limit.toString(), skip.toString(), category, subCategory);
+    const products = await Product.find({ ...productConditions })
+      .limit(limit)
+      .skip(skip)
+      .sort({ createdAt: -1 })
+      .populate([
+        {
+          path: 'trademark',
+          select: 'name',
+        },
+        {
+          path: 'category',
+          select: 'name',
+        },
+        {
+          path: 'subCategory',
+          select: 'name',
+        },
+      ]);
+
+    return products;
   };
 }

@@ -8,6 +8,31 @@ import Typography from '@mui/material/Typography';
 import Rating from '../Rating';
 import './index.scss';
 import { Chip } from '@mui/material';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+export const IconProduct = styled(Button)((props) => ({
+  opacity: 1,
+  background: '#fff',
+  color: `${props.theme.colors.main}`,
+  minWidth: 0,
+  borderRadius: '100rem',
+  border: `1px solid ${props.theme.colors.main}`,
+  padding: '12px',
+  ':focus': {
+    border: `1px solid ${props.theme.colors.main}`,
+  },
+  '>svg': {},
+  ':hover': {
+    backgroundColor: `${props.theme.colors.main}`,
+    color: '#fff',
+  },
+}));
+export const StyledName = styled(Typography)((props) => ({
+  //textShadow: ' 2px 2px 0 #bcbcbc, 4px 4px 0 #9c9c9c, -2px -1px 14px #CE5937',
+  fontSize: '18px',
+}));
 export const Product = React.forwardRef(
   ({ trademark, name, src, rating, price, chip }, ref) => {
     const mapChip = (chip) => {
@@ -32,10 +57,13 @@ export const Product = React.forwardRef(
       new: 'success',
     };
 
+    const [showIcon, setShowIcon] = React.useState(false);
     return (
       <Card
-        className="product"
         style={{ position: 'relative' }}
+        onMouseEnter={() => setShowIcon(true)}
+        onMouseLeave={() => setShowIcon(false)}
+        className="product mb-5"
         sx={{ maxWidth: 345 }}
       >
         <CardMedia component="img" image={src} alt="green iguana" />
@@ -44,22 +72,33 @@ export const Product = React.forwardRef(
           <Typography className="mb-2" variant="body2" color="text.secondary">
             {trademark}
           </Typography>
-          <Typography
+          <StyledName
             className="mb-2"
             gutterBottom
-            variant="h5"
+            variant="h6"
             component="div"
           >
             {name}
-          </Typography>
+          </StyledName>
 
           <Rating className="mb-2" rating={rating || 5}></Rating>
-          <h4 className="price">{price || 999}đ</h4>
+          <h4 className="price">
+            {price ? Number.parseInt(price).toLocaleString() : 999}đ
+          </h4>
         </CardContent>
-        <CardActions>
-          <Button size="small">Share</Button>
-          <Button size="small">Learn More</Button>
-        </CardActions>
+        {showIcon && (
+          <CardActions className="product-icons">
+            <IconProduct className="success ">
+              <FavoriteIcon className=""></FavoriteIcon>
+            </IconProduct>
+            <IconProduct className="success ">
+              <AddShoppingCartIcon className=""></AddShoppingCartIcon>
+            </IconProduct>
+            <IconProduct className="success ">
+              <VisibilityIcon className=""></VisibilityIcon>
+            </IconProduct>
+          </CardActions>
+        )}
       </Card>
     );
   },

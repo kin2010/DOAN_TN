@@ -16,6 +16,10 @@ export interface IRequestCreateBody {
 export interface IRequestFindOne {
   _id: string;
 }
+export interface IRequestGetall {
+  category?: string;
+  subCategory?: string;
+}
 export default class ProductController {
   static create = async (
     req: Request<IRequestCreateBody, Query, Params>,
@@ -38,6 +42,26 @@ export default class ProductController {
       const response = await ProductService.getById({ _id: req.params._id });
       res.json(response).status(httpStatus.OK).end();
       log.info(response);
+    } catch (error) {
+      next(error);
+    }
+  };
+  static getAll = async (
+    req: Request<IRequestGetall, Query, Params>,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      log.info(req);
+      const products = await ProductService.getAll({
+        query: {
+          limit: Number(req.query.limit),
+          skip: Number(req.query.skip) || 0,
+        },
+        category: req.query.category as string,
+        subCategory: req.query.subCategory as string,
+      });
+      res.json(products);
     } catch (error) {
       next(error);
     }
