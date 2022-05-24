@@ -32,7 +32,23 @@ export interface ISendPhoneParams {
   otp: string;
   phone: string;
 }
+export interface IGetUserParams {
+  _id: IUser['_id'];
+}
 export default class AuthService {
+  static getUser = async ({ _id }: IGetUserParams): Promise<TUserDisplay> => {
+    const user = await User.findOne({
+      _id: _id,
+      isVerify: true,
+    });
+    if (!user) {
+      throw new APIError({
+        status: httpStatus.NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+    return user.displayUser();
+  };
   static Register = async ({
     fullName,
     email,
@@ -154,6 +170,9 @@ export default class AuthService {
       });
     }
     const token = JWT.sign({ _id: user._id });
+    // log.info(user);
+    // log.info(user.displayUser());
+
     return {
       user: user.displayUser(),
       token,

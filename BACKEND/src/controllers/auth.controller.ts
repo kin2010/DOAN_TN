@@ -1,9 +1,11 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, RequestHandler, Response } from 'express';
 import httpStatus from 'http-status';
 import { Query, Params, Request } from '../configs/types';
 import { IVerify } from '../models';
-import { IUser } from '../models/user.model';
+import User, { IUser } from '../models/user.model';
 import AuthService from '../services/auth.service';
+import APIError from '../utils/APIError';
+import JWT from '../utils/jwt';
 export interface IRequestBodyRegiser {
   email: IUser['email'];
   password: IUser['password'];
@@ -27,6 +29,38 @@ export interface IRequestSendPhoneBody {
   phone: string;
 }
 export default class AuthController {
+  static getUser: RequestHandler = async (req: any, res, next) => {
+    try {
+      const token = JWT.get(req);
+
+      if (!token) {
+        throw new APIError({
+          status: httpStatus.UNAUTHORIZED,
+          message: 'Unauthorized',
+        });
+        return;
+      }
+
+      const tokenPayload = JWT.verify(token);
+      const user = await User.findOne({
+        _id: tokenPayload._id,
+        isVerify: true,
+      });
+
+      if (!user) {
+        throw new APIError({
+          status: httpStatus.NOT_FOUND,
+          message: 'User not found',
+        });
+      }
+
+      req.user = user;
+      res.json(user.displayUser()).status(httpStatus.OK).end();
+      // next();
+    } catch (e) {
+      next(e);
+    }
+  };
   static register = async (
     req: Request<IRequestBodyRegiser, Query, Params>,
     res: Response,
@@ -34,7 +68,7 @@ export default class AuthController {
   ): Promise<void> => {
     try {
       await AuthService.Register({ ...req.body });
-      res.status(httpStatus.CREATED).end();
+      res.json({ status: 200 }).status(httpStatus.CREATED).end();
     } catch (error) {
       next(error);
     }

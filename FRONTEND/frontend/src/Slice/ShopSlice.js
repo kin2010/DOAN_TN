@@ -27,3 +27,11 @@ const products = createSlice({
 });
 const { reducer, actions } = products;
 export default reducer;
+
+// extraReducers: (builder) => {
+//   // Xử lý logic khi endpoint login được fulfilled
+//   builder.addMatcher(api.endpoints.login.matchFulfilled, (state, action) => {
+//     // Lưu thông tin user vào state
+//     state.currentUser = action.payload;
+//   });
+// },

@@ -15,6 +15,9 @@ export const getUser = () => {
   if (userStr) return JSON.parse(userStr);
   else return null;
 };
+export const setToken = (token) => {
+  return localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, token);
+};
 
 export const getToken = () => {
   return localStorage.getItem(LOCAL_STORAGE_TOKEN_NAME) || null;

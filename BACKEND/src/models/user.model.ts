@@ -71,7 +71,29 @@ UserSchema.methods.isMatchPassword = function (candidatePassword: string) {
   return bcrypt.compare(candidatePassword, user.password);
 };
 UserSchema.methods.displayUser = function () {
-  return this as TUserDisplay;
+  const transformed: Partial<TUserDisplay> = {};
+  const user = this as IUser;
+
+  const fields = [
+    '_id',
+    'email',
+    'fullName',
+    'role',
+    'gender',
+
+    'phone',
+    'avatar',
+    'address',
+    'createdAt',
+    'updatedAt',
+  ];
+
+  fields.forEach((field) => {
+    // @ts-ignore
+    transformed[field] = user.get(field);
+  });
+
+  return transformed;
 };
 const User = model<IUser>('User', UserSchema);
 export default User;

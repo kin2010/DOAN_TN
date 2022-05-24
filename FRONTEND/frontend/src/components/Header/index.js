@@ -4,10 +4,30 @@ import { Container, Row, Col, Navbar, NavDropdown, Nav } from 'react-bootstrap';
 import './index.css';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Dropdown from '../Dropdown';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllCategories, getAllSub } from '../../Slice/CategorySlice';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { Link, useNavigate } from 'react-router-dom';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import {
+  CAvatar,
+  CIcon,
+  CBadge,
+  CDropdown,
+  CDropdownDivider,
+  CDropdownHeader,
+  CDropdownItem,
+  CDropdownMenu,
+  CDropdownToggle,
+} from '@coreui/react';
+import { useUserQuery } from '../../app/AuthApi';
+import { Avatar } from '@mui/material';
+import { removeUserSession, setToken } from '../../Utils/Common';
+import { nullToken } from '../../Slice/AuthSlice';
 const Header = () => {
+  const user = useSelector((state) => state.auths.user);
+  const navigate = useNavigate();
+  const { data, refetch, error } = useUserQuery();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const showDrop = () => {
@@ -22,7 +42,6 @@ const Header = () => {
       try {
         const action = await dispatch(getAllCategories());
         const res = unwrapResult(action);
-        console.log('cate', res);
       } catch (error) {
         console.log(error);
       }
@@ -31,7 +50,6 @@ const Header = () => {
       try {
         const action = await dispatch(getAllSub());
         const res = unwrapResult(action);
-        console.log('sub', res);
       } catch (error) {
         console.log(error);
       }
@@ -39,6 +57,12 @@ const Header = () => {
     fetchData();
     fetchData2();
   }, []);
+  const handleLogout = async () => {
+    await dispatch(nullToken());
+    removeUserSession();
+    refetch();
+    navigate('/login');
+  };
   return (
     <>
       <header>
@@ -67,8 +91,54 @@ const Header = () => {
                 </Col>
                 <Col>
                   <Nav className="justify-content-end nav-header">
-                    <Nav.Link href="#home">Login</Nav.Link>
-                    <Nav.Link href="#link">Register</Nav.Link>
+                    {data && !error ? (
+                      <Nav.Link href="#link">
+                        Hi{' '}
+                        <span style={{ color: '#ff536f' }}>
+                          {data?.fullName}
+                        </span>
+                      </Nav.Link>
+                    ) : (
+                      <>
+                        <Nav.Link as={Link} to="/login">
+                          Login
+                        </Nav.Link>
+                        <Nav.Link as={Link} to="/register">
+                          Register
+                        </Nav.Link>
+                      </>
+                    )}
+
+                    {data && !error && (
+                      <CDropdown variant="nav-item">
+                        <CDropdownToggle
+                          placement="bottom-end"
+                          className="py-0"
+                          caret={false}
+                        >
+                          <Avatar
+                            alt="Remy Sharp"
+                            src={
+                              data.avatar ? data.avatar : '../images/user.png'
+                            }
+                          />
+                        </CDropdownToggle>
+                        <CDropdownMenu className="pt-0" placement="bottom-end">
+                          <CDropdownItem
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleLogout()}
+                          >
+                            <ExitToAppIcon
+                              style={{ transform: 'translate(-6px,6px)' }}
+                            />
+                            <span as={Link} to="/login">
+                              Logout
+                            </span>
+                          </CDropdownItem>
+                        </CDropdownMenu>
+                      </CDropdown>
+                    )}
+
                     <Nav.Link href="#link">
                       <FavoriteIcon color="error" fontSize="large" />
                     </Nav.Link>
@@ -94,7 +164,9 @@ const Header = () => {
               </Row>
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto justify-content-between w-75">
-                  <Nav.Link href="#home">Home</Nav.Link>
+                  <Nav.Link as={Link} to={'/'}>
+                    Home
+                  </Nav.Link>
                   <Nav.Link onMouseEnter={showDrop} href="#home">
                     Product
                     <KeyboardArrowDownIcon />

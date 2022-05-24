@@ -54,6 +54,29 @@ var AuthService = /** @class */ (function () {
     }
     var _a;
     _a = AuthService;
+    AuthService.getUser = function (_b) {
+        var _id = _b._id;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var user;
+            return __generator(_a, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, models_1.User.findOne({
+                            _id: _id,
+                            isVerify: true,
+                        })];
+                    case 1:
+                        user = _c.sent();
+                        if (!user) {
+                            throw new APIError_1.default({
+                                status: http_status_1.default.NOT_FOUND,
+                                message: 'User not found',
+                            });
+                        }
+                        return [2 /*return*/, user.displayUser()];
+                }
+            });
+        });
+    };
     AuthService.Register = function (_b) {
         var fullName = _b.fullName, email = _b.email, password = _b.password;
         return __awaiter(void 0, void 0, void 0, function () {
@@ -206,6 +229,8 @@ var AuthService = /** @class */ (function () {
                             });
                         }
                         token = jwt_1.default.sign({ _id: user._id });
+                        // log.info(user);
+                        // log.info(user.displayUser());
                         return [2 /*return*/, {
                                 user: user.displayUser(),
                                 token: token,

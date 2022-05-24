@@ -51,7 +51,25 @@ UserSchema.methods.isMatchPassword = function (candidatePassword) {
     return bcrypt_1.default.compare(candidatePassword, user.password);
 };
 UserSchema.methods.displayUser = function () {
-    return this;
+    var transformed = {};
+    var user = this;
+    var fields = [
+        '_id',
+        'email',
+        'fullName',
+        'role',
+        'gender',
+        'phone',
+        'avatar',
+        'address',
+        'createdAt',
+        'updatedAt',
+    ];
+    fields.forEach(function (field) {
+        // @ts-ignore
+        transformed[field] = user.get(field);
+    });
+    return transformed;
 };
 var User = (0, mongoose_1.model)('User', UserSchema);
 exports.default = User;

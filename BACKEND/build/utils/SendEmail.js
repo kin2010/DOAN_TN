@@ -95,7 +95,7 @@ var sendMailNodeMaier = function (email, otp) { return __awaiter(void 0, void 0,
                     // thiết lập đối tượng, nội dung gửi mail
                     from: 'Website mỹ phẩm ',
                     to: email,
-                    subject: 'Test Nodemailer',
+                    subject: 'Thanks For Choosing Us',
                     text: 'You recieved message from ',
                     html: "\n    <!DOCTYPE html>\n<html>\n  <head>\n    \n   \n    <style>\n    .wrap{\n      padding:30px;\n      max-width: 900px;\n      border:10px solid pink;\n    }\n    h1{\n      text-align: center;\n    }\n    img{\n      display:block;\n      margin:0 auto;\n    }\n      h2{\n        color:pink;\n      }\n      p{\n        color: pink;\n      }\n       h3{\n      border:3px solid pink;\n      width:fit-content;\n      padding:10px 15px;\n      margin:0 auto;\n    }\n    .otp{\n      color:green;\n      font-size: 30px;\n    }\n    </style>\n  </head>\n  <body>\n    <div class='wrap'>\n      <h1>Thanks You !</h1>\n      <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqFv-L7kcWafx-hmaN-EkU-bI-rGYl6fAKq2s04nmRKREUXci_zvw_XoszuGuwxAs75mE&usqp=CAU'alt='noimg'/>\n      <h2> C\u1EA3m \u01A1n <i>" + email + "</i> \u0111\u00E3 s\u1EED d\u1EE5ng d\u1ECBch v\u1EE5 c\u1EE7a ch\u00FAng t\u00F4i </h2>\n     <p>\u0110\u00E2y l\u00E0 m\u00E3 <strong>OTP</strong> \u0111\u1EC3 b\u1EA1n truy c\u1EADp website:</p> \n      <hr/>\n      <h3><span class='otp'>" + otp + "</span></h3>\n    </div>\n     \n  </body>\n</html>\n    ",
                 };
@@ -104,6 +104,7 @@ var sendMailNodeMaier = function (email, otp) { return __awaiter(void 0, void 0,
                 _a.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, transporter.sendMail(mainOptions, function (error) {
                         if (error) {
+                            logger_1.default.info(error);
                             throw new APIError_1.default({
                                 message: 'Error Send Email',
                                 status: http_status_1.default.FORBIDDEN,

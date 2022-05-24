@@ -51,12 +51,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var http_status_1 = __importDefault(require("http-status"));
+var user_model_1 = __importDefault(require("../models/user.model"));
 var auth_service_1 = __importDefault(require("../services/auth.service"));
+var APIError_1 = __importDefault(require("../utils/APIError"));
+var jwt_1 = __importDefault(require("../utils/jwt"));
 var AuthController = /** @class */ (function () {
     function AuthController() {
     }
     var _a;
     _a = AuthController;
+    AuthController.getUser = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var token, tokenPayload, user, e_1;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    token = jwt_1.default.get(req);
+                    if (!token) {
+                        throw new APIError_1.default({
+                            status: http_status_1.default.UNAUTHORIZED,
+                            message: 'Unauthorized',
+                        });
+                        return [2 /*return*/];
+                    }
+                    tokenPayload = jwt_1.default.verify(token);
+                    return [4 /*yield*/, user_model_1.default.findOne({
+                            _id: tokenPayload._id,
+                            isVerify: true,
+                        })];
+                case 1:
+                    user = _b.sent();
+                    if (!user) {
+                        throw new APIError_1.default({
+                            status: http_status_1.default.NOT_FOUND,
+                            message: 'User not found',
+                        });
+                    }
+                    req.user = user;
+                    res.json(user.displayUser()).status(http_status_1.default.OK).end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_1 = _b.sent();
+                    next(e_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
     AuthController.register = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var error_1;
         return __generator(_a, function (_b) {
@@ -66,7 +107,7 @@ var AuthController = /** @class */ (function () {
                     return [4 /*yield*/, auth_service_1.default.Register(__assign({}, req.body))];
                 case 1:
                     _b.sent();
-                    res.status(http_status_1.default.CREATED).end();
+                    res.json({ status: 200 }).status(http_status_1.default.CREATED).end();
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _b.sent();
@@ -96,7 +137,7 @@ var AuthController = /** @class */ (function () {
         });
     }); };
     AuthController.verifyEmail = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var e_1;
+        var e_2;
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -109,8 +150,8 @@ var AuthController = /** @class */ (function () {
                     });
                     return [3 /*break*/, 3];
                 case 2:
-                    e_1 = _b.sent();
-                    return [2 /*return*/, next(e_1)];
+                    e_2 = _b.sent();
+                    return [2 /*return*/, next(e_2)];
                 case 3: return [2 /*return*/];
             }
         });

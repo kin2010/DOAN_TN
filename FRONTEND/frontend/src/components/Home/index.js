@@ -2,11 +2,14 @@ import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import Product from '../Product';
 import Header from '../Header';
+import { useUserQuery } from '../../app/AuthApi';
 
 const Home = () => {
+  const { data: user, isLoading, error } = useUserQuery();
   return (
     <>
       <Header></Header>
+      {user && JSON.stringify(user)}
       <Container style={{ backgroundColor: '#f6f7fb' }}>
         <Row>
           <Col md={4}>

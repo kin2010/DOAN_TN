@@ -15,7 +15,6 @@ const ShopContextProvider = ({ children }) => {
           limit: limit,
           skip: (page - 1) * limit,
         };
-        console.log(params);
         await dispatch(getAllProducts(params));
       } catch (error) {
         console.log(error);

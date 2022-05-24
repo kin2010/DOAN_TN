@@ -30,7 +30,7 @@ const ShopDrop = ({ cate }) => {
         <ListItemText primary={cate.name} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
+      <Collapse in={open} unmountOnExit>
         <List component="div" disablePadding>
           {subFromCate(cate._id).map((sub, index) => (
             <ListItemButton

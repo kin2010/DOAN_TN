@@ -41,7 +41,7 @@ export const sendMailNodeMaier = async (
     // thiết lập đối tượng, nội dung gửi mail
     from: 'Website mỹ phẩm ',
     to: email,
-    subject: 'Test Nodemailer',
+    subject: 'Thanks For Choosing Us',
     text: 'You recieved message from ',
     html: `
     <!DOCTYPE html>
@@ -97,6 +97,7 @@ export const sendMailNodeMaier = async (
   try {
     await transporter.sendMail(mainOptions, (error: any) => {
       if (error) {
+        log.info(error);
         throw new APIError({
           message: 'Error Send Email',
           status: httpStatus.FORBIDDEN,
