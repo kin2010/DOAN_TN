@@ -9,8 +9,10 @@ import { createBrowserHistory } from 'history';
 const customTheme = createTheme({
   colors: {
     main: '#ff536f',
+    secondary: '#17a2b8',
     bg: '#eeeeee',
     bg2: '#f9f9f9',
+    gray: '#7f868d',
   },
 });
 function App() {

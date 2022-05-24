@@ -22,10 +22,15 @@ import {
 } from '@coreui/react';
 import { useUserQuery } from '../../app/AuthApi';
 import { Avatar } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { removeUserSession, setToken } from '../../Utils/Common';
 import { nullToken } from '../../Slice/AuthSlice';
+import Cart from '../Cart';
+export const ImgStyle = styled('img')((props) => ({
+  maxWidth: '100%',
+}));
 const Header = () => {
-  const user = useSelector((state) => state.auths.user);
+  const [showCart, setShowCart] = useState(false);
   const navigate = useNavigate();
   const { data, refetch, error } = useUserQuery();
   const dispatch = useDispatch();
@@ -68,6 +73,12 @@ const Header = () => {
       <header>
         <Navbar id="header" bg="light" expand="lg">
           <Container id="container">
+            {showCart && <Cart></Cart>}
+            {show && (
+              <Dropdown hide={hideDrop} ref={refDropdown}>
+                {' '}
+              </Dropdown>
+            )}
             <Col md={3}>
               <Navbar.Brand href="#home">
                 <img
@@ -81,7 +92,7 @@ const Header = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
             <Col md={9}>
-              <Row className="align-items-center mb-5">
+              <Row className="align-items-center mb-2">
                 <Col>
                   <input
                     placeholder="search ..."
@@ -144,20 +155,13 @@ const Header = () => {
                     </Nav.Link>
                     <div
                       style={{ marginTop: 8 }}
+                      onClick={() => setShowCart(!showCart)}
                       className="nav-icon position-relative text-decoration-none button-cart"
                     >
                       <i className="fa fa-fw fa-cart-arrow-down text-dark mr-1" />
                       <span className="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
                         2
                       </span>
-                      <div className="shopping-cart-content ">
-                        <div
-                          style={{ width: 'fit-content', marginLeft: 25 }}
-                          className="ml-1 bg-info rounded-circle px-2 py-1 mt-2 text-white "
-                        >
-                          {/* <i className="fas fa-chevron-up"></i> */}
-                        </div>
-                      </div>
                     </div>
                   </Nav>
                 </Col>
@@ -199,11 +203,11 @@ const Header = () => {
                 </Nav>
               </Navbar.Collapse>
             </Col>
-            {show && (
+            {/* {show && (
               <Dropdown hide={hideDrop} ref={refDropdown}>
                 {' '}
               </Dropdown>
-            )}
+            )} */}
           </Container>
         </Navbar>
       </header>

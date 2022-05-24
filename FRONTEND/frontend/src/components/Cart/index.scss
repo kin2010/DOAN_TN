@@ -1,0 +1,15 @@
+.shopping-cart-content {
+  position: absolute;
+  bottom: -9px;
+  transform: translateY(100%);
+  z-index: 99;
+  right: 0;
+  max-width: 350px;
+  width: 350px;
+  padding: 0 15px 0 15px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 21, 0.15) !important;
+}
+.cart-content {
+  max-height: 280px;
+  overflow-x: hidden;
+}

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { reState } from '../../Slice/AuthSlice';
+import { AlertStyled } from './Login';
 export const StyledLabel = styled(Form.Label)((props) => ({
   color: `${props.theme.colors.main}`,
 }));
@@ -161,6 +162,16 @@ const Register = () => {
   );
   return (
     <>
+      {error && (
+        <AlertStyled variant="filled" color="info" severity="error">
+          {error?.data?.message}
+        </AlertStyled>
+      )}
+      {errorVerify && (
+        <AlertStyled variant="filled" color="info" severity="error">
+          {errorVerify?.data?.message}
+        </AlertStyled>
+      )}
       {!showOTP && body}
       {showOTP && bodyOTP}
       {isLoading && (
@@ -169,9 +180,17 @@ const Register = () => {
             <CircularProgress />{' '}
           </div>
         </>
-      )}{' '}
-      {error && error?.data?.message}
-      {errorVerify && errorVerify?.data?.message}
+      )}
+      {LoadingVerify && (
+        <>
+          <div className="d-flex justify-content-center mt-2 mb-5">
+            <CircularProgress />{' '}
+          </div>
+        </>
+      )}
+
+      {/* {error && error?.data?.message}
+      {errorVerify && errorVerify?.data?.message} */}
     </>
   );
 };

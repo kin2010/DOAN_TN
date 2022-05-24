@@ -12,12 +12,10 @@ const AuthContextProvider = ({ children }) => {
   const { user: userRedux } = useSelector((state) => state.auths);
   // const [login, { data, isLoading, error }] = useLoginMutation();
 
-  useEffect(() => {
-    refetch();
-  }, [userRedux]);
-  //have token
-  if (getToken()) {
-  }
+  // useEffect(() => {
+  //   refetch();
+  // }, [userRedux]);
+
   const datas = { user };
   return <AuthContext.Provider value={datas}>{children}</AuthContext.Provider>;
 };

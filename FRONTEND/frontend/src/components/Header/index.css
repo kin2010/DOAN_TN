@@ -2,7 +2,11 @@
   position: relative;
 }
 #header {
-  padding: 35px 0 20px 0;
+  padding: 25px 0 5px 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 999;
 }
 .img-header {
   width: 230px;
@@ -22,14 +26,14 @@
 }
 .dropdownHeader {
   position: absolute;
-  bottom: -242px;
-  bottom: -265px;
-  left: 0;
+  bottom: 3px;
+
+  transform: translateY(100%);
   background-color: rgb(242, 242, 247);
   box-shadow: 0px 5px 16px -3px gray;
   padding: 0 30px 0 30px;
-  transform: translate(-50%, 0);
-  left: 50%;
+
+  left: 15%;
   width: 70%;
   z-index: 999;
 }

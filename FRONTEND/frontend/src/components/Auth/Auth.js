@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Login, { AlertStyled } from './Login.js';
 import Register from './Register.js';
 import Header from '../Header';
 import Breadcrumb from '../BreadCrum/index.js';
-import { useLoginMutation } from '../../app/AuthApi.js';
+import { AuthApi, useLoginMutation, useUserQuery } from '../../app/AuthApi.js';
+import { useSelector } from 'react-redux';
 const Auth = ({ auth }) => {
-  const [{ error }] = useLoginMutation();
+  const [login, { data, isLoading, error }] = useLoginMutation();
+  //const { error: errorUser } = useUserQuery();
+
   let body;
   let label;
   const navigate = useNavigate();
@@ -75,12 +78,7 @@ const Auth = ({ auth }) => {
     <>
       <Header></Header>
       <Breadcrumb breadcrumb="Login"></Breadcrumb>
-      {error && error?.data?.message}
-      {error && (
-        <AlertStyled variant="filled" color="info" severity="error">
-          {error?.data?.message}
-        </AlertStyled>
-      )}
+
       <Container fuild="true" style={{ position: 'relative' }}>
         <Row className="justify-content-center mt-5">
           <Col md={6}>

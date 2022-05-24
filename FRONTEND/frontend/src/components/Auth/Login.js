@@ -111,11 +111,11 @@ const Login = () => {
   );
   return (
     <>
-      {/* {error && (
+      {error && (
         <AlertStyled variant="filled" color="info" severity="error">
           {error?.data?.message}
         </AlertStyled>
-      )} */}
+      )}
       {body}
       {isLoading && (
         <>

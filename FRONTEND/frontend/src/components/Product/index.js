@@ -11,7 +11,10 @@ import { Chip } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+import { addCart } from '../../Slice/CartSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
 export const IconProduct = styled(Button)((props) => ({
   opacity: 1,
   background: '#fff',
@@ -33,74 +36,73 @@ export const StyledName = styled(Typography)((props) => ({
   //textShadow: ' 2px 2px 0 #bcbcbc, 4px 4px 0 #9c9c9c, -2px -1px 14px #CE5937',
   fontSize: '18px',
 }));
-export const Product = React.forwardRef(
-  ({ trademark, name, src, rating, price, chip }, ref) => {
-    const mapChip = (chip) => {
-      switch (chip) {
-        case 'sale': {
-          return 'warning';
-        }
-        case 'hot': {
-          return 'error';
-        }
-        case 'new': {
-          return 'success';
-        }
-        default: {
-          return 'info';
-        }
+export const Product = React.forwardRef(({ product, chip }, ref) => {
+  const dispatch = useDispatch();
+  const { avatar, trademark, name, src, rating, price } = product;
+  const handleAddCart = () => {
+    console.log(product);
+    dispatch(addCart(product));
+  };
+  const mapChip = (chip) => {
+    switch (chip) {
+      case 'sale': {
+        return 'warning';
       }
-    };
-    const mapColor = {
-      sale: 'warning',
-      hot: 'error',
-      new: 'success',
-    };
+      case 'hot': {
+        return 'error';
+      }
+      case 'new': {
+        return 'success';
+      }
+      default: {
+        return 'info';
+      }
+    }
+  };
+  const mapColor = {
+    sale: 'warning',
+    hot: 'error',
+    new: 'success',
+  };
 
-    const [showIcon, setShowIcon] = React.useState(false);
-    return (
-      <Card
-        style={{ position: 'relative' }}
-        onMouseEnter={() => setShowIcon(true)}
-        onMouseLeave={() => setShowIcon(false)}
-        className="product mb-5"
-        sx={{ maxWidth: 345 }}
-      >
-        <CardMedia component="img" image={src} alt="green iguana" />
-        <CardContent className="text-center">
-          <Chip className="chip" label={chip} color={mapColor[chip]} />
-          <Typography className="mb-2" variant="body2" color="text.secondary">
-            {trademark}
-          </Typography>
-          <StyledName
-            className="mb-2"
-            gutterBottom
-            variant="h6"
-            component="div"
-          >
-            {name}
-          </StyledName>
+  const [showIcon, setShowIcon] = React.useState(false);
+  return (
+    <Card
+      style={{ position: 'relative' }}
+      onMouseEnter={() => setShowIcon(true)}
+      onMouseLeave={() => setShowIcon(false)}
+      className="product mb-5"
+      sx={{ maxWidth: 345 }}
+    >
+      <CardMedia component="img" image={avatar} alt="green iguana" />
+      <CardContent className="text-center">
+        <Chip className="chip" label={chip} color={mapColor[chip]} />
+        <Typography className="mb-2" variant="body2" color="text.secondary">
+          {trademark?.name}
+        </Typography>
+        <StyledName className="mb-2" gutterBottom variant="h6" component="div">
+          {name}
+        </StyledName>
 
-          <Rating className="mb-2" rating={rating || 5}></Rating>
-          <h4 className="price">
-            {price ? Number.parseInt(price).toLocaleString() : 999}đ
-          </h4>
-        </CardContent>
-        {showIcon && (
-          <CardActions className="product-icons">
-            <IconProduct className="success ">
-              <FavoriteIcon className=""></FavoriteIcon>
-            </IconProduct>
-            <IconProduct className="success ">
-              <AddShoppingCartIcon className=""></AddShoppingCartIcon>
-            </IconProduct>
-            <IconProduct className="success ">
-              <VisibilityIcon className=""></VisibilityIcon>
-            </IconProduct>
-          </CardActions>
-        )}
-      </Card>
-    );
-  },
-);
+        <Rating className="mb-2" rating={rating || 5}></Rating>
+        <h4 className="price">
+          {price ? Number.parseInt(price).toLocaleString() : 999}đ
+        </h4>
+      </CardContent>
+      {showIcon && (
+        <CardActions className="product-icons">
+          <IconProduct className="success ">
+            <FavoriteIcon className=""></FavoriteIcon>
+          </IconProduct>
+          <IconProduct onClick={() => handleAddCart()} className="success ">
+            <AddShoppingCartIcon></AddShoppingCartIcon>
+          </IconProduct>
+          <IconProduct className="success ">
+            <VisibilityIcon className=""></VisibilityIcon>
+          </IconProduct>
+        </CardActions>
+      )}
+    </Card>
+  );
+});
 export default Product;

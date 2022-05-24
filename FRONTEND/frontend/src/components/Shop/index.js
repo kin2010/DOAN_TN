@@ -69,13 +69,7 @@ const Shop = () => {
                     {products.length > 0 ? (
                       products?.map((product, index) => (
                         <Col md={4} key={index}>
-                          <Product
-                            chip="sale"
-                            name={product?.name}
-                            rating={3.5}
-                            src={product?.avatar}
-                            trademark={product?.trademark?.name}
-                          ></Product>
+                          <Product chip="sale" product={product}></Product>
                         </Col>
                       ))
                     ) : (
