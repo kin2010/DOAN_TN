@@ -12,7 +12,7 @@ export const StyledBread = styled('div')((props) => ({
   width: '100vw',
   textAlign: 'center',
   backgroundColor: `${props.theme.colors.main}30`,
-  padding: '35px 0 35px 0',
+  padding: '15px 0 15px 0',
   '.MuiBreadcrumbs-ol': {
     justifyContent: 'center',
   },

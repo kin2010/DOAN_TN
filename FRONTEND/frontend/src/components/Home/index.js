@@ -1,8 +1,8 @@
-import React from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
-import Product from '../Product';
-import Header from '../Header';
-import { useUserQuery } from '../../app/AuthApi';
+import React from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import Product from "../Product";
+import Header from "../Header";
+import { useUserQuery } from "../../app/AuthApi";
 
 const Home = () => {
   const { data: user, isLoading, error } = useUserQuery();
@@ -10,8 +10,8 @@ const Home = () => {
     <>
       <Header></Header>
       {user && JSON.stringify(user)}
-      <Container style={{ backgroundColor: '#f6f7fb' }}>
-        <Row>
+      <Container style={{ backgroundColor: "#f6f7fb" }}>
+        {/* <Row>
           <Col md={4}>
             <Product
               chip="sale"
@@ -41,7 +41,7 @@ const Home = () => {
               src="../images/img3.png"
             ></Product>
           </Col>
-        </Row>
+        </Row> */}
       </Container>
     </>
   );

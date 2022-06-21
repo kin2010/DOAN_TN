@@ -1,0 +1,2 @@
+IN POSTMAN: + query: Params + params: url:'.././1bfwjn11n431' + body:
+body->raw->json

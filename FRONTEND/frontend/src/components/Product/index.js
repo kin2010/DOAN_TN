@@ -14,7 +14,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { styled } from '@mui/material/styles';
 import { addCart } from '../../Slice/CartSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { Link } from 'react-router-dom';
 export const IconProduct = styled(Button)((props) => ({
   opacity: 1,
   background: '#fff',
@@ -97,7 +97,11 @@ export const Product = React.forwardRef(({ product, chip }, ref) => {
           <IconProduct onClick={() => handleAddCart()} className="success ">
             <AddShoppingCartIcon></AddShoppingCartIcon>
           </IconProduct>
-          <IconProduct className="success ">
+          <IconProduct
+            className="success "
+            as={Link}
+            to={`/product/${product._id}`}
+          >
             <VisibilityIcon className=""></VisibilityIcon>
           </IconProduct>
         </CardActions>

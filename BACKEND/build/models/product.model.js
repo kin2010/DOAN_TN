@@ -40,6 +40,7 @@ var ProductSchema = new mongoose_1.Schema({
         type: 'ObjectId',
         ref: 'SubCategory',
     },
+    comments: [{ type: 'ObjectId', ref: 'Comment' }],
 }, {
     timestamps: true,
 });

@@ -3,12 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
 var controllers_1 = require("../controllers");
+var express_1 = __importDefault(require("express"));
 var router = express_1.default.Router();
-router.route('/').get(controllers_1.ProductController.getAll).post(controllers_1.ProductController.create);
-router
-    .route('/:_id')
-    .get(controllers_1.ProductController.getById)
-    .put(controllers_1.ProductController.update);
+router.route('/').post(controllers_1.CommentController.create);
+router.route('/:id').get(controllers_1.CommentController.getCommentByProduct);
 exports.default = router;

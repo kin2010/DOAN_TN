@@ -163,6 +163,37 @@ var ProductService = /** @class */ (function () {
             });
         });
     };
+    ProductService.update = function (_b) {
+        var body = _b.body, productId = _b.productId;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var shop, productUpdated;
+            return __generator(_a, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, models_1.Product.findById(productId)];
+                    case 1:
+                        shop = _c.sent();
+                        if (!shop) {
+                            throw new APIError_1.default({
+                                message: 'Product not found',
+                                status: http_status_1.default.NOT_FOUND,
+                            });
+                        }
+                        return [4 /*yield*/, models_1.Product.findByIdAndUpdate(productId, body, {
+                                new: true,
+                            })];
+                    case 2:
+                        productUpdated = _c.sent();
+                        if (!productUpdated) {
+                            throw new APIError_1.default({
+                                message: 'Can not update order',
+                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
+                            });
+                        }
+                        return [2 /*return*/, productUpdated];
+                }
+            });
+        });
+    };
     return ProductService;
 }());
 exports.ProductService = ProductService;

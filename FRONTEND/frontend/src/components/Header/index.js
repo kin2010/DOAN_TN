@@ -29,7 +29,7 @@ import Cart from '../Cart';
 export const ImgStyle = styled('img')((props) => ({
   maxWidth: '100%',
 }));
-const Header = () => {
+const Header = ({ className }) => {
   const [showCart, setShowCart] = useState(false);
   const navigate = useNavigate();
   const { data, refetch, error } = useUserQuery();
@@ -38,6 +38,7 @@ const Header = () => {
   const showDrop = () => {
     setShow(true);
   };
+  const carts = useSelector((state) => state.carts.carts);
   const refDropdown = useRef(null);
   const hideDrop = (hide) => {
     setShow(hide);
@@ -70,10 +71,10 @@ const Header = () => {
   };
   return (
     <>
-      <header>
+      <header className={className}>
         <Navbar id="header" bg="light" expand="lg">
           <Container id="container">
-            {showCart && <Cart></Cart>}
+            {showCart && <Cart show={setShowCart}></Cart>}
             {show && (
               <Dropdown hide={hideDrop} ref={refDropdown}>
                 {' '}
@@ -154,14 +155,23 @@ const Header = () => {
                       <FavoriteIcon color="error" fontSize="large" />
                     </Nav.Link>
                     <div
-                      style={{ marginTop: 8 }}
+                      style={{
+                        marginTop: 8,
+                        cursor: 'pointer',
+                        fontSize: '20px',
+                      }}
                       onClick={() => setShowCart(!showCart)}
-                      className="nav-icon position-relative text-decoration-none button-cart"
+                      className=" nav-icon position-relative text-decoration-none button-cart"
                     >
-                      <i className="fa fa-fw fa-cart-arrow-down text-dark mr-1" />
-                      <span className="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
-                        2
-                      </span>
+                      <i
+                        className="fa-solid fa-basket-shopping text-success"
+                        style={{ fontSize: '35px' }}
+                      ></i>{' '}
+                      {carts.length > 0 && (
+                        <span className="text-danger position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light ">
+                          {carts?.length}
+                        </span>
+                      )}
                     </div>
                   </Nav>
                 </Col>

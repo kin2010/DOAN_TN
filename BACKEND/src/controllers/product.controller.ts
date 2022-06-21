@@ -1,8 +1,10 @@
 import { NextFunction, query, Response } from 'express';
 import httpStatus from 'http-status';
 import { Params, Query, Request } from '../configs/types';
+import { IProduct } from '../models';
 import { ProductService } from '../services/product.service';
 import log from '../utils/logger';
+type IRequestBodyUpdateProduct = Omit<IProduct, 'createdAt' | 'updatedAt'>;
 export interface IRequestCreateBody {
   name: string;
   description: string;
@@ -52,7 +54,6 @@ export default class ProductController {
     next: NextFunction,
   ) => {
     try {
-      log.info(req);
       const products = await ProductService.getAll({
         query: {
           limit: Number(req.query.limit),
@@ -64,6 +65,21 @@ export default class ProductController {
       res.json(products);
     } catch (error) {
       next(error);
+    }
+  };
+  static update = async (
+    req: Request<IRequestBodyUpdateProduct, Query, Params>,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const shop = await ProductService.update({
+        productId: req.params.id,
+        body: req.body,
+      });
+      res.json(shop);
+    } catch (e) {
+      return next(e);
     }
   };
 }

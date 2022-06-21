@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SubCategory = exports.Category = exports.Trademark = exports.Product = exports.Verify = exports.User = exports.Role = void 0;
+exports.Order = exports.Comment = exports.SubCategory = exports.Category = exports.Trademark = exports.Product = exports.Verify = exports.User = exports.Role = void 0;
 var role_model_1 = require("./role.model");
 Object.defineProperty(exports, "Role", { enumerable: true, get: function () { return __importDefault(role_model_1).default; } });
 var user_model_1 = require("./user.model");
@@ -18,3 +18,7 @@ var category_model_1 = require("./category.model");
 Object.defineProperty(exports, "Category", { enumerable: true, get: function () { return __importDefault(category_model_1).default; } });
 var subCategory_model_1 = require("./subCategory.model");
 Object.defineProperty(exports, "SubCategory", { enumerable: true, get: function () { return __importDefault(subCategory_model_1).default; } });
+var comment_model_1 = require("./comment.model");
+Object.defineProperty(exports, "Comment", { enumerable: true, get: function () { return __importDefault(comment_model_1).default; } });
+var order_model_1 = require("./order.model");
+Object.defineProperty(exports, "Order", { enumerable: true, get: function () { return __importDefault(order_model_1).default; } });

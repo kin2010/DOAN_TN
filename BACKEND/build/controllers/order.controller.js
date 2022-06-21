@@ -51,23 +51,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var http_status_1 = __importDefault(require("http-status"));
-var product_service_1 = require("../services/product.service");
-var logger_1 = __importDefault(require("../utils/logger"));
-var ProductController = /** @class */ (function () {
-    function ProductController() {
+var order_service_1 = __importDefault(require("../services/order.service"));
+var OrderController = /** @class */ (function () {
+    function OrderController() {
     }
     var _a;
-    _a = ProductController;
-    ProductController.create = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, error_1;
+    _a = OrderController;
+    OrderController.create = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var responce, error_1;
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, product_service_1.ProductService.create(__assign({}, req.body))];
+                    return [4 /*yield*/, order_service_1.default.create(__assign({}, req.body))];
                 case 1:
-                    response = _b.sent();
-                    res.json(response).status(http_status_1.default.OK);
+                    responce = _b.sent();
+                    res.status(http_status_1.default.CREATED).json(responce).end();
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _b.sent();
@@ -77,65 +76,19 @@ var ProductController = /** @class */ (function () {
             }
         });
     }); };
-    ProductController.getById = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, error_2;
-        return __generator(_a, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _b.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, product_service_1.ProductService.getById({ _id: req.params._id })];
-                case 1:
-                    response = _b.sent();
-                    res.json(response).status(http_status_1.default.OK).end();
-                    logger_1.default.info(response);
-                    return [3 /*break*/, 3];
-                case 2:
-                    error_2 = _b.sent();
-                    next(error_2);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); };
-    ProductController.getAll = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var products, error_3;
-        return __generator(_a, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _b.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, product_service_1.ProductService.getAll({
-                            query: {
-                                limit: Number(req.query.limit),
-                                skip: Number(req.query.skip) || 0,
-                            },
-                            category: req.query.category,
-                            subCategory: req.query.subCategory,
-                        })];
-                case 1:
-                    products = _b.sent();
-                    res.json(products);
-                    return [3 /*break*/, 3];
-                case 2:
-                    error_3 = _b.sent();
-                    next(error_3);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); };
-    ProductController.update = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    OrderController.update = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var shop, e_1;
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, product_service_1.ProductService.update({
-                            productId: req.params.id,
+                    return [4 /*yield*/, order_service_1.default.update({
+                            orderId: req.params.id,
                             body: req.body,
                         })];
                 case 1:
                     shop = _b.sent();
-                    res.json(shop);
+                    res.json(shop).status(http_status_1.default.OK).end();
                     return [3 /*break*/, 3];
                 case 2:
                     e_1 = _b.sent();
@@ -144,6 +97,53 @@ var ProductController = /** @class */ (function () {
             }
         });
     }); };
-    return ProductController;
+    OrderController.getAll = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var shops, e_2;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, order_service_1.default.getAll({
+                            pagination: {
+                                limit: Number(req.query.limit),
+                                skip: req.skip || 0,
+                            },
+                        })];
+                case 1:
+                    shops = _b.sent();
+                    res.json(shops);
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_2 = _b.sent();
+                    return [2 /*return*/, next(e_2)];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    OrderController.getByUser = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var shops, e_3;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, order_service_1.default.getByUser({
+                            userId: req.body.userId,
+                            pagination: {
+                                limit: Number(req.query.limit),
+                                skip: Number(req.query.skip) || 0,
+                            },
+                        })];
+                case 1:
+                    shops = _b.sent();
+                    res.json(shops);
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_3 = _b.sent();
+                    return [2 /*return*/, next(e_3)];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    return OrderController;
 }());
-exports.default = ProductController;
+exports.default = OrderController;

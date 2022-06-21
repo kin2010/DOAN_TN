@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -50,24 +39,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var http_status_1 = __importDefault(require("http-status"));
-var product_service_1 = require("../services/product.service");
-var logger_1 = __importDefault(require("../utils/logger"));
-var ProductController = /** @class */ (function () {
-    function ProductController() {
+var comment_service_1 = __importDefault(require("../services/comment.service"));
+var CommentController = /** @class */ (function () {
+    function CommentController() {
     }
     var _a;
-    _a = ProductController;
-    ProductController.create = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, error_1;
+    _a = CommentController;
+    CommentController.create = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var create, error_1;
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, product_service_1.ProductService.create(__assign({}, req.body))];
+                    return [4 /*yield*/, comment_service_1.default.create({ body: req.body })];
                 case 1:
-                    response = _b.sent();
-                    res.json(response).status(http_status_1.default.OK);
+                    create = _b.sent();
+                    res.json(create);
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _b.sent();
@@ -77,17 +64,18 @@ var ProductController = /** @class */ (function () {
             }
         });
     }); };
-    ProductController.getById = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, error_2;
+    CommentController.getCommentByProduct = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var create, error_2;
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, product_service_1.ProductService.getById({ _id: req.params._id })];
+                    return [4 /*yield*/, comment_service_1.default.getCommentByProduct({
+                            productId: req.params.id,
+                        })];
                 case 1:
-                    response = _b.sent();
-                    res.json(response).status(http_status_1.default.OK).end();
-                    logger_1.default.info(response);
+                    create = _b.sent();
+                    res.json(create);
                     return [3 /*break*/, 3];
                 case 2:
                     error_2 = _b.sent();
@@ -97,53 +85,6 @@ var ProductController = /** @class */ (function () {
             }
         });
     }); };
-    ProductController.getAll = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var products, error_3;
-        return __generator(_a, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _b.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, product_service_1.ProductService.getAll({
-                            query: {
-                                limit: Number(req.query.limit),
-                                skip: Number(req.query.skip) || 0,
-                            },
-                            category: req.query.category,
-                            subCategory: req.query.subCategory,
-                        })];
-                case 1:
-                    products = _b.sent();
-                    res.json(products);
-                    return [3 /*break*/, 3];
-                case 2:
-                    error_3 = _b.sent();
-                    next(error_3);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); };
-    ProductController.update = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var shop, e_1;
-        return __generator(_a, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _b.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, product_service_1.ProductService.update({
-                            productId: req.params.id,
-                            body: req.body,
-                        })];
-                case 1:
-                    shop = _b.sent();
-                    res.json(shop);
-                    return [3 /*break*/, 3];
-                case 2:
-                    e_1 = _b.sent();
-                    return [2 /*return*/, next(e_1)];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); };
-    return ProductController;
+    return CommentController;
 }());
-exports.default = ProductController;
+exports.default = CommentController;

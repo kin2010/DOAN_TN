@@ -10,6 +10,7 @@ export interface IProduct extends Document {
   stock: number;
   category: string;
   subCategory: string;
+  comments: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -53,6 +54,7 @@ const ProductSchema = new Schema(
       type: 'ObjectId',
       ref: 'SubCategory',
     },
+    comments: [{ type: 'ObjectId', ref: 'Comment' }],
   },
   {
     timestamps: true,

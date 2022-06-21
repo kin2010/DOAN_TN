@@ -1,32 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
-import { ImgStyle } from '../Header';
-import './index.scss';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { styled } from '@mui/material/styles';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { Col, Row } from "react-bootstrap";
+import { ImgStyle } from "../Header";
+import "./index.scss";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { styled } from "@mui/material/styles";
+import { useDispatch, useSelector } from "react-redux";
+import { changeCart } from "../../Slice/CartSlice";
+import { Navigate, useNavigate } from "react-router-dom";
+
 export const CartButton = styled(Button)((props) => ({
-  padding: '7px',
+  padding: "7px",
   backgroundColor: `${props.theme.colors.secondary}`,
-  borderRadius: '100rem',
-  color: '#fff',
+  borderRadius: "100rem",
+  color: "#fff",
   fontWeight: 700,
   minWidth: 0,
-  ':hover': {
-    backgroundColor: '#fff',
+  ":hover": {
+    backgroundColor: "#fff",
     color: `${props.theme.colors.secondary}`,
     border: `1px solid ${props.theme.colors.secondary}`,
   },
 }));
-export const BtnFooter = styled(CartButton)((props) => ({}));
-const Cart = () => {
+export const BtnFooter = styled(Button)((props) => ({
+  ":hover": {
+    backgroundColor: "#fff",
+    border: `1px solid ${props.theme.colors.info}`,
+    color: `${props.theme.colors.info}`,
+  },
+}));
+const Cart = ({ show }) => {
   const carts = useSelector((state) => state.carts.carts);
   const [total, setTotal] = useState(0);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
-    console.log('change');
+    console.log("change");
     if (carts.length > 0) {
       const totals = Object.values(carts).reduce((init, total) => {
         return init + total.product.price * total.quantity;
@@ -35,13 +46,24 @@ const Cart = () => {
       setTotal(totals);
     }
   }, [carts]);
+  const handleCart = (id, inc) => {
+    console.log(id, inc);
+    dispatch(changeCart({ productId: id, increase: inc }));
+  };
   return (
     <div className="shopping-cart-content bg-white pb-3">
       <div
-        style={{ width: 'fit-content', marginLeft: 25, marginTop: 25 }}
-        className="ml-1 bg-info rounded-circle px-2 py-1 mt-2 text-white  "
+        onClick={() => show(false)}
+        style={{
+          cursor: "pointer",
+          width: "fit-content",
+          marginLeft: 25,
+          marginTop: 25,
+          fontSize: "25px",
+        }}
+        className="ml-1  rounded-circle px-2 py-1 mt-2 text-white text-info  "
       >
-        <i className="fas fa-chevron-up"></i>
+        <i className="fa-solid fa-xmark"></i>
       </div>
       <div className="pb-3 pt-2 cart-content">
         {carts &&
@@ -49,26 +71,34 @@ const Cart = () => {
             <Row className="py-2" key={index}>
               <Row className="pb-1">
                 <Col md={4}>
-                  <ImgStyle src={cart?.product?.avatar} alt="cartImage" />
+                  <ImgStyle
+                    src={cart?.product?.avatar}
+                    alt="cartImage"
+                    style={{ cursor: "pointer" }}
+                  />
                 </Col>
-                <Col md={8} style={{ paddingLeft: '40px' }}>
+                <Col md={8} style={{ paddingLeft: "40px" }}>
                   <Row>{cart?.product?.name} </Row>
-                  <Row style={{ color: '#7f868d' }} className="text-dark">
+                  <Row style={{ color: "#7f868d" }} className="text-dark">
                     <span>
                       {Number.parseInt(
                         cart?.product?.price * cart?.quantity,
                       ).toLocaleString() || 0}
-                      đ{' '}
+                      đ{" "}
                     </span>
                   </Row>
                   <Row>
                     <Col md={6}>
                       <Row className="d-flex justify-content-between align-items-center ">
-                        <CartButton>
+                        <CartButton
+                          onClick={() => handleCart(cart?.product?._id, -1)}
+                        >
                           <ChevronLeftIcon />
                         </CartButton>
                         {cart?.quantity}
-                        <CartButton>
+                        <CartButton
+                          onClick={() => handleCart(cart?.product?._id, 1)}
+                        >
                           <ChevronRightIcon />
                         </CartButton>
                       </Row>
@@ -81,19 +111,28 @@ const Cart = () => {
           ))}
       </div>
       <Row
-        style={{ width: '90%' }}
+        style={{ width: "90%" }}
         className="d-flex text-primary justify-content-between mx-auto pt-2"
       >
         <span>Total</span>
         <span>{total} đ</span>
       </Row>
-      <Row style={{ width: '90%' }} className=" mx-auto pt-1">
-        <Button style={{ width: '100%' }} className="mb-2" variant="contained">
+      <Row style={{ width: "90%" }} className=" mx-auto pt-1">
+        <BtnFooter
+          style={{ width: "100%" }}
+          className="mb-2"
+          onClick={() => navigate("/viewcart")}
+          variant="contained"
+        >
           VIEW CARD
-        </Button>
-        <Button style={{ width: '100%' }} variant="contained">
+        </BtnFooter>
+        <BtnFooter
+          style={{ width: "100%" }}
+          variant="contained"
+          onClick={() => navigate("/checkout")}
+        >
           CHECKOUT
-        </Button>
+        </BtnFooter>
       </Row>
     </div>
   );

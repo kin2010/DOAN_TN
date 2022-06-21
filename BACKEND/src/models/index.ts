@@ -18,3 +18,9 @@ export type { ICategory } from './category.model';
 
 export { default as SubCategory } from './subCategory.model';
 export type { ISubCategory } from './subCategory.model';
+
+export { default as Comment } from './comment.model';
+export type { IComment } from './comment.model';
+
+export { default as Order } from './order.model';
+export type { IOrder } from './order.model';

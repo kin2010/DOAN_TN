@@ -28,6 +28,11 @@ export interface IGetAllProductParams {
   category: string;
   subCategory: string;
 }
+interface IUpdateProductParams {
+  productId: string;
+  body: Omit<IProduct, 'createdAt' | 'updatedAt'>;
+}
+
 export class ProductService {
   static create = async ({
     name,
@@ -115,5 +120,31 @@ export class ProductService {
       ]);
 
     return products;
+  };
+  static update = async ({
+    body,
+    productId,
+  }: IUpdateProductParams): Promise<IProduct> => {
+    const shop = await Product.findById(productId);
+
+    if (!shop) {
+      throw new APIError({
+        message: 'Product not found',
+        status: httpStatus.NOT_FOUND,
+      });
+    }
+
+    const productUpdated = await Product.findByIdAndUpdate(productId, body, {
+      new: true,
+    });
+
+    if (!productUpdated) {
+      throw new APIError({
+        message: 'Can not update order',
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+      });
+    }
+
+    return productUpdated;
   };
 }

@@ -4,11 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var controllers_1 = require("../controllers");
+var order_controller_1 = __importDefault(require("../controllers/order.controller"));
 var router = express_1.default.Router();
-router.route('/').get(controllers_1.ProductController.getAll).post(controllers_1.ProductController.create);
-router
-    .route('/:_id')
-    .get(controllers_1.ProductController.getById)
-    .put(controllers_1.ProductController.update);
+router.route('/').post(order_controller_1.default.create).get(order_controller_1.default.getAll);
+router.route('/:id').put(order_controller_1.default.update);
+router.route('/myorder').get(order_controller_1.default.getByUser);
 exports.default = router;
