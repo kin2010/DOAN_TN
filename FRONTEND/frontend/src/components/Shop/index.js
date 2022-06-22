@@ -1,26 +1,46 @@
-import React, { useContext } from 'react';
-import Header from '../Header';
-import { Container, Row, Col } from 'react-bootstrap';
-import Product from '../Product';
-import { useSelector } from 'react-redux';
-import ListSubheader from '@mui/material/ListSubheader';
-import List from '@mui/material/List';
-import ShopDrop from './ShopDrop';
-import Empty from '../Empty.js';
-import './index.scss';
-import CircularProgress from '@mui/material/CircularProgress';
-import Breadcrumb from '../BreadCrum';
+import React, { useContext, useEffect } from "react";
+import Header from "../Header";
+import { Container, Row, Col } from "react-bootstrap";
+import Product from "../Product";
+import { useDispatch, useSelector } from "react-redux";
+import ListSubheader from "@mui/material/ListSubheader";
+import List from "@mui/material/List";
+import ShopDrop from "./ShopDrop";
+import Empty from "../Empty.js";
+import "./index.scss";
+import CircularProgress from "@mui/material/CircularProgress";
+import Breadcrumb from "../BreadCrum";
+import { useLocation, useParams } from "react-router-dom";
+import { ShopContext } from "../../Context/ShopContext";
 const Shop = () => {
+  const location = useLocation();
+  const params = useParams();
+  const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.categories);
   const subs = useSelector((state) => state.category.subCategories);
   const products = useSelector((state) => state.products.products);
   const isLoading = useSelector((state) => state.products.isLoading);
-
-  let listCategories = '';
+  const { conditionProduct, setCondition } = useContext(ShopContext);
+  useEffect(() => {
+    if (location?.pathname.includes("subcategory")) {
+      setCondition({
+        subCategory: params?.id,
+      });
+    }
+    if (
+      location?.pathname.includes("category") &&
+      !location?.pathname.includes("subcategory")
+    ) {
+      setCondition({
+        category: params?.id,
+      });
+    }
+  }, [location, params]);
+  let listCategories = "";
   listCategories = (
     <>
       <List
-        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+        sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
         component="nav"
         aria-labelledby="nested-list-subheader"
         subheader={
@@ -40,26 +60,26 @@ const Shop = () => {
     <>
       <Header></Header>
       <Breadcrumb breadcrumb="Shop"></Breadcrumb>
-      <div style={{ backgroundColor: '#f9f9f9' }}>
+      <div style={{ backgroundColor: "#f9f9f9" }}>
         <Container>
-          <Row style={{ backgroundColor: '#f9f9f9', paddingTop: '30px' }}>
-            <Row style={{ width: '100%', marginBottom: '20px' }}>
+          <Row style={{ backgroundColor: "#f9f9f9", paddingTop: "30px" }}>
+            <Row style={{ width: "100%", marginBottom: "20px" }}>
               <Col md={3}></Col>
               <Col md={9} className="text-center">
                 <img
-                  style={{ width: 'inherit' }}
+                  style={{ width: "inherit" }}
                   src="../images/shop1.png"
                   alt="nofile"
                 />
               </Col>
             </Row>
-            <Row style={{ width: '100%' }}>
+            <Row style={{ width: "100%" }}>
               <Col md={3}>{listCategories}</Col>
               {isLoading === true ? (
                 <Col md={9}>
                   <Row className="shop-content">
                     <CircularProgress
-                      style={{ margin: '40px auto 0 auto' }}
+                      style={{ margin: "40px auto 0 auto" }}
                     ></CircularProgress>
                   </Row>
                 </Col>

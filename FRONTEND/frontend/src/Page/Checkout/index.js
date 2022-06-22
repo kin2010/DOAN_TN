@@ -1,7 +1,8 @@
 import { Divider } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
+import { useUserQuery } from "../../app/AuthApi";
 import Breadcrumb from "../../components/BreadCrum";
 import { AbsoluteHeader, ButtonPrimaryContained } from "../SingleProduct";
 import "./index.scss";
@@ -11,6 +12,28 @@ export const LabelStyled = styled(Form.Label)((props) => ({
 }));
 const Checkout = () => {
   const { data, refetch, error } = useUserQuery();
+  const [formValue,setFormvalue]=useState({
+    fullName:'',
+    email:'',
+    address:'',
+    phone:'',
+    note:''
+  })
+  const handleFormChange=(e)=>{
+    setFormvalue({...formValue,[e.target.name]:e.target.value})
+  }
+  const handleSubmit=async()=>{
+    console.log(formValue)
+  }
+  useEffect(()=>{
+    console.log("change",data)
+    setFormvalue({...formValue,fullName:data?.fullName,
+      email:data?.email,
+      address:data?.address,
+      phone:data?.phone,
+    
+    })
+  },[data])
   return (
     <>
       <AbsoluteHeader></AbsoluteHeader>
@@ -25,7 +48,7 @@ const Checkout = () => {
                   {" "}
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <LabelStyled>Full name</LabelStyled>
-                    <Form.Control type="text" placeholder="Enter Fullname" />
+                    <Form.Control name='fullName' onChange={handleFormChange} type="text" placeholder="Enter Fullname" />
                     <Form.Text className="text-muted">
                       Enter your fullname
                     </Form.Text>
@@ -34,7 +57,7 @@ const Checkout = () => {
                 <Col>
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <LabelStyled>Email address</LabelStyled>
-                    <Form.Control type="email" placeholder="Enter email" />
+                    <Form.Control name='email' onChange={handleFormChange} type="email" placeholder="Enter email"  />
                     <Form.Text className="text-muted">
                       We'll never share your email with anyone else.
                     </Form.Text>
@@ -46,7 +69,7 @@ const Checkout = () => {
                 <Col>
                   <Form.Group className="mb-3">
                     <LabelStyled>Address</LabelStyled>
-                    <Form.Control type="text" placeholder="Enter address" />
+                    <Form.Control name='address' onChange={handleFormChange} type="text" placeholder="Enter address" />
                     <Form.Text className="text-muted">
                       Enter your address
                     </Form.Text>
@@ -56,7 +79,7 @@ const Checkout = () => {
                   {" "}
                   <Form.Group className="mb-3">
                     <LabelStyled>Phone Number</LabelStyled>
-                    <Form.Control type="number" placeholder="Enter phone" />
+                    <Form.Control name='phone' onChange={handleFormChange} type="text" placeholder="Enter phone" />
                     <Form.Text className="text-muted">
                       Enter your phone number
                     </Form.Text>
@@ -70,7 +93,7 @@ const Checkout = () => {
                   controlId="exampleForm.ControlTextarea1"
                 >
                   <LabelStyled>Order Notes</LabelStyled>
-                  <Form.Control
+                  <Form.Control name='note' onChange={handleFormChange}
                     as="textarea"
                     rows={7}
                     placeholder="Notes about your order, e.g. special notes for delivery"
@@ -148,7 +171,7 @@ const Checkout = () => {
                   <p style={{ height: "20px", marginLeft: "15px" }}>Momo</p>
                 </div>
               </div>
-              <ButtonPrimaryContained fullWidth className="mt-4 py-3">
+              <ButtonPrimaryContained fullWidth className="mt-4 py-3" onClick={handleSubmit}>
                 PLACE ORDER
               </ButtonPrimaryContained>
             </div>
