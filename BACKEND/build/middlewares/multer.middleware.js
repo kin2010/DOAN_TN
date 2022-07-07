@@ -9,10 +9,10 @@ var MulterMiddleware = /** @class */ (function () {
     }
     MulterMiddleware.storage = multer_1.default.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, 'src/uploads');
+            cb(null, "src/uploads");
         },
         filename: function (req, file, cb) {
-            cb(null, Date.now() + "-" + file.originalname);
+            cb(null, "".concat(Date.now(), "-").concat(file.originalname));
         },
     });
     MulterMiddleware.upload = (0, multer_1.default)({
@@ -20,7 +20,17 @@ var MulterMiddleware = /** @class */ (function () {
         limits: { fileSize: 1024 * 1024 },
         fileFilter: function (req, file, cb) {
             if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/gi)) {
-                return cb(new Error('Only image files are allowed!'), false);
+                return cb(new Error("Only image files are allowed!"), false);
+            }
+            cb(null, true);
+        },
+    });
+    MulterMiddleware.uploadVideo = (0, multer_1.default)({
+        storage: MulterMiddleware.storage,
+        limits: { fileSize: 1024 * 1024 * 99 },
+        fileFilter: function (req, file, cb) {
+            if (!file.originalname.match(/\.(mp3|mp4|)$/gi)) {
+                return cb(new Error("Only Video files are allowed!"), false);
             }
             cb(null, true);
         },

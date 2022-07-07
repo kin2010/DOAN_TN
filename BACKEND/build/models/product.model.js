@@ -11,9 +11,13 @@ var ProductSchema = new mongoose_1.Schema({
         required: true,
     },
     trademark: {
-        type: 'ObjectId',
-        ref: 'Trademark',
+        type: "ObjectId",
+        ref: "Trademark",
         required: true,
+    },
+    tag: {
+        type: "ObjectId",
+        ref: "Tag",
     },
     price: {
         type: Number,
@@ -33,16 +37,19 @@ var ProductSchema = new mongoose_1.Schema({
         required: true,
     },
     category: {
-        type: 'ObjectId',
-        ref: 'Category',
+        type: "ObjectId",
+        ref: "Category",
     },
     subCategory: {
-        type: 'ObjectId',
-        ref: 'SubCategory',
+        type: "ObjectId",
+        ref: "SubCategory",
     },
-    comments: [{ type: 'ObjectId', ref: 'Comment' }],
+    comments: [{ type: "ObjectId", ref: "Comment" }],
+    instruction: {
+        type: String,
+    },
 }, {
     timestamps: true,
 });
-var Product = (0, mongoose_1.model)('Product', ProductSchema);
+var Product = (0, mongoose_1.model)("Product", ProductSchema);
 exports.default = Product;

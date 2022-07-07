@@ -16,7 +16,6 @@ var ProductSchema = new mongoose_1.Schema({
     },
     deliveryAddress: {
         type: String,
-        required: true,
     },
     product: [
         {
@@ -46,6 +45,9 @@ var ProductSchema = new mongoose_1.Schema({
     currentAddress: {
         type: String,
     },
+    note: {
+        type: String
+    }
 }, { timestamps: true });
 var Order = (0, mongoose_1.model)('Order', ProductSchema);
 exports.default = Order;

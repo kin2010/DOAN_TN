@@ -1,0 +1,23 @@
+td > div {
+	font-size: 50;
+}
+.img-order {
+	width: 100px;
+}
+.content{
+	font-family: "Roboto",sans-serif!important;
+}
+.img{
+	width: 100px;
+}
+.link{
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;  
+	overflow: hidden;
+
+}
+.link:hover{
+	color:rgb(152, 142, 130);
+	cursor: pointer;
+}

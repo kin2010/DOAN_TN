@@ -1,14 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Container, Row, Col, Navbar, NavDropdown, Nav } from 'react-bootstrap';
-import './index.css';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import Dropdown from '../Dropdown';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllCategories, getAllSub } from '../../Slice/CategorySlice';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { Link, useNavigate } from 'react-router-dom';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import React, { useEffect, useRef, useState } from "react";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { Container, Row, Col, Navbar, NavDropdown, Nav } from "react-bootstrap";
+import "./index.css";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Dropdown from "../Dropdown";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCategories, getAllSub } from "../../Slice/CategorySlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { Link, useNavigate } from "react-router-dom";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import {
   CAvatar,
   CIcon,
@@ -19,15 +19,15 @@ import {
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
-} from '@coreui/react';
-import { useUserQuery } from '../../app/AuthApi';
-import { Avatar } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { removeUserSession, setToken } from '../../Utils/Common';
-import { nullToken } from '../../Slice/AuthSlice';
-import Cart from '../Cart';
-export const ImgStyle = styled('img')((props) => ({
-  maxWidth: '100%',
+} from "@coreui/react";
+import { useUserQuery } from "../../app/AuthApi";
+import { Avatar } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { removeUserSession, setToken } from "../../Utils/Common";
+import { nullToken } from "../../Slice/AuthSlice";
+import Cart from "../Cart";
+export const ImgStyle = styled("img")((props) => ({
+  maxWidth: "100%",
 }));
 const Header = ({ className }) => {
   const [showCart, setShowCart] = useState(false);
@@ -67,7 +67,7 @@ const Header = ({ className }) => {
     await dispatch(nullToken());
     removeUserSession();
     refetch();
-    navigate('/login');
+    navigate("/login");
   };
   return (
     <>
@@ -77,7 +77,7 @@ const Header = ({ className }) => {
             {showCart && <Cart show={setShowCart}></Cart>}
             {show && (
               <Dropdown hide={hideDrop} ref={refDropdown}>
-                {' '}
+                {" "}
               </Dropdown>
             )}
             <Col md={3}>
@@ -105,8 +105,8 @@ const Header = ({ className }) => {
                   <Nav className="justify-content-end nav-header">
                     {data && !error ? (
                       <Nav.Link href="#link">
-                        Hi{' '}
-                        <span style={{ color: '#ff536f' }}>
+                        Hi{" "}
+                        <span style={{ color: "#ff536f" }}>
                           {data?.fullName}
                         </span>
                       </Nav.Link>
@@ -131,17 +131,18 @@ const Header = ({ className }) => {
                           <Avatar
                             alt="Remy Sharp"
                             src={
-                              data.avatar ? data.avatar : '../images/user.png'
+                              data.avatar ? data.avatar : "../images/user.png"
                             }
                           />
                         </CDropdownToggle>
                         <CDropdownMenu className="pt-0" placement="bottom-end">
                           <CDropdownItem
-                            style={{ cursor: 'pointer' }}
+                            style={{ cursor: "pointer" }}
                             onClick={() => handleLogout()}
+                            className="ava"
                           >
                             <ExitToAppIcon
-                              style={{ transform: 'translate(-6px,6px)' }}
+                              style={{ transform: "translate(-6px,6px)" }}
                             />
                             <span as={Link} to="/login">
                               Logout
@@ -157,16 +158,16 @@ const Header = ({ className }) => {
                     <div
                       style={{
                         marginTop: 8,
-                        cursor: 'pointer',
-                        fontSize: '20px',
+                        cursor: "pointer",
+                        fontSize: "20px",
                       }}
                       onClick={() => setShowCart(!showCart)}
                       className=" nav-icon position-relative text-decoration-none button-cart"
                     >
                       <i
                         className="fa-solid fa-basket-shopping text-success"
-                        style={{ fontSize: '35px' }}
-                      ></i>{' '}
+                        style={{ fontSize: "35px" }}
+                      ></i>{" "}
                       {carts.length > 0 && (
                         <span className="text-danger position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light ">
                           {carts?.length}
@@ -178,7 +179,7 @@ const Header = ({ className }) => {
               </Row>
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto justify-content-between w-75">
-                  <Nav.Link as={Link} to={'/'}>
+                  <Nav.Link as={Link} to={"/"}>
                     Home
                   </Nav.Link>
                   <Nav.Link onMouseEnter={showDrop} href="#home">

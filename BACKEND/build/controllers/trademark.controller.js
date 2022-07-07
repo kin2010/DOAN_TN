@@ -76,6 +76,25 @@ var TrademarkController = /** @class */ (function () {
             }
         });
     }); };
+    TrademarkController.get = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var responce, error_2;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, trademark_service_1.default.get()];
+                case 1:
+                    responce = _b.sent();
+                    res.json(responce).status(http_status_1.default.OK).end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_2 = _b.sent();
+                    next(error_2);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
     return TrademarkController;
 }());
 exports.default = TrademarkController;

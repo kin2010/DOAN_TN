@@ -7,6 +7,7 @@ export interface IOrder extends Document {
   user: string;
   currentAddress: string;
   status: IOrderStatus;
+  note:string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -34,7 +35,7 @@ const ProductSchema = new Schema(
     },
     deliveryAddress: {
       type: String,
-      required: true,
+      
     },
     product: [
       {
@@ -64,6 +65,9 @@ const ProductSchema = new Schema(
     currentAddress: {
       type: String,
     },
+    note:{
+      type:String
+    }
   },
   { timestamps: true },
 );

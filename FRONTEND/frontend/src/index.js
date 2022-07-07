@@ -1,24 +1,34 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { Provider } from 'react-redux';
-import store from './app/store';
-import ShopContextProvider from './Context/ShopContext';
-import AuthContextProvider from './Context/AuthContext';
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import store from "./app/store";
+import ShopContextProvider from "./Context/ShopContext";
+import AuthContextProvider from "./Context/AuthContext";
+import "@coreui/coreui/dist/css/coreui.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import "./index.css";
+import ProductContextProvider from "./Context/ProductContext";
+import CategoryContextProvider from "./Context/CategoryContext";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <AuthContextProvider>
-        <ShopContextProvider>
-          <App />
-        </ShopContextProvider>
+        <CategoryContextProvider>
+          <ProductContextProvider>
+            <ShopContextProvider>
+              <App />
+            </ShopContextProvider>
+          </ProductContextProvider>
+        </CategoryContextProvider>
       </AuthContextProvider>
     </Provider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

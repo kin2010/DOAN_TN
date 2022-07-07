@@ -17,7 +17,7 @@ export const CartButton = styled(Button)((props) => ({
   borderRadius: "100rem",
   color: "#fff",
   fontWeight: 700,
-  minWidth: 0,
+  minWidth: "inherit",
   ":hover": {
     backgroundColor: "#fff",
     color: `${props.theme.colors.secondary}`,
@@ -78,18 +78,21 @@ const Cart = ({ show }) => {
                   />
                 </Col>
                 <Col md={8} style={{ paddingLeft: "40px" }}>
-                  <Row>{cart?.product?.name} </Row>
+                  <Row className="limit">{cart?.product?.name} </Row>
                   <Row style={{ color: "#7f868d" }} className="text-dark">
                     <span>
                       {Number.parseInt(
-                        cart?.product?.price * cart?.quantity,
+                        cart?.product?.price * cart?.quantity
                       ).toLocaleString() || 0}
                       đ{" "}
                     </span>
                   </Row>
                   <Row>
                     <Col md={6}>
-                      <Row className="d-flex justify-content-between align-items-center ">
+                      <div
+                        style={{ gap: "0 10px" }}
+                        className="d-flex my-1 justify-content-between align-items-center "
+                      >
                         <CartButton
                           onClick={() => handleCart(cart?.product?._id, -1)}
                         >
@@ -101,7 +104,7 @@ const Cart = ({ show }) => {
                         >
                           <ChevronRightIcon />
                         </CartButton>
-                      </Row>
+                      </div>
                     </Col>
                   </Row>
                 </Col>
@@ -110,13 +113,13 @@ const Cart = ({ show }) => {
             </Row>
           ))}
       </div>
-      <Row
+      <div
         style={{ width: "90%" }}
         className="d-flex text-primary justify-content-between mx-auto pt-2"
       >
         <span>Total</span>
         <span>{total} đ</span>
-      </Row>
+      </div>
       <Row style={{ width: "90%" }} className=" mx-auto pt-1">
         <BtnFooter
           style={{ width: "100%" }}

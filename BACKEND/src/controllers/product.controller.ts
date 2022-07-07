@@ -1,10 +1,10 @@
-import { NextFunction, query, Response } from 'express';
-import httpStatus from 'http-status';
-import { Params, Query, Request } from '../configs/types';
-import { IProduct } from '../models';
-import { ProductService } from '../services/product.service';
-import log from '../utils/logger';
-type IRequestBodyUpdateProduct = Omit<IProduct, 'createdAt' | 'updatedAt'>;
+import { NextFunction, query, Response } from "express";
+import httpStatus from "http-status";
+import { Params, Query, Request } from "../configs/types";
+import { IProduct } from "../models";
+import { ProductService } from "../services/product.service";
+import log from "../utils/logger";
+type IRequestBodyUpdateProduct = Omit<IProduct, "createdAt" | "updatedAt">;
 export interface IRequestCreateBody {
   name: string;
   description: string;
@@ -26,7 +26,7 @@ export default class ProductController {
   static create = async (
     req: Request<IRequestCreateBody, Query, Params>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> => {
     try {
       const response = await ProductService.create({ ...req.body });
@@ -38,12 +38,11 @@ export default class ProductController {
   static getById = async (
     req: Request<Query, Params>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => {
     try {
       const response = await ProductService.getById({ _id: req.params._id });
       res.json(response).status(httpStatus.OK).end();
-      log.info(response);
     } catch (error) {
       next(error);
     }
@@ -51,7 +50,7 @@ export default class ProductController {
   static getAll = async (
     req: Request<IRequestGetall, Query, Params>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => {
     try {
       const products = await ProductService.getAll({
@@ -70,11 +69,11 @@ export default class ProductController {
   static update = async (
     req: Request<IRequestBodyUpdateProduct, Query, Params>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> => {
     try {
       const shop = await ProductService.update({
-        productId: req.params.id,
+        productId: req.params._id,
         body: req.body,
       });
       res.json(shop);

@@ -5,7 +5,8 @@
   padding: 25px 0 5px 0;
   position: fixed;
   top: 0;
-  width: 100vw;
+  width: 100%;
+  box-sizing: border-box;
   z-index: 999;
 }
 .img-header {
@@ -36,4 +37,8 @@
   left: 15%;
   width: 70%;
   z-index: 999;
+}
+.ava{
+  display: flex!important;
+ 
 }

@@ -1,8 +1,9 @@
-import { Document, model, Schema } from 'mongoose';
+import { Document, model, Schema } from "mongoose";
 
 export interface IComment extends Document {
   productId: string;
   name: string;
+  avatar: string;
   rating: number;
   comment: string;
   createdAt: Date;
@@ -14,8 +15,10 @@ const CommentSchema = new Schema(
     name: { type: String, require: true },
     rating: { type: Number, require: true },
     comment: { type: String },
+
+    avatar: { type: String },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
-const Comment = model<IComment>('Comment', CommentSchema);
+const Comment = model<IComment>("Comment", CommentSchema);
 export default Comment;

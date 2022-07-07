@@ -6,6 +6,7 @@ var CommentSchema = new mongoose_1.Schema({
     name: { type: String, require: true },
     rating: { type: Number, require: true },
     comment: { type: String },
+    avatar: { type: String },
 }, { timestamps: true });
-var Comment = (0, mongoose_1.model)('Comment', CommentSchema);
+var Comment = (0, mongoose_1.model)("Comment", CommentSchema);
 exports.default = Comment;

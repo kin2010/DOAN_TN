@@ -11,7 +11,7 @@ var log = (0, pino_1.default)({
         pid: false,
     },
     timestamp: function () {
-        return ",\"time\":\"" + (0, moment_1.default)().format() + "\"";
+        return ",\"time\":\"".concat((0, moment_1.default)().format(), "\"");
     },
 });
 exports.default = log;

@@ -56,6 +56,17 @@ var TrademarkService = /** @class */ (function () {
             });
         });
     };
+    TrademarkService.get = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var trades;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, models_1.Trademark.find({})];
+                case 1:
+                    trades = _b.sent();
+                    return [2 /*return*/, trades];
+            }
+        });
+    }); };
     return TrademarkService;
 }());
 exports.default = TrademarkService;

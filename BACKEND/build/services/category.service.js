@@ -46,8 +46,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+var http_status_1 = __importDefault(require("http-status"));
 var models_1 = require("../models");
+var APIError_1 = __importDefault(require("../utils/APIError"));
 var CategoryService = /** @class */ (function () {
     function CategoryService() {
     }
@@ -103,6 +108,68 @@ var CategoryService = /** @class */ (function () {
             }
         });
     }); };
+    CategoryService.update = function (_b) {
+        var body = _b.body, categoryId = _b.categoryId;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var categoryUpdate, productUpdated;
+            return __generator(_a, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, models_1.Category.find({ categoryId: categoryId })];
+                    case 1:
+                        categoryUpdate = _c.sent();
+                        if (!categoryUpdate) {
+                            throw new APIError_1.default({
+                                message: "Can not update category",
+                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
+                            });
+                        }
+                        return [4 /*yield*/, models_1.Category.findByIdAndUpdate(categoryId, body, {
+                                new: true,
+                            })];
+                    case 2:
+                        productUpdated = _c.sent();
+                        if (!productUpdated) {
+                            throw new APIError_1.default({
+                                message: "Can not update order",
+                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
+                            });
+                        }
+                        return [2 /*return*/, productUpdated];
+                }
+            });
+        });
+    };
+    CategoryService.updateSub = function (_b) {
+        var body = _b.body, categoryId = _b.categoryId;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var categoryUpdate, productUpdated;
+            return __generator(_a, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, models_1.SubCategory.find({ categoryId: categoryId })];
+                    case 1:
+                        categoryUpdate = _c.sent();
+                        if (!categoryUpdate) {
+                            throw new APIError_1.default({
+                                message: "Can not update Subcategory",
+                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
+                            });
+                        }
+                        return [4 /*yield*/, models_1.SubCategory.findByIdAndUpdate(categoryId, body, {
+                                new: true,
+                            })];
+                    case 2:
+                        productUpdated = _c.sent();
+                        if (!productUpdated) {
+                            throw new APIError_1.default({
+                                message: "Can not update order",
+                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
+                            });
+                        }
+                        return [2 /*return*/, productUpdated];
+                }
+            });
+        });
+    };
     return CategoryService;
 }());
 exports.default = CategoryService;

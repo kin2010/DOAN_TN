@@ -69,10 +69,10 @@ var AuthService = /** @class */ (function () {
                         if (!user) {
                             throw new APIError_1.default({
                                 status: http_status_1.default.NOT_FOUND,
-                                message: 'User not found',
+                                message: "User not found",
                             });
                         }
-                        return [2 /*return*/, user.displayUser()];
+                        return [2 /*return*/, user.displayUser().populate([{ path: "role", select: "roleName" }])];
                 }
             });
         });
@@ -91,7 +91,7 @@ var AuthService = /** @class */ (function () {
                         user = _c.sent();
                         if (user && user.isVerify) {
                             throw new APIError_1.default({
-                                message: 'Email already exists',
+                                message: "Email already exists",
                                 status: http_status_1.default.BAD_REQUEST,
                             });
                         }
@@ -100,7 +100,7 @@ var AuthService = /** @class */ (function () {
                     case 3:
                         _c.sent();
                         otp_2 = (0, otp_1.generateOTP)();
-                        expiredAt_1 = (0, moment_1.default)().add(30, 'minutes').toDate();
+                        expiredAt_1 = (0, moment_1.default)().add(30, "minutes").toDate();
                         return [4 /*yield*/, models_1.Verify.findOneAndUpdate({ email: email }, {
                                 otp: otp_2.toString(),
                                 expiredAt: expiredAt_1,
@@ -111,12 +111,12 @@ var AuthService = /** @class */ (function () {
                     case 5:
                         _c.sent();
                         return [2 /*return*/];
-                    case 6: return [4 /*yield*/, models_1.Role.findOne({ roleName: 'User' })];
+                    case 6: return [4 /*yield*/, models_1.Role.findOne({ roleName: "User" })];
                     case 7:
                         role = _c.sent();
                         if (!role) {
                             throw new APIError_1.default({
-                                message: 'Internal server error',
+                                message: "Internal server error",
                                 status: http_status_1.default.INTERNAL_SERVER_ERROR,
                             });
                         }
@@ -132,7 +132,7 @@ var AuthService = /** @class */ (function () {
                         return [4 /*yield*/, (0, otp_1.generateOTP)()];
                     case 9:
                         otp = _c.sent();
-                        expiredAt = (0, moment_1.default)().add(30, 'minutes');
+                        expiredAt = (0, moment_1.default)().add(30, "minutes");
                         return [4 /*yield*/, models_1.Verify.create({ email: email, otp: otp, expiredAt: expiredAt })];
                     case 10:
                         _c.sent();
@@ -154,7 +154,7 @@ var AuthService = /** @class */ (function () {
                         user = models_1.User.findOne({ email: email });
                         if (!user) {
                             throw new APIError_1.default({
-                                message: 'User not found',
+                                message: "User not found",
                                 status: http_status_1.default.NOT_FOUND,
                             });
                         }
@@ -165,25 +165,25 @@ var AuthService = /** @class */ (function () {
                         verify = _c.sent();
                         if (!verify) {
                             throw new APIError_1.default({
-                                message: 'Invalid OTP',
+                                message: "Invalid OTP",
                                 status: http_status_1.default.BAD_REQUEST,
                             });
                         }
                         if (verify && verify.otp !== otp) {
                             throw new APIError_1.default({
-                                message: 'Invalid OTP',
+                                message: "Invalid OTP",
                                 status: http_status_1.default.BAD_REQUEST,
                             });
                         }
                         if (verify.verifiedAt) {
                             throw new APIError_1.default({
-                                message: 'OTP code was verified before',
+                                message: "OTP code was verified before",
                                 status: http_status_1.default.BAD_REQUEST,
                             });
                         }
                         if ((0, moment_1.default)().isAfter(verify.expiredAt)) {
                             throw new APIError_1.default({
-                                message: 'OTP code was expired',
+                                message: "OTP code was expired",
                                 status: http_status_1.default.BAD_REQUEST,
                             });
                         }
@@ -209,13 +209,13 @@ var AuthService = /** @class */ (function () {
                         user = _c.sent();
                         if (!user) {
                             throw new APIError_1.default({
-                                message: 'User not found',
+                                message: "User not found",
                                 status: http_status_1.default.NOT_FOUND,
                             });
                         }
                         if (!user.isVerify) {
                             throw new APIError_1.default({
-                                message: 'User is not verify',
+                                message: "User is not verify",
                                 status: http_status_1.default.BAD_REQUEST,
                             });
                         }
@@ -224,7 +224,7 @@ var AuthService = /** @class */ (function () {
                         isMatchPassword = _c.sent();
                         if (!isMatchPassword) {
                             throw new APIError_1.default({
-                                message: 'Invalid Password',
+                                message: "Invalid Password",
                                 status: http_status_1.default.BAD_REQUEST,
                             });
                         }
@@ -250,7 +250,7 @@ var AuthService = /** @class */ (function () {
                         user = _c.sent();
                         if (!user) {
                             throw new APIError_1.default({
-                                message: 'User not found',
+                                message: "User not found",
                                 status: http_status_1.default.NOT_FOUND,
                             });
                         }
@@ -259,13 +259,13 @@ var AuthService = /** @class */ (function () {
                         isMatchPassword = _c.sent();
                         if (!isMatchPassword) {
                             throw new APIError_1.default({
-                                message: 'Invalid Password',
+                                message: "Invalid Password",
                                 status: http_status_1.default.BAD_REQUEST,
                             });
                         }
                         if (password === newPassword) {
                             throw new APIError_1.default({
-                                message: 'Password is matched with previous password',
+                                message: "Password is matched with previous password",
                                 status: http_status_1.default.BAD_REQUEST,
                             });
                         }
@@ -289,6 +289,31 @@ var AuthService = /** @class */ (function () {
                     case 1:
                         _c.sent();
                         return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AuthService.getAllUser = function (_b) {
+        var pagination = _b.pagination;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var limit, skip, users;
+            return __generator(_a, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        limit = pagination.limit, skip = pagination.skip;
+                        return [4 /*yield*/, models_1.User.find()
+                                .limit(limit)
+                                .skip(skip)
+                                .sort({ createdAt: -1 })
+                                .populate([
+                                {
+                                    path: "role",
+                                    select: "roleName",
+                                },
+                            ])];
+                    case 1:
+                        users = _c.sent();
+                        return [2 /*return*/, users.map(function (user) { return user.displayUser(); })];
                 }
             });
         });

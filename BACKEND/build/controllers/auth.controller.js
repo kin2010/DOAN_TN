@@ -70,7 +70,7 @@ var AuthController = /** @class */ (function () {
                     if (!token) {
                         throw new APIError_1.default({
                             status: http_status_1.default.UNAUTHORIZED,
-                            message: 'Unauthorized',
+                            message: "Unauthorized",
                         });
                         return [2 /*return*/];
                     }
@@ -78,13 +78,13 @@ var AuthController = /** @class */ (function () {
                     return [4 /*yield*/, user_model_1.default.findOne({
                             _id: tokenPayload._id,
                             isVerify: true,
-                        })];
+                        }).populate([{ path: "role", select: "roleName" }])];
                 case 1:
                     user = _b.sent();
                     if (!user) {
                         throw new APIError_1.default({
                             status: http_status_1.default.NOT_FOUND,
-                            message: 'User not found',
+                            message: "User not found",
                         });
                     }
                     req.user = user;
@@ -146,7 +146,7 @@ var AuthController = /** @class */ (function () {
                 case 1:
                     _b.sent();
                     res.status(http_status_1.default.OK).json({
-                        message: 'Verify successfully',
+                        message: "Verify successfully",
                     });
                     return [3 /*break*/, 3];
                 case 2:
@@ -168,7 +168,7 @@ var AuthController = /** @class */ (function () {
                     res
                         .status(http_status_1.default.OK)
                         .json({
-                        message: 'Change Password is successfully',
+                        message: "Change Password is successfully",
                         status: 200,
                     })
                         .end();
@@ -193,7 +193,7 @@ var AuthController = /** @class */ (function () {
                     res
                         .status(http_status_1.default.OK)
                         .json({
-                        message: 'Phone sent message',
+                        message: "Phone sent message",
                         status: 200,
                     })
                         .end();
@@ -201,6 +201,30 @@ var AuthController = /** @class */ (function () {
                 case 2:
                     error_4 = _b.sent();
                     next(error_4);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    AuthController.getAllUser = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var responce, error_5;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, auth_service_1.default.getAllUser({
+                            pagination: {
+                                limit: Number(req.query.limit),
+                                skip: Number(req.query.skip) || 0,
+                            },
+                        })];
+                case 1:
+                    responce = _b.sent();
+                    res.json(responce).status(http_status_1.default.OK).end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_5 = _b.sent();
+                    next(error_5);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }

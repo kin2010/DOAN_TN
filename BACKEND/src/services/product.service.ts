@@ -1,7 +1,7 @@
-import httpStatus from 'http-status';
-import { IProduct, Product } from '../models';
-import APIError from '../utils/APIError';
-import log from '../utils/logger';
+import httpStatus from "http-status";
+import { IProduct, Product } from "../models";
+import APIError from "../utils/APIError";
+import log from "../utils/logger";
 
 export interface ICreateProductParams {
   name: string;
@@ -30,7 +30,7 @@ export interface IGetAllProductParams {
 }
 interface IUpdateProductParams {
   productId: string;
-  body: Omit<IProduct, 'createdAt' | 'updatedAt'>;
+  body: Omit<IProduct, "createdAt" | "updatedAt">;
 }
 
 export class ProductService {
@@ -56,31 +56,60 @@ export class ProductService {
     });
     if (!newProduct) {
       throw new APIError({
-        message: 'Cannot create product',
+        message: "Cannot create product",
         status: httpStatus.BAD_REQUEST,
       });
     }
-    return newProduct;
+    return newProduct.populate([
+      {
+        path: "trademark",
+        select: "name",
+      },
+      {
+        path: "category",
+        select: "name description",
+      },
+      {
+        path: "subCategory",
+        select: "name description",
+      },
+      {
+        path: "comments",
+        select: "name comment rating avatar createdAt",
+      },
+      {
+        path: "tag",
+        select: "name color",
+      },
+    ]);
   };
   static getById = async ({ _id }: IGetOneProductParams): Promise<IProduct> => {
     const product = await Product.findById(_id).populate([
       {
-        path: 'trademark',
-        select: 'name',
+        path: "trademark",
+        select: "name",
       },
       {
-        path: 'category',
-        select: 'name description',
+        path: "category",
+        select: "name description",
       },
       {
-        path: 'subCategory',
-        select: 'name description',
+        path: "subCategory",
+        select: "name description",
+      },
+      {
+        path: "comments",
+        select: "name comment rating avatar createdAt",
+      },
+      {
+        path: "tag",
+        select: "name color",
       },
     ]);
 
     if (!product) {
       throw new APIError({
-        message: 'Product not found',
+        message: "Product not found",
         status: httpStatus.BAD_REQUEST,
       });
     }
@@ -106,16 +135,24 @@ export class ProductService {
       .sort({ createdAt: -1 })
       .populate([
         {
-          path: 'trademark',
-          select: 'name',
+          path: "trademark",
+          select: "name",
         },
         {
-          path: 'category',
-          select: 'name',
+          path: "category",
+          select: "name",
         },
         {
-          path: 'subCategory',
-          select: 'name',
+          path: "subCategory",
+          select: "name",
+        },
+        {
+          path: "tag",
+          select: "name color",
+        },
+        {
+          path: "comments",
+          select: "name comment rating avatar createdAt",
         },
       ]);
 
@@ -129,7 +166,7 @@ export class ProductService {
 
     if (!shop) {
       throw new APIError({
-        message: 'Product not found',
+        message: "Product not found",
         status: httpStatus.NOT_FOUND,
       });
     }
@@ -140,11 +177,32 @@ export class ProductService {
 
     if (!productUpdated) {
       throw new APIError({
-        message: 'Can not update order',
+        message: "Can not update order",
         status: httpStatus.INTERNAL_SERVER_ERROR,
       });
     }
 
-    return productUpdated;
+    return productUpdated.populate([
+      {
+        path: "trademark",
+        select: "name",
+      },
+      {
+        path: "category",
+        select: "name description",
+      },
+      {
+        path: "subCategory",
+        select: "name description",
+      },
+      {
+        path: "comments",
+        select: "name comment rating avatar createdAt",
+      },
+      {
+        path: "tag",
+        select: "name color",
+      },
+    ]);
   };
 }

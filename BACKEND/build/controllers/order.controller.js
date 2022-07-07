@@ -106,7 +106,7 @@ var OrderController = /** @class */ (function () {
                     return [4 /*yield*/, order_service_1.default.getAll({
                             pagination: {
                                 limit: Number(req.query.limit),
-                                skip: req.skip || 0,
+                                skip: Number(req.query.skip) || 0,
                             },
                         })];
                 case 1:
@@ -122,24 +122,68 @@ var OrderController = /** @class */ (function () {
     }); };
     OrderController.getByUser = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var shops, e_3;
-        return __generator(_a, function (_b) {
-            switch (_b.label) {
+        var _b;
+        return __generator(_a, function (_c) {
+            switch (_c.label) {
                 case 0:
-                    _b.trys.push([0, 2, , 3]);
+                    _c.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, order_service_1.default.getByUser({
-                            userId: req.body.userId,
+                            userId: ((_b = req.query.userId) === null || _b === void 0 ? void 0 : _b.toString()) || "",
                             pagination: {
                                 limit: Number(req.query.limit),
                                 skip: Number(req.query.skip) || 0,
                             },
                         })];
                 case 1:
-                    shops = _b.sent();
+                    shops = _c.sent();
                     res.json(shops);
                     return [3 /*break*/, 3];
                 case 2:
-                    e_3 = _b.sent();
+                    e_3 = _c.sent();
                     return [2 /*return*/, next(e_3)];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    OrderController.payment = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var payUrl, e_4;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, order_service_1.default.paymentMomo({
+                            orderId: req.params.id,
+                        })];
+                case 1:
+                    payUrl = _b.sent();
+                    res.json(payUrl);
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_4 = _b.sent();
+                    return [2 /*return*/, next(e_4)];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    OrderController.paymentNotification = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var _b, message, requestId, data, e_5;
+        return __generator(_a, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    _c.trys.push([0, 2, , 3]);
+                    _b = req.body, message = _b.message, requestId = _b.requestId;
+                    data = {
+                        message: message,
+                        requestId: requestId,
+                    };
+                    return [4 /*yield*/, order_service_1.default.paymentNotification(data)];
+                case 1:
+                    _c.sent();
+                    res.end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_5 = _c.sent();
+                    return [2 /*return*/, next(e_5)];
                 case 3: return [2 /*return*/];
             }
         });

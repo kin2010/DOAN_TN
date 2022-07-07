@@ -10,6 +10,15 @@ import SingleProduct from "./Page/SingleProduct";
 import Checkout from "./Page/Checkout";
 import ViewCart from "./Page/ViewCart";
 import PrivateRoutes from "./Utils/PrivateRouter";
+import Order from "./Page/Order";
+import Admin from "./Admin/Admin";
+import ProductAdmin from "./Admin/PageAdmin/Product";
+import ChangeProduct from "./Admin/PageAdmin/ChangeProduct";
+import CategoryAdmin from "./Admin/PageAdmin/CategoryAdmin";
+import BillAdmin from "./Admin/PageAdmin/BillAdmin";
+import User from "./Admin/PageAdmin/User";
+// import "@coreui/coreui/dist/css/coreui.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 const customTheme = createTheme({
   colors: {
     main: "#ff536f",
@@ -35,6 +44,22 @@ function App() {
             <Route element={<PrivateRoutes />}>
               <Route exact path="/checkout" element={<Checkout />}></Route>
               <Route exact path="/viewcart" element={<ViewCart />}></Route>
+              <Route exact path="/order/:id" element={<Order />}></Route>
+              <Route path="/admin" element={<Admin />}>
+                <Route exact path="product" element={<ProductAdmin />}></Route>
+                <Route
+                  exact
+                  path="category"
+                  element={<CategoryAdmin />}
+                ></Route>
+                <Route exact path="bill" element={<BillAdmin />}></Route>
+                <Route
+                  exact
+                  path="product/:id"
+                  element={<ChangeProduct />}
+                ></Route>
+                <Route exact path="user" element={<User />}></Route>
+              </Route>
             </Route>
             <Route
               exact

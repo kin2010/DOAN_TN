@@ -1,27 +1,27 @@
-import { NextFunction, RequestHandler, Response } from 'express';
-import httpStatus from 'http-status';
-import { Query, Params, Request } from '../configs/types';
-import { IVerify } from '../models';
-import User, { IUser } from '../models/user.model';
-import AuthService from '../services/auth.service';
-import APIError from '../utils/APIError';
-import JWT from '../utils/jwt';
+import { NextFunction, RequestHandler, Response } from "express";
+import httpStatus from "http-status";
+import { Query, Params, Request } from "../configs/types";
+import { IVerify } from "../models";
+import User, { IUser } from "../models/user.model";
+import AuthService from "../services/auth.service";
+import APIError from "../utils/APIError";
+import JWT from "../utils/jwt";
 export interface IRequestBodyRegiser {
-  email: IUser['email'];
-  password: IUser['password'];
-  fullName: IUser['fullName'];
+  email: IUser["email"];
+  password: IUser["password"];
+  fullName: IUser["fullName"];
 }
 export interface IRequeseBodyVerify {
-  email: IUser['email'];
-  otp: IVerify['otp'];
+  email: IUser["email"];
+  otp: IVerify["otp"];
 }
 export interface IRequeseBodyLogin {
-  email: IUser['email'];
-  password: IUser['password'];
+  email: IUser["email"];
+  password: IUser["password"];
 }
 export interface IRequeseBodyChangePassword {
-  email: IUser['email'];
-  password: IUser['password'];
+  email: IUser["email"];
+  password: IUser["password"];
   newPassword: string;
 }
 export interface IRequestSendPhoneBody {
@@ -36,7 +36,7 @@ export default class AuthController {
       if (!token) {
         throw new APIError({
           status: httpStatus.UNAUTHORIZED,
-          message: 'Unauthorized',
+          message: "Unauthorized",
         });
         return;
       }
@@ -45,12 +45,12 @@ export default class AuthController {
       const user = await User.findOne({
         _id: tokenPayload._id,
         isVerify: true,
-      });
+      }).populate([{ path: "role", select: "roleName" }]);
 
       if (!user) {
         throw new APIError({
           status: httpStatus.NOT_FOUND,
-          message: 'User not found',
+          message: "User not found",
         });
       }
 
@@ -64,7 +64,7 @@ export default class AuthController {
   static register = async (
     req: Request<IRequestBodyRegiser, Query, Params>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> => {
     try {
       await AuthService.Register({ ...req.body });
@@ -76,7 +76,7 @@ export default class AuthController {
   static login = async (
     req: Request<IRequeseBodyLogin, Query, Params>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => {
     try {
       const { user, token } = await AuthService.login({ ...req.body });
@@ -88,12 +88,12 @@ export default class AuthController {
   static verifyEmail = async (
     req: Request<IRequeseBodyVerify, Query, Params>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> => {
     try {
       await AuthService.verifyEmail({ ...req.body });
       res.status(httpStatus.OK).json({
-        message: 'Verify successfully',
+        message: "Verify successfully",
       });
     } catch (e) {
       return next(e);
@@ -102,14 +102,14 @@ export default class AuthController {
   static changePassword = async (
     req: Request<IRequeseBodyChangePassword, Query, Params>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> => {
     try {
       await AuthService.changePassword({ ...req.body });
       res
         .status(httpStatus.OK)
         .json({
-          message: 'Change Password is successfully',
+          message: "Change Password is successfully",
           status: 200,
         })
         .end();
@@ -120,17 +120,34 @@ export default class AuthController {
   static sendPhone = async (
     req: Request<IRequestSendPhoneBody, Query, Params>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> => {
     try {
       await AuthService.sendPhone({ ...req.body });
       res
         .status(httpStatus.OK)
         .json({
-          message: 'Phone sent message',
+          message: "Phone sent message",
           status: 200,
         })
         .end();
+    } catch (error) {
+      next(error);
+    }
+  };
+  static getAllUser = async (
+    req: Request<never, Query, Params>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const responce = await AuthService.getAllUser({
+        pagination: {
+          limit: Number(req.query.limit),
+          skip: Number(req.query.skip) || 0,
+        },
+      });
+      res.json(responce).status(httpStatus.OK).end();
     } catch (error) {
       next(error);
     }

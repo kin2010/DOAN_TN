@@ -80,11 +80,32 @@ var ProductService = /** @class */ (function () {
                         newProduct = _c.sent();
                         if (!newProduct) {
                             throw new APIError_1.default({
-                                message: 'Cannot create product',
+                                message: "Cannot create product",
                                 status: http_status_1.default.BAD_REQUEST,
                             });
                         }
-                        return [2 /*return*/, newProduct];
+                        return [2 /*return*/, newProduct.populate([
+                                {
+                                    path: "trademark",
+                                    select: "name",
+                                },
+                                {
+                                    path: "category",
+                                    select: "name description",
+                                },
+                                {
+                                    path: "subCategory",
+                                    select: "name description",
+                                },
+                                {
+                                    path: "comments",
+                                    select: "name comment rating avatar createdAt",
+                                },
+                                {
+                                    path: "tag",
+                                    select: "name color",
+                                },
+                            ])];
                 }
             });
         });
@@ -97,23 +118,31 @@ var ProductService = /** @class */ (function () {
                 switch (_c.label) {
                     case 0: return [4 /*yield*/, models_1.Product.findById(_id).populate([
                             {
-                                path: 'trademark',
-                                select: 'name',
+                                path: "trademark",
+                                select: "name",
                             },
                             {
-                                path: 'category',
-                                select: 'name description',
+                                path: "category",
+                                select: "name description",
                             },
                             {
-                                path: 'subCategory',
-                                select: 'name description',
+                                path: "subCategory",
+                                select: "name description",
+                            },
+                            {
+                                path: "comments",
+                                select: "name comment rating avatar createdAt",
+                            },
+                            {
+                                path: "tag",
+                                select: "name color",
                             },
                         ])];
                     case 1:
                         product = _c.sent();
                         if (!product) {
                             throw new APIError_1.default({
-                                message: 'Product not found',
+                                message: "Product not found",
                                 status: http_status_1.default.BAD_REQUEST,
                             });
                         }
@@ -144,16 +173,24 @@ var ProductService = /** @class */ (function () {
                                 .sort({ createdAt: -1 })
                                 .populate([
                                 {
-                                    path: 'trademark',
-                                    select: 'name',
+                                    path: "trademark",
+                                    select: "name",
                                 },
                                 {
-                                    path: 'category',
-                                    select: 'name',
+                                    path: "category",
+                                    select: "name",
                                 },
                                 {
-                                    path: 'subCategory',
-                                    select: 'name',
+                                    path: "subCategory",
+                                    select: "name",
+                                },
+                                {
+                                    path: "tag",
+                                    select: "name color",
+                                },
+                                {
+                                    path: "comments",
+                                    select: "name comment rating avatar createdAt",
                                 },
                             ])];
                     case 1:
@@ -174,7 +211,7 @@ var ProductService = /** @class */ (function () {
                         shop = _c.sent();
                         if (!shop) {
                             throw new APIError_1.default({
-                                message: 'Product not found',
+                                message: "Product not found",
                                 status: http_status_1.default.NOT_FOUND,
                             });
                         }
@@ -185,11 +222,32 @@ var ProductService = /** @class */ (function () {
                         productUpdated = _c.sent();
                         if (!productUpdated) {
                             throw new APIError_1.default({
-                                message: 'Can not update order',
+                                message: "Can not update order",
                                 status: http_status_1.default.INTERNAL_SERVER_ERROR,
                             });
                         }
-                        return [2 /*return*/, productUpdated];
+                        return [2 /*return*/, productUpdated.populate([
+                                {
+                                    path: "trademark",
+                                    select: "name",
+                                },
+                                {
+                                    path: "category",
+                                    select: "name description",
+                                },
+                                {
+                                    path: "subCategory",
+                                    select: "name description",
+                                },
+                                {
+                                    path: "comments",
+                                    select: "name comment rating avatar createdAt",
+                                },
+                                {
+                                    path: "tag",
+                                    select: "name color",
+                                },
+                            ])];
                 }
             });
         });

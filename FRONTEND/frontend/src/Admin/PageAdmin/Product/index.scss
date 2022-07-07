@@ -1,0 +1,15 @@
+.btn_add>button{
+    border-bottom: 1px solid gray;
+    
+}
+.btn_add{
+    cursor: pointer;
+    gap:0 15px
+}
+.btn_add:hover>button{
+    transition: border 0.3s linear;
+    border-bottom: 3px solid #1976d2; 
+    &>p{
+      color:#1976d2
+    }
+}

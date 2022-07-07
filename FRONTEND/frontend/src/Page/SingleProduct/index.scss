@@ -40,6 +40,7 @@
     overflow: hidden;
     line-height: 1.5;
     font-size: 21px;
+    white-space: pre-wrap;
   }
   &-title {
     margin-top: 30px;
@@ -70,6 +71,7 @@
   font-size: 18px;
   color: #333;
   line-height: 1.75;
+  white-space: pre-wrap;
 }
 .pd-title {
   color: #ff536f;

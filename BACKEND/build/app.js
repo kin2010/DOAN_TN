@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -148,7 +152,7 @@ httpServer.listen(appConfig_1.default.server.port, function () { return __awaite
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                logger_1.default.info("Server :" + appConfig_1.default.server.hostname + " is running on port: " + appConfig_1.default.server.port);
+                logger_1.default.info("Server :".concat(appConfig_1.default.server.hostname, " is running on port: ").concat(appConfig_1.default.server.port));
                 return [4 /*yield*/, (0, database_1.default)()];
             case 1:
                 _a.sent();

@@ -2,4 +2,9 @@
   // background-color: #fff;
   height: 100%;
   min-height: 500px;
+  margin-left: -30pxs;
+}
+.ppd{
+  margin-left: 30px;
+  width: calc(33.33% - 30px)!important;
 }

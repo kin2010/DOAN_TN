@@ -1,4 +1,4 @@
-import multer, { FileFilterCallback } from 'multer';
+import multer, { FileFilterCallback } from "multer";
 
 interface ICallback extends FileFilterCallback {
   (error: null | Error, acceptFile: boolean): void;
@@ -7,7 +7,7 @@ interface ICallback extends FileFilterCallback {
 class MulterMiddleware {
   private static storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'src/uploads');
+      cb(null, "src/uploads");
     },
     filename: function (req, file, cb) {
       cb(null, `${Date.now()}-${file.originalname}`);
@@ -19,7 +19,17 @@ class MulterMiddleware {
     limits: { fileSize: 1024 * 1024 },
     fileFilter(req, file, cb: ICallback) {
       if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/gi)) {
-        return cb(new Error('Only image files are allowed!'), false);
+        return cb(new Error("Only image files are allowed!"), false);
+      }
+      cb(null, true);
+    },
+  });
+  static uploadVideo = multer({
+    storage: MulterMiddleware.storage,
+    limits: { fileSize: 1024 * 1024 * 99 },
+    fileFilter(req, file, cb: ICallback) {
+      if (!file.originalname.match(/\.(mp3|mp4|)$/gi)) {
+        return cb(new Error("Only Video files are allowed!"), false);
       }
       cb(null, true);
     },

@@ -57,9 +57,9 @@ var sendPhone = function (_a) {
                     _b.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, client.messages
                             .create({
-                            body: "\u0110\u00E2y l\u00E0 m\u00E3 OTP c\u1EE7a b\u1EA1n " + otp,
+                            body: "\u0110\u00E2y l\u00E0 m\u00E3 OTP c\u1EE7a b\u1EA1n ".concat(otp),
                             from: myPhone,
-                            to: "+84" + phone,
+                            to: "+84".concat(phone),
                         })
                             .then(function (res) { return logger_1.default.info(res); })
                             .catch(function (err) { return logger_1.default.info(err); })];

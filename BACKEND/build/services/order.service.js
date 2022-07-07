@@ -52,7 +52,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var http_status_1 = __importDefault(require("http-status"));
 var models_1 = require("../models");
+var bill_model_1 = __importDefault(require("../models/bill.model"));
 var APIError_1 = __importDefault(require("../utils/APIError"));
+var MomoPayment_1 = __importDefault(require("../utils/MomoPayment"));
 var OrderService = /** @class */ (function () {
     function OrderService() {
     }
@@ -71,7 +73,7 @@ var OrderService = /** @class */ (function () {
                         if (!orderId.match(/^[0-9a-fA-F]{24}$/)) {
                             // Yes, it's a valid ObjectId, proceed with `findById` call.
                             throw new APIError_1.default({
-                                message: 'Order not found',
+                                message: "Order not found",
                                 status: http_status_1.default.NOT_FOUND,
                             });
                         }
@@ -80,7 +82,7 @@ var OrderService = /** @class */ (function () {
                         order = _c.sent();
                         if (!order) {
                             throw new APIError_1.default({
-                                message: 'Order not found',
+                                message: "Order not found",
                                 status: http_status_1.default.NOT_FOUND,
                             });
                         }
@@ -91,7 +93,7 @@ var OrderService = /** @class */ (function () {
                         productUpdated = _c.sent();
                         if (!productUpdated) {
                             throw new APIError_1.default({
-                                message: 'Can not update order',
+                                message: "Can not update order",
                                 status: http_status_1.default.INTERNAL_SERVER_ERROR,
                             });
                         }
@@ -112,19 +114,19 @@ var OrderService = /** @class */ (function () {
                         .sort({ createdAt: -1 })
                         .populate([
                         {
-                            path: 'product',
-                            select: 'name price trademark avatar ',
+                            path: "product",
+                            select: "name price trademark avatar ",
                             // select: 'name price category avatar photos',
                             populate: [
                                 {
-                                    path: 'trademark',
-                                    select: 'name',
+                                    path: "trademark",
+                                    select: "name",
                                 },
                             ],
                         },
                         {
-                            path: 'user',
-                            select: 'fullName',
+                            path: "user",
+                            select: "fullName",
                         },
                     ])
                         .lean()];
@@ -134,8 +136,15 @@ var OrderService = /** @class */ (function () {
     OrderService.getByUser = function (_b) {
         var userId = _b.userId, pagination = _b.pagination;
         return __awaiter(void 0, void 0, void 0, function () {
-            var limit, skip;
+            var user, limit, skip;
             return __generator(_a, function (_c) {
+                user = models_1.User.find({ _id: userId });
+                if (!user || userId === "") {
+                    throw new APIError_1.default({
+                        message: "User not found",
+                        status: http_status_1.default.NOT_FOUND,
+                    });
+                }
                 limit = pagination.limit, skip = pagination.skip;
                 return [2 /*return*/, models_1.Order.find({ user: userId })
                         .limit(limit)
@@ -143,22 +152,64 @@ var OrderService = /** @class */ (function () {
                         .sort({ createdAt: -1 })
                         .populate([
                         {
-                            path: 'product',
-                            select: 'name price trademark avatar ',
+                            path: "product",
+                            select: "name price trademark avatar ",
                             populate: [
                                 {
-                                    path: 'trademark',
-                                    select: 'name',
+                                    path: "trademark",
+                                    select: "name",
                                 },
                             ],
                         },
                         {
-                            path: 'user',
-                            select: 'avatar fullName address gender address phone role',
-                            populate: [{ path: 'role', select: 'roleName' }],
+                            path: "user",
+                            select: "avatar fullName address gender address phone role",
+                            populate: [{ path: "role", select: "roleName" }],
                         },
                     ])
                         .lean()];
+            });
+        });
+    };
+    OrderService.paymentMomo = function (_b) {
+        var orderId = _b.orderId;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var order, payUrl;
+            return __generator(_a, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, models_1.Order.findById(orderId)];
+                    case 1:
+                        order = _c.sent();
+                        if (!order) {
+                            throw new APIError_1.default({
+                                message: "Order not found",
+                                status: http_status_1.default.NOT_FOUND,
+                            });
+                        }
+                        return [4 /*yield*/, (0, MomoPayment_1.default)(order._id)];
+                    case 2:
+                        payUrl = _c.sent();
+                        return [2 /*return*/, { payUrl: payUrl }];
+                }
+            });
+        });
+    };
+    OrderService.paymentNotification = function (_b) {
+        var message = _b.message, requestId = _b.requestId;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var bill;
+            return __generator(_a, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, bill_model_1.default.findOne({ requestId: requestId })];
+                    case 1:
+                        bill = _c.sent();
+                        if (!(message === "success")) return [3 /*break*/, 3];
+                        return [4 /*yield*/, models_1.Order.findOneAndUpdate({ _id: bill === null || bill === void 0 ? void 0 : bill.order }, { status: "paid" })];
+                    case 2:
+                        _c.sent();
+                        _c.label = 3;
+                    case 3: return [2 /*return*/];
+                }
             });
         });
     };

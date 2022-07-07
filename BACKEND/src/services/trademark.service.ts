@@ -1,4 +1,4 @@
-import { ITrademark, Trademark } from '../models';
+import { ITrademark, Trademark } from "../models";
 
 export interface ITrademarkCreateParams {
   name: string;
@@ -11,5 +11,9 @@ export default class TrademarkService {
   }: ITrademarkCreateParams): Promise<ITrademark> => {
     const trade = await Trademark.create({ name, description });
     return trade;
+  };
+  static get = async (): Promise<ITrademark[]> => {
+    const trades = await Trademark.find({});
+    return trades;
   };
 }

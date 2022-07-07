@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table, Container, Nav, Card } from "react-bootstrap";
 import { Button } from "@mui/material";
 import "./Cart.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import cart from '../../img/cart.png';
 import { useSelector, useDispatch } from "react-redux";
 import Header from "../../components/Header";
@@ -12,7 +12,7 @@ const ViewCart = () => {
   const cartDummy = useSelector((state) => state.carts.carts);
   const [total, setTotal] = React.useState(0);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   React.useEffect(() => {
     //total
     let total = 0;
@@ -191,6 +191,7 @@ const ViewCart = () => {
                 fontSize: "17px",
                 borderRadius: "25px",
               }}
+              onClick={() => navigate("/shop")}
             >
               CONTINUE SHOPPING
             </Button>

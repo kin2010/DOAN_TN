@@ -85,6 +85,92 @@ var CategoryController = /** @class */ (function () {
             }
         });
     }); };
+    CategoryController.update = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var responce, error_3;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, category_service_1.default.update({
+                            categoryId: req.params._id,
+                            body: req.body,
+                        })];
+                case 1:
+                    responce = _b.sent();
+                    res.json(responce).status(http_status_1.default.OK).end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_3 = _b.sent();
+                    next(error_3);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    CategoryController.updateSub = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var responce, error_4;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, category_service_1.default.updateSub({
+                            categoryId: req.params._id,
+                            body: req.body,
+                        })];
+                case 1:
+                    responce = _b.sent();
+                    res.json(responce).status(http_status_1.default.OK).end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_4 = _b.sent();
+                    next(error_4);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    CategoryController.create = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var responce, error_5;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, category_service_1.default.create({
+                            body: req.body,
+                        })];
+                case 1:
+                    responce = _b.sent();
+                    res.json(responce).status(http_status_1.default.OK).end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_5 = _b.sent();
+                    next(error_5);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    CategoryController.createSub = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var responce, error_6;
+        return __generator(_a, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, category_service_1.default.createSubCategory({
+                            body: req.body,
+                        })];
+                case 1:
+                    responce = _b.sent();
+                    res.json(responce).status(http_status_1.default.OK).end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_6 = _b.sent();
+                    next(error_6);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
     return CategoryController;
 }());
 exports.CategoryController = CategoryController;

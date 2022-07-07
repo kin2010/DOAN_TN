@@ -52,7 +52,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var http_status_1 = __importDefault(require("http-status"));
 var product_service_1 = require("../services/product.service");
-var logger_1 = __importDefault(require("../utils/logger"));
 var ProductController = /** @class */ (function () {
     function ProductController() {
     }
@@ -87,7 +86,6 @@ var ProductController = /** @class */ (function () {
                 case 1:
                     response = _b.sent();
                     res.json(response).status(http_status_1.default.OK).end();
-                    logger_1.default.info(response);
                     return [3 /*break*/, 3];
                 case 2:
                     error_2 = _b.sent();
@@ -130,7 +128,7 @@ var ProductController = /** @class */ (function () {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, product_service_1.ProductService.update({
-                            productId: req.params.id,
+                            productId: req.params._id,
                             body: req.body,
                         })];
                 case 1:

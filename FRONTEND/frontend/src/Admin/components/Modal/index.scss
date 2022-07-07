@@ -1,0 +1,41 @@
+.img-content{
+    position: absolute;
+	width: 214px;
+	height: 214px;
+	object-fit: cover;
+}
+.img-holder {
+	position: relative;
+	margin: auto;
+	width: 220px;
+	height: 220px;
+	border: 3px black solid;
+	border-radius: 5px;
+	
+	margin-top: 1rem;
+	margin-bottom: 0.5rem;
+	justify-content: center;
+}
+#file[type="file"] {
+	display: none;
+}
+#file1[type="file"] {
+	display: none;
+}
+#file2[type="file"] {
+	display: none;
+}
+#file3[type="file"] {
+	display: none;
+}
+#file4[type="file"] {
+	display: none;
+}
+.md{
+	position: relative;
+}
+.submit{
+	position: absolute!important;
+	top: 50px;
+	right: 50px;
+}

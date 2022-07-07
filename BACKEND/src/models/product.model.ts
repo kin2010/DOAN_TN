@@ -1,11 +1,11 @@
-import { number, required } from 'joi';
-import { Document, model, Schema } from 'mongoose';
+import { number, required } from "joi";
+import { Document, model, Schema } from "mongoose";
 export interface IProduct extends Document {
   name: string;
   description: string;
   trademark: string;
   price: number;
-  detailImages: string[];
+  detailImage: string[];
   avatar: string;
   stock: number;
   category: string;
@@ -13,6 +13,8 @@ export interface IProduct extends Document {
   comments: string[];
   createdAt: Date;
   updatedAt: Date;
+  tag: string;
+  instruction: string;
 }
 const ProductSchema = new Schema(
   {
@@ -25,9 +27,13 @@ const ProductSchema = new Schema(
       required: true,
     },
     trademark: {
-      type: 'ObjectId',
-      ref: 'Trademark',
+      type: "ObjectId",
+      ref: "Trademark",
       required: true,
+    },
+    tag: {
+      type: "ObjectId",
+      ref: "Tag",
     },
     price: {
       type: Number,
@@ -47,18 +53,21 @@ const ProductSchema = new Schema(
       required: true,
     },
     category: {
-      type: 'ObjectId',
-      ref: 'Category',
+      type: "ObjectId",
+      ref: "Category",
     },
     subCategory: {
-      type: 'ObjectId',
-      ref: 'SubCategory',
+      type: "ObjectId",
+      ref: "SubCategory",
     },
-    comments: [{ type: 'ObjectId', ref: 'Comment' }],
+    comments: [{ type: "ObjectId", ref: "Comment" }],
+    instruction: {
+      type: String,
+    },
   },
   {
     timestamps: true,
-  },
+  }
 );
-const Product = model<IProduct>('Product', ProductSchema);
+const Product = model<IProduct>("Product", ProductSchema);
 export default Product;

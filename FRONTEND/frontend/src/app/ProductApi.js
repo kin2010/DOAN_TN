@@ -9,5 +9,13 @@ const ProductApi = {
     const url = `${apiURL}/products/${params.id}`;
     return axiosClient.get(url);
   },
+  create: (params) => {
+    const url = `${apiURL}/products`;
+    return axiosClient.post(url, { params });
+  },
+  update: (params) => {
+    const url = `${apiURL}/products/${params._id}`;
+    return axiosClient.put(url, { ...params });
+  },
 };
 export default ProductApi;

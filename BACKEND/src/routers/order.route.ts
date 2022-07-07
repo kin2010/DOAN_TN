@@ -1,7 +1,10 @@
-import express from 'express';
-import OrderController from '../controllers/order.controller';
+import express from "express";
+import OrderController from "../controllers/order.controller";
 const router = express.Router();
-router.route('/').post(OrderController.create).get(OrderController.getAll);
-router.route('/:id').put(OrderController.update);
-router.route('/myorder').get(OrderController.getByUser);
+router.route("/").post(OrderController.create).get(OrderController.getAll);
+router.route("/:id").put(OrderController.update);
+router.route("/getall").get(OrderController.getAll);
+router.route("/myorder").get(OrderController.getByUser);
+router.route("/payment/:id").get(OrderController.payment);
+router.route("/payment-notification").get(OrderController.paymentNotification);
 export default router;

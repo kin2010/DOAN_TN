@@ -3,46 +3,26 @@ import { Col, Container, Row } from "react-bootstrap";
 import Product from "../Product";
 import Header from "../Header";
 import { useUserQuery } from "../../app/AuthApi";
+import Slider from "../Carousel";
+import { AbsoluteHeader } from "../../Page/SingleProduct";
+import TopPage from "../../Page/TopPage";
+import HotPage from "../../Page/HotPage";
+import ReviewPage from "../../Page/ReviewPage";
+import { Divider } from "@mui/material";
+import Footer from "../Footer";
 
 const Home = () => {
   const { data: user, isLoading, error } = useUserQuery();
   return (
     <>
-      <Header></Header>
-      {user && JSON.stringify(user)}
-      <Container style={{ backgroundColor: "#f6f7fb" }}>
-        {/* <Row>
-          <Col md={4}>
-            <Product
-              chip="sale"
-              name="Kem chống năng số 1"
-              trademark="Dior"
-              rating={3.5}
-              src="../images/img1.png"
-            ></Product>
-          </Col>
-          <Col md={4}>
-            <Product
-              chip="hot"
-              name="Kem chống năng số 1"
-              trademark="Dior"
-              rating={3.5}
-              price={80000}
-              src="../images/img2.png"
-            ></Product>
-          </Col>
-          <Col md={4}>
-            <Product
-              chip="new"
-              name="Kem chống năng số 1"
-              trademark="Dior"
-              price={1030000}
-              rating={3.5}
-              src="../images/img3.png"
-            ></Product>
-          </Col>
-        </Row> */}
-      </Container>
+      <AbsoluteHeader></AbsoluteHeader>
+      {/* {user && JSON.stringify(user)} */}
+      <Slider></Slider>
+      <TopPage></TopPage>
+      <HotPage></HotPage>
+      <ReviewPage></ReviewPage>
+      <hr></hr>
+      <Footer></Footer>
     </>
   );
 };
