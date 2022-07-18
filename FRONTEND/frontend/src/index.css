@@ -255,3 +255,8 @@ hr{
 .ant-select-selector{
   padding: 10px;
 }
+
+/* icon */
+.MuiSvgIcon-fontSizeOk{
+  font-size: 70px;
+}

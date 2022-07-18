@@ -135,6 +135,15 @@ const Overview = () => {
       console.log(error);
     }
   };
+  const total = (data) => {
+    if (data && data?.length === 0) {
+      return 0;
+    }
+    const rs = data.reduce((pre, curr) => {
+      return pre + curr?.revenue;
+    }, 0);
+    return rs;
+  };
   return (
     <>
       <Row>
@@ -155,16 +164,26 @@ const Overview = () => {
           <LineChart date={dt} />
         </Col>
         <div className="fs21 mb-5"> Chi tiết doanh thu theo tuần :</div>
+        <div className="fs20 fw500 mb-5">
+          Tổng :{" "}
+          <span className="text-success fw700">{formatNumber(total(dt))}</span>{" "}
+          vnđ
+        </div>
         <div>
           {dt.length > 0 &&
             dt.map((d, index) => (
-              <Revenue
+              <div
+                // style={{ width: "fit-content" }}
+                className="bg-white shadow2 ps-3 py-3 mb-3"
                 key={index}
-                date={d?.date}
-                dateEnd={d?.dateEnd}
-                revenue={d?.revenue}
-                order={d?.order}
-              />
+              >
+                <Revenue
+                  date={d?.date}
+                  dateEnd={d?.dateEnd}
+                  revenue={d?.revenue}
+                  order={d?.order}
+                />
+              </div>
             ))}
         </div>
         <Col xs={12} sm={6} xl={6} md={6} className="mb-4">
@@ -228,6 +247,37 @@ const Overview = () => {
             dt2={year2}
           />
         </Col>
+        <div className="fs21 mb-5">
+          {" "}
+          Chi tiết doanh thu năm :
+          <strong className="text-info fs21">
+            {year1 && new Date(date1).getFullYear()}
+          </strong>
+        </div>
+        <div className="fs20 fw500 mb-5">
+          Tổng :{" "}
+          <span className="text-success fw700">
+            {formatNumber(total(year1))}
+          </span>{" "}
+          vnđ
+        </div>
+        <div>
+          {year1.length > 0 &&
+            year1.map((d, index) => (
+              <div
+                // style={{ width: "fit-content" }}
+                className="bg-white shadow2 ps-3 py-3 mb-3"
+                key={index}
+              >
+                <Revenue
+                  date={d?.date}
+                  dateEnd={d?.dateEnd}
+                  revenue={d?.revenue}
+                  order={d?.order}
+                />
+              </div>
+            ))}
+        </div>
       </Row>
     </>
   );

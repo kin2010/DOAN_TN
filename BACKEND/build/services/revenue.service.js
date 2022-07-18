@@ -195,7 +195,7 @@ var RevenueServices = /** @class */ (function () {
                         rs.push({
                             revenue: revenue,
                             date: startMonth,
-                            datedateEnd: endMonth,
+                            dateEnd: endMonth,
                             order: orders,
                         });
                         nextMonth = (0, date_fns_1.startOfMonth)(new Date((0, date_fns_1.addMonths)(startMonth, 1)));

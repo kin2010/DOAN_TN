@@ -142,7 +142,7 @@ export default class RevenueServices {
       rs.push({
         revenue: revenue,
         date: startMonth,
-        datedateEnd: endMonth,
+        dateEnd: endMonth,
         order: orders,
       });
       const nextMonth = startOfMonth(new Date(addMonths(startMonth, 1)));
