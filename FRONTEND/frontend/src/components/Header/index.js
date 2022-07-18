@@ -28,6 +28,7 @@ import { styled } from "@mui/material/styles";
 import { removeUserSession, setToken } from "../../Utils/Common";
 import { nullToken } from "../../Slice/AuthSlice";
 import Cart from "../Cart";
+import { searchProduct } from "../../Slice/ShopSlice";
 export const ImgStyle = styled("img")((props) => ({
   maxWidth: "100%",
 }));
@@ -71,6 +72,12 @@ const Header = ({ className }) => {
     refetch();
     navigate("/login");
   };
+  const changeSearch = (e) => {
+    console.log(e?.target?.value);
+    const value = e?.target?.value;
+    const action = searchProduct(value);
+    dispatch(action);
+  };
   console.log("query user", data, error);
   return (
     <>
@@ -102,6 +109,7 @@ const Header = ({ className }) => {
                     placeholder="search ..."
                     className="search-header"
                     type="search"
+                    onChange={changeSearch}
                   />
                 </Col>
                 <Col>

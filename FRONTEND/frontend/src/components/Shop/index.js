@@ -15,6 +15,7 @@ import { ShopContext } from "../../Context/ShopContext";
 import { Pagination } from "@mui/material";
 import Footer from "../Footer";
 import Notification from "../../Admin/components/Notifacation/Notification";
+import { sortProduct } from "../../Slice/ShopSlice";
 const Shop = () => {
   const location = useLocation();
   const params = useParams();
@@ -69,6 +70,12 @@ const Shop = () => {
     setCondition({});
     navigate("/shop");
   };
+  const changeSort = (e) => {
+    const value = e?.target?.value;
+    console.log(value);
+    const action = sortProduct(value.toString());
+    dispatch(action);
+  };
   return (
     <>
       <Header></Header>
@@ -105,13 +112,14 @@ const Shop = () => {
                       borderRight: "0px",
                       borderLeft: "0px",
                     }}
+                    onChange={changeSort}
                     aria-label="Sort"
                   >
                     <option>Select ... </option>
                     <option value="1">default</option>
-                    <option value="1">price</option>
-                    <option value="2">rating</option>
-                    <option value="3">hot</option>
+                    <option value="2">price</option>
+                    <option value="3">rating</option>
+                    {/* <option value="4">hot</option> */}
                   </Form.Select>
                 </div>
                 {isLoading === true && (

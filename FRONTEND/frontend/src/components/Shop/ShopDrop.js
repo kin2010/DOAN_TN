@@ -1,16 +1,17 @@
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import StarBorder from '@mui/icons-material/StarBorder';
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import StarBorder from "@mui/icons-material/StarBorder";
 import {
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-} from '@mui/material';
-import React, { useContext, useState } from 'react';
-import { Collapse } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { ShopContext } from '../../Context/ShopContext';
+} from "@mui/material";
+import React, { useContext, useState } from "react";
+import { Collapse } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { ShopContext } from "../../Context/ShopContext";
 
 const ShopDrop = ({ cate }) => {
   const subs = useSelector((state) => state.category.subCategories);
@@ -24,6 +25,7 @@ const ShopDrop = ({ cate }) => {
   const handleClick = () => {
     setOpen(!open);
   };
+  const navigate = useNavigate();
   return (
     <>
       <ListItemButton onClick={handleClick}>
@@ -41,7 +43,10 @@ const ShopDrop = ({ cate }) => {
               <ListItemIcon>
                 <StarBorder />
               </ListItemIcon>
-              <ListItemText primary={sub.name} />
+              <ListItemText
+                onClick={() => navigate(`/subcategory/${sub._id}`)}
+                primary={sub.name}
+              />
             </ListItemButton>
           ))}
         </List>
