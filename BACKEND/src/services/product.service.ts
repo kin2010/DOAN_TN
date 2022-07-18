@@ -12,6 +12,9 @@ export interface ICreateProductParams {
   avatar: string;
   category: string;
   subCategory: string;
+  instruction: string;
+  stock: number;
+  tag: string;
 }
 interface IProductConditionGetAll {
   category?: string;
@@ -43,6 +46,9 @@ export class ProductService {
     avatar,
     category,
     subCategory,
+    instruction,
+    stock,
+    tag,
   }: ICreateProductParams): Promise<IProduct> => {
     const newProduct = await Product.create({
       name,
@@ -53,6 +59,9 @@ export class ProductService {
       avatar,
       category,
       subCategory,
+      instruction,
+      stock,
+      tag,
     });
     if (!newProduct) {
       throw new APIError({

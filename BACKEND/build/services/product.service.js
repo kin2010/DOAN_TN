@@ -60,7 +60,7 @@ var ProductService = /** @class */ (function () {
     var _a;
     _a = ProductService;
     ProductService.create = function (_b) {
-        var name = _b.name, description = _b.description, trademark = _b.trademark, price = _b.price, detailImage = _b.detailImage, avatar = _b.avatar, category = _b.category, subCategory = _b.subCategory;
+        var name = _b.name, description = _b.description, trademark = _b.trademark, price = _b.price, detailImage = _b.detailImage, avatar = _b.avatar, category = _b.category, subCategory = _b.subCategory, instruction = _b.instruction, stock = _b.stock, tag = _b.tag;
         return __awaiter(void 0, void 0, void 0, function () {
             var newProduct;
             return __generator(_a, function (_c) {
@@ -74,6 +74,9 @@ var ProductService = /** @class */ (function () {
                             avatar: avatar,
                             category: category,
                             subCategory: subCategory,
+                            instruction: instruction,
+                            stock: stock,
+                            tag: tag,
                         })];
                     case 1:
                         newProduct = _c.sent();

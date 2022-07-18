@@ -11,6 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import PersonIcon from "@mui/icons-material/Person";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import {
   CAvatar,
   CIcon,
@@ -149,18 +150,6 @@ const Header = ({ className }) => {
                         <CDropdownMenu className="pt-0" placement="bottom-end">
                           <CDropdownItem
                             style={{ cursor: "pointer" }}
-                            onClick={() => navigate("/orderhistory")}
-                            className="ava"
-                          >
-                            <LocalMallIcon
-                              style={{ transform: "translate(-6px,6px)" }}
-                            />
-                            <span as={Link} to="/login">
-                              Order History
-                            </span>
-                          </CDropdownItem>
-                          <CDropdownItem
-                            style={{ cursor: "pointer" }}
                             onClick={() => navigate("/profile")}
                             className="ava"
                           >
@@ -171,6 +160,20 @@ const Header = ({ className }) => {
                               Profile
                             </span>
                           </CDropdownItem>
+                          {data && data?.role?.roleName === "Admin" && (
+                            <CDropdownItem
+                              style={{ cursor: "pointer" }}
+                              onClick={() => navigate("/admin/overview")}
+                              className="ava"
+                            >
+                              <SupervisorAccountIcon
+                                style={{ transform: "translate(-6px,6px)" }}
+                              />
+                              <span as={Link} to="/admin/overview">
+                                Admin
+                              </span>
+                            </CDropdownItem>
+                          )}
                           <CDropdownItem
                             style={{ cursor: "pointer" }}
                             onClick={() => handleLogout()}
@@ -234,7 +237,7 @@ const Header = ({ className }) => {
                   <Nav.Link as={Link} to={"/shop"}>
                     Shop
                   </Nav.Link>
-                  <NavDropdown title="About" id="basic-nav-dropdown">
+                  {/* <NavDropdown title="About" id="basic-nav-dropdown">
                     <NavDropdown.Item href="#action/3.1">
                       Action
                     </NavDropdown.Item>
@@ -248,7 +251,7 @@ const Header = ({ className }) => {
                     <NavDropdown.Item href="#action/3.4">
                       Separated link
                     </NavDropdown.Item>
-                  </NavDropdown>
+                  </NavDropdown> */}
                 </Nav>
               </Navbar.Collapse>
             </Col>

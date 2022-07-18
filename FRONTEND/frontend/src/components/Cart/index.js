@@ -130,6 +130,7 @@ const Cart = ({ show }) => {
           VIEW CARD
         </BtnFooter>
         <BtnFooter
+          disabled={Object.values(carts)?.length === 0}
           style={{ width: "100%" }}
           variant="contained"
           onClick={() => navigate("/checkout")}

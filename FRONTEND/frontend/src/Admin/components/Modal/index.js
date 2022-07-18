@@ -178,7 +178,7 @@ export default function ModalCreate() {
         aria-describedby="modal-modal-description"
       >
         <Box className="md" style={{ overflowY: "scroll" }} sx={style}>
-          <Notification />
+          {/* <Notification /> */}
           <div>
             <img className="img" src="../images/logo.png" alt="" />
           </div>
@@ -290,7 +290,21 @@ export default function ModalCreate() {
                 <Col md={6} sm={12}>
                   <Form.Group>
                     <Form.Label className="mb-2">Avatar</Form.Label>
-                    <div className="img-holder ">
+                    <div
+                      className="img-holder "
+                      style={{ position: "relative" }}
+                    >
+                      <div className="mt-4 label-image text-center">
+                        <label className="mb-3 image-upload" htmlFor="file">
+                          Pick product avatar
+                        </label>
+                      </div>
+                      <Form.Control.Feedback
+                        className="text-center label-image"
+                        type="invalid"
+                      >
+                        Chọn ảnh cho sản phẩm
+                      </Form.Control.Feedback>
                       <img
                         src={
                           Object.values(imgData).length > 0
@@ -311,18 +325,6 @@ export default function ModalCreate() {
                       required
                       onChange={(e) => imageHandler(0, e)}
                     />
-
-                    <div className="mt-4 label-image text-center">
-                      <label className="mb-3 image-upload" htmlFor="file">
-                        Pick product avatar
-                      </label>
-                    </div>
-                    <Form.Control.Feedback
-                      className="text-center"
-                      type="invalid"
-                    >
-                      Chọn ảnh cho sản phẩm
-                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
