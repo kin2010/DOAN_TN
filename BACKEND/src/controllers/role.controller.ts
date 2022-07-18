@@ -1,21 +1,20 @@
-import { Request, Query, Params } from '../configs/types';
-import { Response, NextFunction } from 'express';
-import { IRole } from '../models';
-import RoleSerivce from '../services/role.service';
-import httpStatus from 'http-status';
-import log from '../utils/logger';
+import { Request, Query, Params } from "../configs/types";
+import { Response, NextFunction } from "express";
+import { IRole } from "../models";
+import RoleSerivce from "../services/role.service";
+import httpStatus from "http-status";
+import log from "../utils/logger";
 export interface IRoleRequest {
-  roleName: IRole['roleName'];
-  description: IRole['description'];
+  roleName: IRole["roleName"];
+  description: IRole["description"];
 }
 export default class RoleController {
   static create = async (
     req: Request<IRoleRequest, Query, Params>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> => {
     try {
-      log.info(req);
       const newRole = await RoleSerivce.create({ ...req.body });
       res.status(httpStatus.OK).json(newRole).end();
     } catch (error) {
@@ -25,7 +24,7 @@ export default class RoleController {
   static getAll = async (
     req: Request<IRoleRequest, Query, Params>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> => {
     try {
       const roles = await RoleSerivce.getAll();

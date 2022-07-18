@@ -230,6 +230,29 @@ var AuthController = /** @class */ (function () {
             }
         });
     }); };
+    AuthController.updateUser = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var responce, _b, error;
+        return __generator(_a, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    _c.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, auth_service_1.default.updateUser({
+                            userId: req.params._id,
+                            body: req.body,
+                        })];
+                case 1:
+                    responce = _c.sent();
+                    res.json(responce).status(http_status_1.default.OK).end();
+                    return [3 /*break*/, 3];
+                case 2:
+                    _b = _c.sent();
+                    error = _b.error;
+                    next(error);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
     return AuthController;
 }());
 exports.default = AuthController;

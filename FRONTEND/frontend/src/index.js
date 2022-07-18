@@ -13,20 +13,24 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 import ProductContextProvider from "./Context/ProductContext";
 import CategoryContextProvider from "./Context/CategoryContext";
-
+import { BrowserRouter } from "react-router-dom";
+import { createBrowserHistory } from "history";
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const history = createBrowserHistory();
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <AuthContextProvider>
-        <CategoryContextProvider>
-          <ProductContextProvider>
-            <ShopContextProvider>
-              <App />
-            </ShopContextProvider>
-          </ProductContextProvider>
-        </CategoryContextProvider>
-      </AuthContextProvider>
+      <BrowserRouter history={history}>
+        <AuthContextProvider>
+          <CategoryContextProvider>
+            <ProductContextProvider>
+              <ShopContextProvider>
+                <App />
+              </ShopContextProvider>
+            </ProductContextProvider>
+          </CategoryContextProvider>
+        </AuthContextProvider>
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 );

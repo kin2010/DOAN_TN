@@ -1,47 +1,48 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { apiURL } from '../Context/constant';
-import { getToken } from '../Utils/Common';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { apiURL } from "../Context/constant";
+import { getToken } from "../Utils/Common";
 export const AuthApi = createApi({
-  reducerPath: 'authApi',
+  reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${apiURL}`,
     prepareHeaders: (headers, { getState }) => {
       // mutation-> query->settoken
 
       const token = getState().auths.token;
-      console.log(token, getState().auths);
+      // const token = getToken();
+      console.log("refect", token, getState().auths);
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+        headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
-  tagTypes: ['auth'],
+  tagTypes: ["auth"],
   endpoints: (builder) => ({
     user: builder.query({
-      query: () => '/auth',
-      providesTags: ['auth'],
+      query: () => "/auth",
+      providesTags: ["auth"],
     }),
     login: builder.mutation({
       query: (body) => ({
-        url: '/auth/login',
-        method: 'POST',
+        url: "/auth/login",
+        method: "POST",
         body: body,
       }),
-      invalidatesTags: ['auth'],
+      invalidatesTags: ["auth"],
     }),
     register: builder.mutation({
       query: (body) => ({
-        url: '/auth/register',
-        method: 'POST',
+        url: "/auth/register",
+        method: "POST",
         body: body,
       }),
-      invalidatesTags: ['auth'],
+      invalidatesTags: ["auth"],
     }),
     verify: builder.mutation({
       query: (body) => ({
-        url: '/auth/verify',
-        method: 'POST',
+        url: "/auth/verify",
+        method: "POST",
         body: body,
       }),
     }),

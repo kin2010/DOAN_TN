@@ -44,7 +44,7 @@ var models_1 = require("../models");
 var APIError_1 = __importDefault(require("../utils/APIError"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var appConfig_1 = __importDefault(require("../configs/appConfig"));
-var SendEmail_1 = require("../utils/SendEmail");
+var SendEmail_1 = __importDefault(require("../utils/SendEmail"));
 var otp_1 = require("../utils/otp");
 var moment_1 = __importDefault(require("moment"));
 var jwt_1 = __importDefault(require("../utils/jwt"));
@@ -73,6 +73,47 @@ var AuthService = /** @class */ (function () {
                             });
                         }
                         return [2 /*return*/, user.displayUser().populate([{ path: "role", select: "roleName" }])];
+                }
+            });
+        });
+    };
+    AuthService.updateUser = function (_b) {
+        var userId = _b.userId, body = _b.body;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var user, userUpadte, userReturn;
+            return __generator(_a, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        console.log(userId, body);
+                        return [4 /*yield*/, models_1.User.findOne({
+                                _id: userId,
+                                isVerify: true,
+                            })];
+                    case 1:
+                        user = _c.sent();
+                        if (!user) {
+                            throw new APIError_1.default({
+                                status: http_status_1.default.NOT_FOUND,
+                                message: "User not found",
+                            });
+                        }
+                        console.log("body", body);
+                        return [4 /*yield*/, models_1.User.findByIdAndUpdate(userId, body, {
+                                new: true,
+                            })];
+                    case 2:
+                        userUpadte = (_c.sent());
+                        userReturn = userUpadte === null || userUpadte === void 0 ? void 0 : userUpadte.displayUser();
+                        if (userUpadte) {
+                            console.log(111, userUpadte.populate([{ path: "role", select: "roleName" }]));
+                        }
+                        if (!userUpadte) {
+                            throw new APIError_1.default({
+                                message: "Can not update user",
+                                status: http_status_1.default.INTERNAL_SERVER_ERROR,
+                            });
+                        }
+                        return [2 /*return*/, userUpadte];
                 }
             });
         });
@@ -107,8 +148,10 @@ var AuthService = /** @class */ (function () {
                             })];
                     case 4:
                         _c.sent();
-                        return [4 /*yield*/, (0, SendEmail_1.sendMailNodeMaier)(email, otp_2)];
+                        // await sendMailNodeMaier(email, otp);
+                        return [4 /*yield*/, (0, SendEmail_1.default)(email, otp_2)];
                     case 5:
+                        // await sendMailNodeMaier(email, otp);
                         _c.sent();
                         return [2 /*return*/];
                     case 6: return [4 /*yield*/, models_1.Role.findOne({ roleName: "User" })];
@@ -136,7 +179,7 @@ var AuthService = /** @class */ (function () {
                         return [4 /*yield*/, models_1.Verify.create({ email: email, otp: otp, expiredAt: expiredAt })];
                     case 10:
                         _c.sent();
-                        return [4 /*yield*/, (0, SendEmail_1.sendMailNodeMaier)(email, otp)];
+                        return [4 /*yield*/, (0, SendEmail_1.default)(email, otp)];
                     case 11:
                         _c.sent();
                         return [2 /*return*/];
@@ -232,7 +275,7 @@ var AuthService = /** @class */ (function () {
                         // log.info(user);
                         // log.info(user.displayUser());
                         return [2 /*return*/, {
-                                user: user.displayUser(),
+                                user: user.populate([{ path: "role", select: "roleName" }]).displayUser(),
                                 token: token,
                             }];
                 }

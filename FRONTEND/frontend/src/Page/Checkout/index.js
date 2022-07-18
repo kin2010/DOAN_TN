@@ -51,11 +51,12 @@ const Checkout = () => {
 
     const req = {
       totalPrice: total || 0,
-      deliveryAddress: formValue?.address || "",
+      deliveryAddress: formValue?.address || data?.address || "",
       product: products || [],
       user: data?._id || "",
-      currentAddress: data?.address || "",
+      // currentAddress: data?.address || "",
       status: "pending",
+      note: formValue?.note || "",
     };
 
     const res = await dispatch(createOrder(req));

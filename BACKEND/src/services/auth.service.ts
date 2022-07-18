@@ -41,6 +41,10 @@ export interface IPagination {
     skip: number;
   };
 }
+export interface IUpdateUser {
+  body: Omit<IUser, "createdAt" | "updatedAt">;
+  userId: string;
+}
 export default class AuthService {
   static getUser = async ({ _id }: IGetUserParams): Promise<TUserDisplay> => {
     const user = await User.findOne({
@@ -54,6 +58,41 @@ export default class AuthService {
       });
     }
     return user.displayUser().populate([{ path: "role", select: "roleName" }]);
+  };
+  static updateUser = async ({
+    userId,
+    body,
+  }: IUpdateUser): Promise<TUserDisplay> => {
+    console.log(userId, body);
+    const user = await User.findOne({
+      _id: userId,
+      isVerify: true,
+    });
+    if (!user) {
+      throw new APIError({
+        status: httpStatus.NOT_FOUND,
+        message: "User not found",
+      });
+    }
+    console.log("body", body);
+    const userUpadte = (await User.findByIdAndUpdate(userId, body, {
+      new: true,
+    })) as IUser;
+    const userReturn: TUserDisplay = userUpadte?.displayUser() as TUserDisplay;
+    if (userUpadte) {
+      console.log(
+        111,
+        userUpadte.populate([{ path: "role", select: "roleName" }])
+      );
+    }
+    if (!userUpadte) {
+      throw new APIError({
+        message: "Can not update user",
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+      });
+    }
+
+    return userUpadte;
   };
   static Register = async ({
     fullName,
@@ -82,7 +121,8 @@ export default class AuthService {
           expiredAt: expiredAt,
         }
       );
-      await sendMailNodeMaier(email, otp);
+      // await sendMailNodeMaier(email, otp);
+      await sendEmail(email, otp);
       return;
     }
 
@@ -103,7 +143,7 @@ export default class AuthService {
     const otp = await generateOTP();
     const expiredAt = moment().add(30, "minutes");
     await Verify.create({ email, otp, expiredAt });
-    await sendMailNodeMaier(email, otp);
+    await sendEmail(email, otp);
   };
 
   static verifyEmail = async ({ email, otp }: IVerifyParams): Promise<void> => {
@@ -180,7 +220,7 @@ export default class AuthService {
     // log.info(user.displayUser());
 
     return {
-      user: user.displayUser(),
+      user: user.populate([{ path: "role", select: "roleName" }]).displayUser(),
       token,
     };
   };

@@ -18,6 +18,9 @@ var UserSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    avatar: {
+        type: String,
+    },
     address: {
         type: String,
     },
@@ -33,8 +36,8 @@ var UserSchema = new mongoose_1.Schema({
         min: 6,
     },
     role: {
-        type: 'ObjectId',
-        ref: 'Role',
+        type: "ObjectId",
+        ref: "Role",
         required: true,
     },
     gender: {
@@ -54,16 +57,16 @@ UserSchema.methods.displayUser = function () {
     var transformed = {};
     var user = this;
     var fields = [
-        '_id',
-        'email',
-        'fullName',
-        'role',
-        'gender',
-        'phone',
-        'avatar',
-        'address',
-        'createdAt',
-        'updatedAt',
+        "_id",
+        "email",
+        "fullName",
+        "role",
+        "gender",
+        "phone",
+        "avatar",
+        "address",
+        "createdAt",
+        "updatedAt",
     ];
     fields.forEach(function (field) {
         // @ts-ignore
@@ -71,5 +74,5 @@ UserSchema.methods.displayUser = function () {
     });
     return transformed;
 };
-var User = (0, mongoose_1.model)('User', UserSchema);
+var User = (0, mongoose_1.model)("User", UserSchema);
 exports.default = User;

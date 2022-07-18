@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import Notification from "../Admin/components/Notifacation/Notification";
 import axiosClient from "../app/AxiosClient";
 import { getAllCategories, getAllSub } from "../Slice/CategorySlice";
 import { getallOrder } from "../Slice/OrderSlice";
@@ -17,6 +18,7 @@ const CategoryContextProvider = ({ children }) => {
     message: "",
     color: "",
   });
+  const [loadingGlobal, setLoadingGlobal] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     fetchCategory();
@@ -63,15 +65,20 @@ const CategoryContextProvider = ({ children }) => {
     try {
       const params = {
         limit: 5,
-        skip: pageOrder * 5,
+        skip: (pageOrder - 1) * 5,
       };
-      console.log(params);
+
       const action = getallOrder(params);
       await dispatch(action);
     } catch (error) {
       console.log(error);
     }
   };
+  useEffect(() => {
+    if (showToast.show) {
+      closeToast();
+    }
+  }, [showToast]);
   const closeToast = () => {
     setTimeout(() => {
       setShowToast({
@@ -90,9 +97,14 @@ const CategoryContextProvider = ({ children }) => {
     setShowToast,
     tags,
     setTag,
+    loadingGlobal,
+    setLoadingGlobal,
   };
   return (
-    <CategoryContext.Provider value={data}>{children}</CategoryContext.Provider>
+    <CategoryContext.Provider value={data}>
+      <Notification />
+      {children}
+    </CategoryContext.Provider>
   );
 };
 export default CategoryContextProvider;

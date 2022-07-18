@@ -12,8 +12,8 @@ const Slider = () => {
             alt="First slide"
           />
           <Carousel.Caption>
-            <h3 style={{ color: "#c6596b" }}>First slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            <h3 style={{ color: "#c6596b" }}>Mỹ phẩm Ecomestic</h3>
+            <p>Với kinh nghiệm nhiều năm, đây là sự lựa chọn đúng đắn</p>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item interval={500}>
@@ -23,8 +23,10 @@ const Slider = () => {
             alt="Second slide"
           />
           <Carousel.Caption>
-            <h3 style={{ color: "#c6596b" }}>Second slide label</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <h3 style={{ color: "#c6596b" }}>
+              Sản phẩm mới luôn được cập nhật
+            </h3>
+            <p>Khách hàng luôn tin tưởng về chất lượng của chúng tôi</p>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
@@ -34,10 +36,8 @@ const Slider = () => {
             alt="Third slide"
           />
           <Carousel.Caption>
-            <h3 style={{ color: "#c6596b" }}>Third slide label</h3>
-            <p>
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-            </p>
+            <h3 style={{ color: "#c6596b" }}>Sale 30% vào mỗi cuối tuẩn</h3>
+            <p>Hãy là người tiêu dùng thông minh</p>
           </Carousel.Caption>
         </Carousel.Item>
       </Carousel>

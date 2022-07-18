@@ -1,6 +1,6 @@
-import { Document, Schema, model } from 'mongoose';
+import { Document, Schema, model } from "mongoose";
 
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 export interface IUser extends Document {
   _id: string;
@@ -20,7 +20,7 @@ export interface IUser extends Document {
 }
 export type TUserDisplay = Omit<
   IUser,
-  'isMatchPassword' | 'displayUser' | 'password'
+  "isMatchPassword" | "displayUser" | "password"
 >;
 
 //male :0
@@ -35,6 +35,9 @@ const UserSchema = new Schema(
     email: {
       type: String,
       required: true,
+    },
+    avatar: {
+      type: String,
     },
     address: {
       type: String,
@@ -51,8 +54,8 @@ const UserSchema = new Schema(
       min: 6,
     },
     role: {
-      type: 'ObjectId',
-      ref: 'Role',
+      type: "ObjectId",
+      ref: "Role",
       required: true,
     },
     gender: {
@@ -64,7 +67,7 @@ const UserSchema = new Schema(
       default: false,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 UserSchema.methods.isMatchPassword = function (candidatePassword: string) {
   const user = this as IUser;
@@ -75,17 +78,17 @@ UserSchema.methods.displayUser = function () {
   const user = this as IUser;
 
   const fields = [
-    '_id',
-    'email',
-    'fullName',
-    'role',
-    'gender',
+    "_id",
+    "email",
+    "fullName",
+    "role",
+    "gender",
 
-    'phone',
-    'avatar',
-    'address',
-    'createdAt',
-    'updatedAt',
+    "phone",
+    "avatar",
+    "address",
+    "createdAt",
+    "updatedAt",
   ];
 
   fields.forEach((field) => {
@@ -95,5 +98,5 @@ UserSchema.methods.displayUser = function () {
 
   return transformed;
 };
-const User = model<IUser>('User', UserSchema);
+const User = model<IUser>("User", UserSchema);
 export default User;

@@ -1,9 +1,18 @@
 import React from "react";
 
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Admin from "../Admin";
+import { useUserQuery } from "../app/AuthApi";
 import HeaderAdmin from "./HeaderAdmin";
 const AdminLayout = () => {
+  const { data } = useUserQuery();
+  const navigate = useNavigate();
+
+  if (data) {
+    if (data?.role?.roleName === "User") {
+      navigate("/");
+    }
+  }
   return (
     <div>
       <Admin />

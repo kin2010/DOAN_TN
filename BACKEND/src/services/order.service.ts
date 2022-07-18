@@ -53,8 +53,14 @@ export default class OrderService {
         status: httpStatus.NOT_FOUND,
       });
     }
-
-    const productUpdated = await Order.findByIdAndUpdate(orderId, body, {
+    let rs = body;
+    if (
+      order.currentAddress === order.deliveryAddress &&
+      body.status === "paid"
+    ) {
+      rs = { ...body, status: "done" };
+    }
+    const productUpdated = await Order.findByIdAndUpdate(orderId, rs, {
       new: true,
     });
 
@@ -90,7 +96,7 @@ export default class OrderService {
         },
         {
           path: "user",
-          select: "fullName",
+          select: "avatar fullName address gender address phone role",
         },
       ])
       .lean();

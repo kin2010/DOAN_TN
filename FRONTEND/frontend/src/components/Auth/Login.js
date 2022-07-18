@@ -1,31 +1,34 @@
-import React, { useState, useContext } from 'react';
-import { Container, Row, Col, Form, Spinner } from 'react-bootstrap';
-import { Alert, Button } from '@mui/material';
-import './Login.css';
-import Breadcrumb from '../BreadCrum';
-import { useLoginMutation, useUserQuery } from '../../app/AuthApi';
-import CircularProgress from '@mui/material/CircularProgress';
-import { setToken } from '../../Utils/Common';
-import { useNavigate } from 'react-router-dom';
-import { StyledButtonAuth, StyledLabel } from './Register';
-import { styled } from '@mui/material/styles';
+import React, { useState, useContext } from "react";
+import { Container, Row, Col, Form, Spinner } from "react-bootstrap";
+import { Alert, Button } from "@mui/material";
+import "./Login.css";
+import Breadcrumb from "../BreadCrum";
+import { useLoginMutation, useUserQuery } from "../../app/AuthApi";
+import CircularProgress from "@mui/material/CircularProgress";
+import { setRoleId, setToken } from "../../Utils/Common";
+import { useNavigate } from "react-router-dom";
+import { StyledButtonAuth, StyledLabel } from "./Register";
+import { styled } from "@mui/material/styles";
 export const AlertStyled = styled(Alert)((props) => ({
   backgroundColor: `${props.theme.colors.main}`,
-  '>div': {
-    color: '#fff',
+  ">div": {
+    color: "#fff",
   },
 }));
 const Login = () => {
   const [login, { data, isLoading, error }] = useLoginMutation();
-  const { refresh } = useUserQuery();
+  const { data: dataUser, refetch, currentData } = useUserQuery();
+
+  const navigate = useNavigate();
+
   const nagivate = useNavigate();
   // const {
   // 	login,
   // 	authState: { user, isLoading, isAuthenticated },
   // } = useContext(AuthContext);
   const [loginForm, setLoginForm] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   //submit
   const submit = async (event) => {
@@ -34,7 +37,15 @@ const Login = () => {
       const res = await login(loginForm).unwrap();
 
       await setToken(res?.token);
-      nagivate('/shop');
+      console.log("res", res);
+      setTimeout(() => {
+        if (res && dataUser) {
+          setRoleId(dataUser?.role?.roleName);
+          if (dataUser?.role?.roleName === "Admin") {
+            navigate("/admin/product");
+          } else nagivate("/shop");
+        }
+      }, 2500);
       //  refresh();
     } catch (err) {
       console.log(err, error);
@@ -47,7 +58,7 @@ const Login = () => {
       [event.target.name]: event.target.value,
     });
   };
-  const [color, setColor] = useState('#a749ff');
+  const [color, setColor] = useState("#a749ff");
   let body;
   // const click = (value) => {
   // 	body = value === "1" ? login : register;
@@ -60,7 +71,7 @@ const Login = () => {
         className=" border p-5 mb-5"
         onSubmit={submit}
         style={{
-          boxShadow: '0px 5px 16px -3px gray',
+          boxShadow: "0px 5px 16px -3px gray",
         }}
         // style={{
         //   WebkitBoxShadow: '0px -1px 20px 5px rgba(0,0,0,0.72)',
@@ -120,7 +131,7 @@ const Login = () => {
       {isLoading && (
         <>
           <div className="d-flex justify-content-center mt-2 mb-5">
-            <CircularProgress />{' '}
+            <CircularProgress />{" "}
           </div>
         </>
       )}

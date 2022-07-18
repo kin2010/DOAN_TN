@@ -9,6 +9,8 @@ import { getAllCategories, getAllSub } from "../../Slice/CategorySlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { Link, useNavigate } from "react-router-dom";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import PersonIcon from "@mui/icons-material/Person";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
 import {
   CAvatar,
   CIcon,
@@ -32,7 +34,7 @@ export const ImgStyle = styled("img")((props) => ({
 const Header = ({ className }) => {
   const [showCart, setShowCart] = useState(false);
   const navigate = useNavigate();
-  const { data, refetch, error } = useUserQuery();
+  const { data, refetch, error, currentData } = useUserQuery();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const showDrop = () => {
@@ -69,6 +71,7 @@ const Header = ({ className }) => {
     refetch();
     navigate("/login");
   };
+  console.log("query user", data, error);
   return (
     <>
       <header className={className}>
@@ -138,6 +141,30 @@ const Header = ({ className }) => {
                         <CDropdownMenu className="pt-0" placement="bottom-end">
                           <CDropdownItem
                             style={{ cursor: "pointer" }}
+                            onClick={() => navigate("/orderhistory")}
+                            className="ava"
+                          >
+                            <LocalMallIcon
+                              style={{ transform: "translate(-6px,6px)" }}
+                            />
+                            <span as={Link} to="/login">
+                              Order History
+                            </span>
+                          </CDropdownItem>
+                          <CDropdownItem
+                            style={{ cursor: "pointer" }}
+                            onClick={() => navigate("/profile")}
+                            className="ava"
+                          >
+                            <PersonIcon
+                              style={{ transform: "translate(-6px,6px)" }}
+                            />
+                            <span as={Link} to="/profile">
+                              Profile
+                            </span>
+                          </CDropdownItem>
+                          <CDropdownItem
+                            style={{ cursor: "pointer" }}
                             onClick={() => handleLogout()}
                             className="ava"
                           >
@@ -189,14 +216,17 @@ const Header = ({ className }) => {
 
                   {/* <Dropdown></Dropdown>
                   <Dropdown></Dropdown> */}
-                  <Nav.Link
+                  {/* <Nav.Link
                     onMouseEnter={showDrop}
                     onMouseLeave={hideDrop}
                     href="#link"
                   >
                     TradeMark <KeyboardArrowDownIcon />
+                  </Nav.Link> */}
+                  <Nav.Link as={Link} to={"/shop"}>
+                    Shop
                   </Nav.Link>
-                  <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                  <NavDropdown title="About" id="basic-nav-dropdown">
                     <NavDropdown.Item href="#action/3.1">
                       Action
                     </NavDropdown.Item>

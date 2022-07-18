@@ -54,7 +54,6 @@ exports.ProductService = void 0;
 var http_status_1 = __importDefault(require("http-status"));
 var models_1 = require("../models");
 var APIError_1 = __importDefault(require("../utils/APIError"));
-var logger_1 = __importDefault(require("../utils/logger"));
 var ProductService = /** @class */ (function () {
     function ProductService() {
     }
@@ -166,7 +165,6 @@ var ProductService = /** @class */ (function () {
                             productConditions.subCategory = subCategory;
                         }
                         skip = query.skip, limit = query.limit;
-                        logger_1.default.info(limit.toString(), skip.toString(), category, subCategory);
                         return [4 /*yield*/, models_1.Product.find(__assign({}, productConditions))
                                 .limit(limit)
                                 .skip(skip)

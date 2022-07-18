@@ -1,4 +1,5 @@
-import { Document, Schema, model } from 'mongoose';
+import { boolean } from "joi";
+import { Document, Schema, model } from "mongoose";
 
 export interface IOrder extends Document {
   totalPrice: number;
@@ -7,9 +8,13 @@ export interface IOrder extends Document {
   user: string;
   currentAddress: string;
   status: IOrderStatus;
-  note:string;
+  note: string;
+  currentLocation: string;
+  isPaid: boolean;
   createdAt: Date;
   updatedAt: Date;
+  paidTime: string;
+  deliveryTime: string;
 }
 
 export type IOrderStatus =
@@ -20,11 +25,12 @@ export type IOrderStatus =
   | typeof ORDER_STATUS.OVER;
 
 export const ORDER_STATUS = {
-  PENDING: 'pending',
-  SHIPPING: 'shipping',
-  DONE: 'done',
-  OVER: 'over',
-  PAID: 'paid',
+  PENDING: "pending",
+  SHIPPING: "shipping",
+  DONE: "done",
+  OVER: "over",
+  PAID: "paid",
+  NOTPAID: "not_paid",
 };
 
 const ProductSchema = new Schema(
@@ -33,19 +39,22 @@ const ProductSchema = new Schema(
       type: Number,
       required: true,
     },
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
     deliveryAddress: {
       type: String,
-      
     },
     product: [
       {
-        type: 'ObjectId',
-        ref: 'Product',
+        type: "ObjectId",
+        ref: "Product",
       },
     ],
     user: {
-      type: 'ObjectId',
-      ref: 'User',
+      type: "ObjectId",
+      ref: "User",
       required: true,
     },
     status: {
@@ -56,7 +65,17 @@ const ProductSchema = new Schema(
         ORDER_STATUS.DONE,
         ORDER_STATUS.PAID,
         ORDER_STATUS.OVER,
+        ORDER_STATUS.NOTPAID,
       ],
+    },
+    paidTime: {
+      type: String,
+    },
+    deliveryTime: {
+      type: String,
+    },
+    currentLocation: {
+      type: String,
     },
     isDeleted: {
       type: Boolean,
@@ -65,12 +84,12 @@ const ProductSchema = new Schema(
     currentAddress: {
       type: String,
     },
-    note:{
-      type:String
-    }
+    note: {
+      type: String,
+    },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-const Order = model<IOrder>('Order', ProductSchema);
+const Order = model<IOrder>("Order", ProductSchema);
 export default Order;

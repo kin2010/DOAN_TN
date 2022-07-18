@@ -28,11 +28,18 @@ const Admin = () => {
       >
         <CSidebarBrand>Administration</CSidebarBrand>
         <CSidebarNav>
-          <CNavTitle>Nav Title</CNavTitle>
-          <CNavItem href="#">
+          <CNavTitle>Manager</CNavTitle>
+          {/* <CNavItem href="#">
             <CIcon customClassName="nav-icon" icon={cilHome} />
             <Link className="text-light" to="/admin/overview" as={Link}>
               Trang chủ
+            </Link>
+           
+          </CNavItem> */}
+          <CNavItem href="#">
+            <CIcon customClassName="nav-icon" icon={cilSpeedometer} />
+            <Link className="text-light" to="/admin/overview" as={Link}>
+              Tổng quan
             </Link>
             {/* <CBadge color="primary ms-auto">NEW</CBadge> */}
           </CNavItem>
@@ -55,29 +62,29 @@ const Admin = () => {
               Quản lí đơn hàng
             </Link>
           </CNavItem>
-          <CNavItem href="#">
-            <CIcon customClassName="nav-icon" icon={cilSpeedometer} />
-            <Link className="text-light" to="/admin/categories">
-              Quản lí shop
-            </Link>
-          </CNavItem>
+
           <CNavItem href="#">
             <CIcon customClassName="nav-icon" icon={cilSpeedometer} />
             <Link className="text-light" to="/admin/user" as={Link}>
               Quản lí người dùng
             </Link>
           </CNavItem>
-
-          <CNavGroup toggler="Nav dropdown">
-            <CNavItem href="#">
-              <CIcon customClassName="nav-icon" icon={cilPuzzle} /> Nav dropdown
-              item
-            </CNavItem>
-            <CNavItem href="#">
-              <CIcon customClassName="nav-icon" icon={cilPuzzle} /> Nav dropdown
-              item
-            </CNavItem>
-          </CNavGroup>
+          <CNavItem href="#">
+            <CIcon customClassName="nav-icon" icon={cilSpeedometer} />
+            <Link className="text-light" to="/admin/categories">
+              Quản lí shop
+            </Link>
+          </CNavItem>
+          {/* <CNavGroup toggler="Nav dropdown">
+              <CNavItem href="#">
+                <CIcon customClassName="nav-icon" icon={cilPuzzle} /> Nav dropdown
+                item
+              </CNavItem>
+              <CNavItem href="#">
+                <CIcon customClassName="nav-icon" icon={cilPuzzle} /> Nav dropdown
+                item
+              </CNavItem>
+            </CNavGroup> */}
         </CSidebarNav>
         <CSidebarToggler
           className="d-none d-lg-flex"

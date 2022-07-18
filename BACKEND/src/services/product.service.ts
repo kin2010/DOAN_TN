@@ -128,7 +128,6 @@ export class ProductService {
       productConditions.subCategory = subCategory;
     }
     const { skip, limit } = query;
-    log.info(limit.toString(), skip.toString(), category, subCategory);
     const products = await Product.find({ ...productConditions })
       .limit(limit)
       .skip(skip)

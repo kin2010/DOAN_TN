@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color:#344767
 }
 
 code {
@@ -52,7 +53,8 @@ div {
   /* font-family: 'Lobster Two', cursive; */
   font-family: 'Lato', sans-serif;
   font-size: 20px;
-  color: rgb(17, 15, 15);
+  /* color: rgb(17, 15, 15); */
+  color:#344767;
   font-weight: 700;
 }
 a:hover {
@@ -103,7 +105,7 @@ hr{
   color:rgb(92, 92, 197)
 }
 .img-slider{
-  height: 700px;
+  height: 540px;
 }
 .slick-slide>div{
   display: flex;
@@ -138,4 +140,118 @@ hr{
 .carousel .thumbs{
   display: flex;
   justify-content: space-between;
+}
+.page-title{
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.bg-main{
+  background-color: #ebebeb;
+}
+.shadow2{
+  box-shadow: 0rem 0.25rem 0.375rem -0.0625rem rgb(0 0 0 / 10%), 0rem 0.125rem 0.25rem -0.0625rem rgb(0 0 0 / 6%);
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-radius: 0.75rem;
+}
+.fm2{
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+}
+.fw300{
+  font-weight: 300!important;
+}
+.fw400{
+  font-weight: 400!important;
+}
+.fw700{
+  font-weight: 700!important;
+}
+.fw500{
+  font-weight: 500!important;
+}
+.fs13{
+  font-size: 13px!important;
+}
+.fs14 {
+  font-size: 14px!important;
+}
+.fs15{
+  font-size: 15px!important;
+}
+.fs16{
+  font-size: 16px!important;
+}
+.fs17{
+  font-size: 17px!important;
+}
+.fs18{
+  font-size: 18px!important;
+}
+.fs19{
+  font-size: 19px!important;
+}
+.fs20{
+  font-size: 20px!important;
+}
+.fs21{
+  font-size: 21px!important;
+}
+.fs22{
+  font-size: 22px!important;
+}
+
+
+
+/*  */
+.inputcustom>input{
+  border:0px
+}
+
+.img-holder2{
+  position: relative;
+	margin: auto;
+	width: 220px;
+	height: 220px;
+	border: 3px black solid;
+	border-radius: 100rem;
+	margin-top: 1rem;
+	margin-bottom: 0.5rem;
+	justify-content: center;
+}
+.img-content{
+  position: absolute;
+  width: 100%;
+  height: 214px;
+  object-fit: cover;
+}
+.img-content>img{
+  width: 100%;
+  height: 214px;
+  object-fit: cover;
+}
+.label-image{
+  position: absolute;
+  bottom: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+}
+/* radio */
+.form-check .form-check-input{
+  margin-right: 10px!important;
+}
+/* my order */
+.img-div{
+  border:1px solid gray;
+  width: 100px;
+  height: 100px;
+}
+.img-div>img{
+  width: 100%;
+  object-fit: cover;
+}
+.ant-select-dropdown{
+  z-index: 99999!important;
+}
+.ant-select-selector{
+  padding: 10px;
 }

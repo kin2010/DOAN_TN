@@ -28,6 +28,8 @@ export interface IRequestSendPhoneBody {
   otp: string;
   phone: string;
 }
+export type IUpdateUser = Omit<IUser, "createdAt" | "updatedAt">;
+
 export default class AuthController {
   static getUser: RequestHandler = async (req: any, res, next) => {
     try {
@@ -149,6 +151,21 @@ export default class AuthController {
       });
       res.json(responce).status(httpStatus.OK).end();
     } catch (error) {
+      next(error);
+    }
+  };
+  static updateUser = async (
+    req: Request<IUpdateUser, Query, Params>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const responce = await AuthService.updateUser({
+        userId: req.params._id,
+        body: req.body,
+      });
+      res.json(responce).status(httpStatus.OK).end();
+    } catch ({ error }) {
       next(error);
     }
   };

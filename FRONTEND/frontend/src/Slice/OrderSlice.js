@@ -41,15 +41,25 @@ const order = createSlice({
   initialState: {
     orders: [],
     allOrder: [],
+    bill: [],
     orderDetail: null,
     isLoading: false,
     urlPayment: null,
     isPaymentLoading: false,
+    orderUpdate: [],
+    delivery: [],
   },
   reducers: {
+    deliveryAction: (state, action) => {
+      console.log(action, getRoleID());
+
+      const index = state.orders.findIndex((i) => i._id === action.payload);
+      state.delivery = state.orders[index];
+      return;
+    },
     orderdetail: (state, action) => {
       if (getRoleID() === "Admin") {
-        const index = state.allOrder.findIndex((i) => i._id === action.payload);
+        const index = state.orders.findIndex((i) => i._id === action.payload);
         if (index === -1) {
           const index = state.orderHistory.findIndex(
             (i) => i._id === action.payload
@@ -57,7 +67,7 @@ const order = createSlice({
           state.orderDetail = state.orderHistory[index];
           return;
         }
-        state.orderDetail = state.allOrder[index];
+        state.orderDetail = state.orders[index];
         return;
       }
       const index = state.allOrder.findIndex((i) => i._id === action.payload);
@@ -84,7 +94,7 @@ const order = createSlice({
   },
   extraReducers: {
     [updateOrder.fulfilled]: (state, action) => {
-      state.order = action.payload;
+      state.orderUpdate = action.payload;
     },
     [updateOrder.pending]: (state, action) => {
       state.isLoading = true;
@@ -97,6 +107,7 @@ const order = createSlice({
     },
     [myOrder.fulfilled]: (state, action) => {
       state.allOrder = action.payload;
+      state.bill = action.payload;
       state.isLoading = false;
     },
     [myOrder.pending]: (state, action) => {
@@ -119,5 +130,5 @@ const order = createSlice({
   },
 });
 const { reducer, actions } = order;
-export const { orderdetail, mapping } = actions;
+export const { orderdetail, mapping, deliveryAction } = actions;
 export default reducer;

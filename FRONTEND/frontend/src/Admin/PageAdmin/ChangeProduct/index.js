@@ -49,7 +49,7 @@ const ChangeProduct = () => {
   });
   useEffect(() => {
     fetchProduct();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (pdUpdate) {
@@ -326,9 +326,11 @@ const ChangeProduct = () => {
                   <div className="img-holder ">
                     <img
                       src={
-                        imgData[0] || pdUpdate?.avatar || "../images/empty.png"
+                        imgData[0] ||
+                        pdUpdate?.avatar ||
+                        "https://res.cloudinary.com/drvb2kjug/image/upload/v1657722820/doantotnghiep/empty_iasoc5.jpg"
                       }
-                      alt=""
+                      alt="zz"
                       id="img"
                       className="img-content"
                     />
@@ -340,7 +342,7 @@ const ChangeProduct = () => {
                     name="image"
                     id="file"
                     onChange={(e) => imageHandler(0, e)}
-                    defaultValue={pdUpdate?.avatar}
+                    // defaultValue={pdUpdate?.avatar}
                   />
 
                   <div className="mt-4 label-image text-center">
@@ -451,7 +453,7 @@ const ChangeProduct = () => {
                     src={
                       imgData[ar] ||
                       (listImg && listImg[ar - 1]) ||
-                      "../images/empty.png"
+                      "https://res.cloudinary.com/drvb2kjug/image/upload/v1657722820/doantotnghiep/empty_iasoc5.jpg"
                     }
                     alt=""
                     id="img"

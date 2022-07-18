@@ -1,16 +1,22 @@
 import { createContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useUserQuery } from "../app/AuthApi";
-import { getToken } from "../Utils/Common";
+import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
 const AuthContextProvider = ({ children }) => {
   const [bread, setBread] = useState("");
-  const { data: user, isLoading, error, refetch } = useUserQuery();
-  const [authState, setAuth] = useState({
-    user: [],
-    isAuthenticated: false,
-  });
-  const { user: userRedux } = useSelector((state) => state.auths);
+  const navigate = useNavigate();
+  const { data: user } = useUserQuery();
+  useEffect(() => {
+    if (user?.role?.roleName === "Admin") {
+      // window.location.replace("/admin");
+      // navigate("/admin");
+    }
+  }, [user]);
+  // const [authState, setAuth] = useState({
+  //   user: [],
+  //   isAuthenticated: false,
+  // });
+  // const { user: userRedux } = useSelector((state) => state.auths);
   // const [login, { data, isLoading, error }] = useLoginMutation();
 
   // useEffect(() => {

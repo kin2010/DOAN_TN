@@ -66,7 +66,7 @@ var OrderService = /** @class */ (function () {
     OrderService.update = function (_b) {
         var body = _b.body, orderId = _b.orderId;
         return __awaiter(void 0, void 0, void 0, function () {
-            var order, productUpdated;
+            var order, rs, productUpdated;
             return __generator(_a, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -86,7 +86,12 @@ var OrderService = /** @class */ (function () {
                                 status: http_status_1.default.NOT_FOUND,
                             });
                         }
-                        return [4 /*yield*/, models_1.Order.findByIdAndUpdate(orderId, body, {
+                        rs = body;
+                        if (order.currentAddress === order.deliveryAddress &&
+                            body.status === "paid") {
+                            rs = __assign(__assign({}, body), { status: "done" });
+                        }
+                        return [4 /*yield*/, models_1.Order.findByIdAndUpdate(orderId, rs, {
                                 new: true,
                             })];
                     case 2:
@@ -126,7 +131,7 @@ var OrderService = /** @class */ (function () {
                         },
                         {
                             path: "user",
-                            select: "fullName",
+                            select: "avatar fullName address gender address phone role",
                         },
                     ])
                         .lean()];

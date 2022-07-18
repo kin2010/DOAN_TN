@@ -52,7 +52,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var role_service_1 = __importDefault(require("../services/role.service"));
 var http_status_1 = __importDefault(require("http-status"));
-var logger_1 = __importDefault(require("../utils/logger"));
 var RoleController = /** @class */ (function () {
     function RoleController() {
     }
@@ -64,7 +63,6 @@ var RoleController = /** @class */ (function () {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    logger_1.default.info(req);
                     return [4 /*yield*/, role_service_1.default.create(__assign({}, req.body))];
                 case 1:
                     newRole = _b.sent();

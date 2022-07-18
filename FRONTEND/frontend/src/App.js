@@ -17,6 +17,15 @@ import ChangeProduct from "./Admin/PageAdmin/ChangeProduct";
 import CategoryAdmin from "./Admin/PageAdmin/CategoryAdmin";
 import BillAdmin from "./Admin/PageAdmin/BillAdmin";
 import User from "./Admin/PageAdmin/User";
+import Profile from "./Page/Profile";
+import TrackingOrder from "./Page/TrackingOrder";
+import ChangeProfile from "./Page/Profile/ChangeProfile";
+import MyOrder from "./Page/Profile/MyOrder";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { QueryClient, QueryClientProvider } from "react-query";
+import Overview from "./Admin/PageAdmin/Widgets/Overview";
+
+const queryClient = new QueryClient();
 // import "@coreui/coreui/dist/css/coreui.min.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
 const customTheme = createTheme({
@@ -37,14 +46,23 @@ function App() {
   const history = createBrowserHistory();
   return (
     <>
-      <ThemeProvider theme={customTheme}>
-        <BrowserRouter history={history}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={customTheme}>
           <Routes>
             <Route exact path="/" element={<Home />}></Route>
+            <Route exact path="/tracking" element={<TrackingOrder />}></Route>
             <Route element={<PrivateRoutes />}>
               <Route exact path="/checkout" element={<Checkout />}></Route>
               <Route exact path="/viewcart" element={<ViewCart />}></Route>
               <Route exact path="/order/:id" element={<Order />}></Route>
+              <Route exact path="/profile" element={<Profile />}>
+                <Route
+                  exact
+                  path="change-profile"
+                  element={<ChangeProfile />}
+                />
+                <Route exact path="myorder" element={<MyOrder />} />
+              </Route>
               <Route path="/admin" element={<Admin />}>
                 <Route exact path="product" element={<ProductAdmin />}></Route>
                 <Route
@@ -59,6 +77,7 @@ function App() {
                   element={<ChangeProduct />}
                 ></Route>
                 <Route exact path="user" element={<User />}></Route>
+                <Route exact path="overview" element={<Overview />}></Route>
               </Route>
             </Route>
             <Route
@@ -80,8 +99,9 @@ function App() {
             <Route exact path="/subcategory/:id" element={<Shop />}></Route>
             <Route exact path="/category/:id" element={<Shop />}></Route>
           </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
+        </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </>
   );
 }

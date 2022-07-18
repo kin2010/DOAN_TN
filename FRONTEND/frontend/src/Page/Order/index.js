@@ -4,9 +4,15 @@ import { Alert, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useUserQuery } from "../../app/AuthApi";
 import Breadcrumb from "../../components/BreadCrum";
-import { formatDate, formatNumber } from "../../Utils/func";
+import { formatDate, formatNumber, formatTime } from "../../Utils/func";
 import { AbsoluteHeader } from "../SingleProduct";
-import { mapping, myOrder, orderdetail, payment } from "../../Slice/OrderSlice";
+import {
+  mapping,
+  myOrder,
+  orderdetail,
+  payment,
+  updateOrder,
+} from "../../Slice/OrderSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import "./index.scss";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -27,32 +33,128 @@ const Order = () => {
   const dataMapping = useSelector((state) => state.orders?.mapping);
   // console.log(data);
   useEffect(() => {
-    const fetch = async () => {
-      if (!data?._id) {
-        return;
-      }
-      const action = await dispatch(
-        myOrder({
-          userId: data?._id || "",
-        })
-      );
-      // const res = await unwrapResult(action);
-      const action1 = await orderdetail(id);
-      console.log(id);
-      dispatch(action1);
-      const action2 = await mapping();
-      dispatch(action2);
-    };
     fetch();
   }, [data]);
+  const fetch = async () => {
+    if (!data?._id) {
+      return;
+    }
+    const action = await dispatch(
+      myOrder({
+        userId: data?._id || "",
+      })
+    );
+    // const res = await unwrapResult(action);
+    const action1 = await orderdetail(id);
+    console.log(id);
+    dispatch(action1);
+    const action2 = await mapping();
+    dispatch(action2);
+  };
   const handlePayment = async (id) => {
     console.log(id);
     const action = await dispatch(payment({ id: id }));
     const res = unwrapResult(action);
     console.log(res.payUrl);
     window.open(res.payUrl, "_blank")?.focus();
+    setTimeout(() => {
+      upOrder();
+    }, 6000);
   };
-
+  const upOrder = async () => {
+    try {
+      let params = {};
+      if (ORDER?.deliveryAddress === ORDER?.currentAddress) {
+        params = {
+          id: ORDER._id,
+          body: {
+            isPaid: true,
+            status: "done",
+            paidTime: new Date().toISOString(),
+          },
+        };
+      } else {
+        params = {
+          id: ORDER._id,
+          body: {
+            isPaid: true,
+            status: "paid",
+            paidTime: new Date().toISOString(),
+          },
+        };
+      }
+      const action2 = updateOrder(params);
+      await dispatch(action2);
+      await fetch();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const mapPaid = (order) => {
+    if (order) {
+      if (order?.isPaid) {
+        return (
+          <Alert variant="success">
+            Paid at {formatTime(order?.paidTime) || ""}
+          </Alert>
+        );
+      }
+      if (!order?.isPaid) {
+        return <Alert variant="danger">Not Paid</Alert>;
+      }
+    }
+  };
+  const mapDelivery = (order) => {
+    if (order) {
+      switch (order?.status) {
+        case "done": {
+          return (
+            <Alert variant="success">
+              Delivered at{" "}
+              <strong className="fs20">{order?.deliveryAddress}</strong> on{" "}
+              {formatTime(order?.deliveryTime)}
+            </Alert>
+          );
+        }
+        case "shipping": {
+          return (
+            <Alert variant="info">
+              {order?.currentAddress &&
+                `Shipping : Delivered at ${
+                  order?.currentAddress
+                } on ${formatTime(order?.deliveryTime)}`}
+            </Alert>
+          );
+        }
+        case "over": {
+          return (
+            <Alert variant="danger">
+              Bill Canceled on {formatTime(order?.updatedAt)}
+            </Alert>
+          );
+        }
+        case "paid": {
+          if (order?.currentAddress) {
+            return (
+              <Alert variant="info">
+                {order?.currentAddress &&
+                  `Shipping : Delivered at ${
+                    order?.currentAddress
+                  } on ${formatTime(order?.deliveryTime)}`}
+              </Alert>
+            );
+          } else return <Alert variant="info">Shipping</Alert>;
+        }
+        default: {
+          return (
+            <Alert variant="warning">
+              {order?.status?.toString().toUpperCase()}
+            </Alert>
+          );
+        }
+      }
+    }
+  };
   return (
     <>
       <AbsoluteHeader></AbsoluteHeader>
@@ -229,8 +331,8 @@ const Order = () => {
             {!isLoading ? (
               <div className="py-3 px-5 shadow ">
                 <p>Name: {user?.fullName}</p>
-                <p className="mb-3">Address: {user?.address}</p>
-                <Alert variant="success">Success</Alert>
+                <p className="mb-3">Address: {ORDER?.deliveryAddress}</p>
+                {mapDelivery(ORDER)}
               </div>
             ) : (
               <LinearProgress color="success" />
@@ -242,7 +344,7 @@ const Order = () => {
             {!isLoading ? (
               <div className="py-3 px-5 shadow ">
                 <p className="mb-3">Method: Momo</p>
-                <Alert variant="success">Success</Alert>
+                {mapPaid(ORDER)}{" "}
               </div>
             ) : (
               <LinearProgress color="success" />
@@ -312,12 +414,15 @@ const Order = () => {
                 <Col>Order Total</Col>
                 <Col className="text-right">10000</Col>
               </Row>
-              <Button
-                className="mt-5 py-3 w-100"
-                onClick={() => handlePayment(ORDER?._id)}
-              >
-                Pay
-              </Button>
+              {!ORDER?.isPaid && ORDER?.user?._id === user?._id && (
+                <Button
+                  className="mt-5 py-3 w-100"
+                  onClick={() => handlePayment(ORDER?._id)}
+                >
+                  Pay
+                </Button>
+              )}
+
               {isPaymentLoading && (
                 <LinearProgress className="my-5" color="primary" />
               )}

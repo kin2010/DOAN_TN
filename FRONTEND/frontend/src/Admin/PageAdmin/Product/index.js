@@ -57,7 +57,7 @@ const ProductAdmin = () => {
       <ModalCreate></ModalCreate>
       <div className="mb-3 d-flex justify-content-between">
         <TextField id="standard-basic" label="Search" variant="standard" />
-        <FormControl sx={{ m: 1, minWidth: 240 }}>
+        {/* <FormControl sx={{ m: 1, minWidth: 240 }}>
           <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
           <Select
             labelId="demo-simple-select-helper-label"
@@ -74,7 +74,7 @@ const ProductAdmin = () => {
             <MenuItem value={30}>Thirty</MenuItem>
           </Select>
           <FormHelperText>With label + helper text</FormHelperText>
-        </FormControl>
+        </FormControl> */}
         <div onClick={handleAdd} className="d-flex align-items-center btn_add">
           <AddBoxIcon fontSize="large" color="primary" />
           <Button color="primary" variant="outlined">

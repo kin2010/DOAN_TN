@@ -1,37 +1,41 @@
-import sgMail from '@sendgrid/mail';
-import httpStatus from 'http-status';
-import APIError from '../utils/APIError';
-const nodemailer = require('nodemailer');
-import configs from '../configs/appConfig';
-import log from './logger';
-import config from '../configs/appConfig';
+import sgMail from "@sendgrid/mail";
+import httpStatus from "http-status";
+import APIError from "../utils/APIError";
+const nodemailer = require("nodemailer");
+import configs from "../configs/appConfig";
+import log from "./logger";
+import config from "../configs/appConfig";
 const sendEmail = async (email: string, otp: number): Promise<void> => {
   const msg = {
     from: configs.sendGrid.email,
     to: email,
-    templateId: configs.sendGrid.template,
-    dynamic_template_data: { otp },
+    // templateId: configs.sendGrid.template,
+    // dynamic_template_data: {},
+    subject: "kin",
+    text: "hrllo",
+    html: "<html><body>fafafa</body></html>",
   };
   log.info(msg);
   sgMail.setApiKey(configs.sendGrid.key);
-
+  console.log(configs.sendGrid.key);
   try {
-    await sgMail.send(msg);
+    const res = await sgMail.send(msg);
+    log.info("ok", res);
   } catch (err) {
     log.info(err as string);
     throw new APIError({
-      message: 'Error Send Email',
+      message: "Error Send Email sendgrip",
       status: httpStatus.FORBIDDEN,
     });
   }
 };
 export const sendMailNodeMaier = async (
   email: string,
-  otp: number,
+  otp: number
 ): Promise<void> => {
   const transporter = nodemailer.createTransport({
     // config mail server
-    service: 'Gmail',
+    service: "Gmail",
     auth: {
       user: config.userNodemail,
       pass: config.passwordNodemail,
@@ -39,10 +43,10 @@ export const sendMailNodeMaier = async (
   });
   const mainOptions = {
     // thiết lập đối tượng, nội dung gửi mail
-    from: 'Website mỹ phẩm ',
+    from: "Website mỹ phẩm ",
     to: email,
-    subject: 'Thanks For Choosing Us',
-    text: 'You recieved message from ',
+    subject: "Thanks For Choosing Us",
+    text: "You recieved message from ",
     html: `
     <!DOCTYPE html>
 <html>
@@ -99,16 +103,16 @@ export const sendMailNodeMaier = async (
       if (error) {
         log.info(error);
         throw new APIError({
-          message: 'Error Send Email',
+          message: "Error Send Email",
           status: httpStatus.FORBIDDEN,
         });
       } else {
-        log.info('send successfully');
+        log.info("send successfully");
       }
     });
   } catch (error) {
     throw new APIError({
-      message: 'Error Send Email',
+      message: "Error Send Email",
       status: httpStatus.FORBIDDEN,
     });
   }

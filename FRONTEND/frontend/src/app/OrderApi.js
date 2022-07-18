@@ -10,8 +10,9 @@ const OrderApi = {
     return axiosClient.put(url, params?.body);
   },
   myorder: (params) => {
-    const url = `${apiURL}/order/myorder`;
-    return axiosClient.get(url, { params });
+    console.log(params);
+    const url = `${apiURL}/order/myorder?userId=${params?.userId}`;
+    return axiosClient.get(url);
   },
   payment: (params) => {
     const url = `${apiURL}/order/payment/${params.id}`;
