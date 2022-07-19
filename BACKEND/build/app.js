@@ -76,10 +76,10 @@ var error_middleware_1 = __importDefault(require("./middlewares/error.middleware
 var logger_1 = __importDefault(require("./utils/logger"));
 var APIError_1 = __importDefault(require("./utils/APIError"));
 var routers_1 = __importDefault(require("./routers"));
-var nodemailer = require('nodemailer');
+var nodemailer = require("nodemailer");
 var app = (0, express_1.default)();
 var httpServer = http.createServer(app);
-(0, morgan_1.default)('tiny');
+(0, morgan_1.default)("tiny");
 /** Parser the request **/
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use(body_parser_1.default.json());
@@ -87,16 +87,16 @@ app.use(body_parser_1.default.json());
 app.use((0, cors_1.default)());
 /** Rules of our API **/
 app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers, Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods', 'GET POST PUT DELETE PATCH');
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers, Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    if (req.method === "OPTIONS") {
+        res.header("Access-Control-Allow-Methods", "GET POST PUT DELETE PATCH");
         return res.status(http_status_1.default.OK).end();
     }
     return next();
 });
-var client = new google_auth_library_1.OAuth2Client('411768487503-e06gsoh9etobrarghoagn8gbh6fjo7u8.apps.googleusercontent.com');
-app.post('/auth/google', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var client = new google_auth_library_1.OAuth2Client("411768487503-e06gsoh9etobrarghoagn8gbh6fjo7u8.apps.googleusercontent.com");
+app.post("/auth/google", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var token, ticket, email, name, customUser, user;
     var _a, _b;
     return __generator(this, function (_c) {
@@ -123,7 +123,7 @@ app.post('/auth/google', function (req, res) { return __awaiter(void 0, void 0, 
                 if (!customUser) {
                     throw new APIError_1.default({
                         status: http_status_1.default.INTERNAL_SERVER_ERROR,
-                        message: 'Can not create',
+                        message: "Can not create",
                     });
                 }
                 return [3 /*break*/, 6];
@@ -138,12 +138,51 @@ app.post('/auth/google', function (req, res) { return __awaiter(void 0, void 0, 
         }
     });
 }); });
-app.get('/', function (req, res) {
-    res.send('Hello World!');
+var secret = "sk_test_51LMxCAI6HAK9mOVZ7xKAVLvrxjVYNFzMs76u982XHNRqlpSPsY0gzaTDlJ8UxaiqMR7CarhZauZxCFuvP2S15zM500edPrGS1g";
+var stripe = require("stripe")(secret);
+app.post("/doan/create-checkout-session", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var session, e_1;
+    var _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _c.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, stripe.checkout.sessions.create({
+                        payment_method_types: ["card"],
+                        mode: "payment",
+                        line_items: req.body.items.map(function (item) {
+                            return {
+                                price_data: {
+                                    currency: "vnd",
+                                    product_data: {
+                                        name: item.name,
+                                    },
+                                    unit_amount: item.price,
+                                },
+                                quantity: item.quantity,
+                            };
+                        }),
+                        success_url: "http://localhost:3000/order/".concat((_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.id, "?success=true"),
+                        cancel_url: "http://localhost:3000/order/".concat((_b = req === null || req === void 0 ? void 0 : req.body) === null || _b === void 0 ? void 0 : _b.id, "?success=false"),
+                    })];
+            case 1:
+                session = _c.sent();
+                res.json({ url: session.url });
+                return [3 /*break*/, 3];
+            case 2:
+                e_1 = _c.sent();
+                res.status(500).json({ error: e_1 === null || e_1 === void 0 ? void 0 : e_1.message });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+app.get("/", function (req, res) {
+    res.send("Hello World!");
 });
-app.use('/doan', routers_1.default);
+app.use("/doan", routers_1.default);
 /** Logging the request **/
-app.use((0, morgan_1.default)(':remote-addr :method :url :status :response-time ms'));
+app.use((0, morgan_1.default)(":remote-addr :method :url :status :response-time ms"));
 /** Error handling **/
 app.use(error_middleware_1.default.routeNotFound);
 app.use(error_middleware_1.default.handler);

@@ -1,17 +1,20 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useUserQuery } from "../../app/AuthApi";
-import { myOrder } from "../../Slice/OrderSlice";
+import { fitterStatus, myOrder } from "../../Slice/OrderSlice";
 import { Button, Col } from "react-bootstrap";
 import { MAP_STATUS } from "../../constant";
-import { Divider } from "@mui/material";
+import { Box, Divider, Tab } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { formatTime } from "../../Utils/func";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 export const mapProduct = (product) => {
   if (product && product.length > 0) {
     const arr = product;
     const rs = [];
-    console.log(arr[0]);
+
     for (let i = 0; i < arr.length; i++) {
       const id = arr[i]._id;
       const isId = rs.findIndex((value) => value?._id === id);
@@ -30,6 +33,43 @@ const MyOrder = () => {
   const { data: user } = useUserQuery();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [value, setValue] = React.useState("1");
+
+  const handleChange = (event, newValue) => {
+    let params = "";
+    switch (newValue) {
+      case "1": {
+        params = "all";
+        break;
+      }
+      case "2": {
+        params = "pending";
+        break;
+      }
+      case "3": {
+        params = "shipping";
+        break;
+      }
+      case "4": {
+        params = "not_paid";
+        break;
+      }
+      case "5": {
+        params = "done";
+        break;
+      }
+      case "6": {
+        params = "paid";
+        break;
+      }
+      default:
+        params = "all";
+    }
+    const action = fitterStatus(params);
+    dispatch(action);
+    setValue(newValue);
+  };
+
   useEffect(() => {
     if (user && user?._id) {
       fetchBill();
@@ -43,10 +83,27 @@ const MyOrder = () => {
       await dispatch(action);
     } catch (error) {}
   };
-  const bill = useSelector((state) => state.orders.bill);
-  mapProduct(Object.values(bill)[3]?.product);
+  const bill = useSelector((state) => state.orders.billCopy);
+  // mapProduct(Object.values(bill)[3]?.product);
   return (
     <div>
+      <TabContext value={value} className="mb-5">
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <Tab label="Tất cả" value="1" />
+            <Tab label="Chờ xác nhận" value="2" />
+            <Tab label="Đã thanh toán" value="6" />
+            <Tab label="Đang giao" value="3" />
+            <Tab label="Đã giao" value="4" />
+            <Tab label="Hoàn thành" value="5" />
+          </TabList>
+        </Box>
+        <TabPanel value="1"></TabPanel>
+        <TabPanel value="2"></TabPanel>
+        <TabPanel value="3"></TabPanel>
+        <TabPanel value="4"></TabPanel>
+        <TabPanel value="5"></TabPanel>
+      </TabContext>
       <div>
         {bill &&
           Object.values(bill).map((bi) => (

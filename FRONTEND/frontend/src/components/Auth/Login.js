@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Container, Row, Col, Form, Spinner } from "react-bootstrap";
 import { Alert, Button } from "@mui/material";
 import "./Login.css";
@@ -9,6 +9,7 @@ import { setRoleId, setToken } from "../../Utils/Common";
 import { useNavigate } from "react-router-dom";
 import { StyledButtonAuth, StyledLabel } from "./Register";
 import { styled } from "@mui/material/styles";
+import { useSelector } from "react-redux";
 export const AlertStyled = styled(Alert)((props) => ({
   backgroundColor: `${props.theme.colors.main}`,
   ">div": {
@@ -18,9 +19,10 @@ export const AlertStyled = styled(Alert)((props) => ({
 const Login = () => {
   const [login, { data, isLoading, error }] = useLoginMutation();
   const { data: dataUser, refetch, currentData } = useUserQuery();
-
+  const auth = useSelector((state) => state.auths.user);
+  const uToken = useSelector((state) => state.auths.token);
   const navigate = useNavigate();
-
+  const [isLogin, setIslogin] = useState(false);
   const nagivate = useNavigate();
   // const {
   // 	login,
@@ -38,12 +40,18 @@ const Login = () => {
 
       await setToken(res?.token);
       console.log("res", res);
+      if (res) {
+        refetch();
+        setTimeout(() => {
+          setIslogin(true);
+        }, 3000);
+      }
       setTimeout(() => {
         if (res && dataUser) {
-          setRoleId(dataUser?.role?.roleName);
-          if (dataUser?.role?.roleName === "Admin") {
-            navigate("/admin/product");
-          } else nagivate("/shop");
+          // setRoleId(dataUser?.role?.roleName);
+          // if (dataUser?.role?.roleName === "Admin") {
+          //   navigate("/admin/product");
+          // } else nagivate("/shop");
         }
       }, 2500);
       //  refresh();
@@ -51,6 +59,18 @@ const Login = () => {
       console.log(err, error);
     }
   };
+  useEffect(() => {
+    console.log(dataUser);
+    if (!!isLogin && !!auth) {
+      setRoleId(auth?.role?.roleName);
+      if (
+        auth?.role?.roleName === "Admin" ||
+        auth?.role === "6257f38a332c45395ccb8971"
+      ) {
+        navigate("/admin/overview");
+      } else nagivate("/shop");
+    }
+  }, [isLogin]);
   const { email, password } = loginForm;
   const onChangeValue = (event) => {
     setLoginForm({

@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useDispatch, useSelector } from "react-redux";
-import { formatNumber } from "../../../Utils/func";
+import { formatNumber, formatTime } from "../../../Utils/func";
 import { useNavigate } from "react-router-dom";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import "antd/dist/antd.css";
@@ -227,10 +227,10 @@ export default function BasicTable() {
             showSearch
             mode="tags"
             style={{
-              padding: "25px 15px",
-              minWidth: "400px",
+              padding: "45px 15px",
+              minWidth: "600px",
             }}
-            placeholder="Select a person"
+            placeholder="Select..."
             optionFilterProp="children"
             onChange={onChange}
             autoClearSearchValue={false}
@@ -312,13 +312,19 @@ export default function BasicTable() {
                   >
                     {row?._id.toString().slice(-5)}
                   </TableCell>
-                  <TableCell align="right d-flex align-item-center flex-row">
-                    <Avatar
-                      alt="Remy Sharp "
-                      className="me-2"
-                      src={row?.user?.avatar}
-                    />
-                    <div> {row?.user?.fullName}</div>
+                  <TableCell align="right ">
+                    <div className="d-flex align-item-center flex-row">
+                      <Avatar
+                        alt="Remy Sharp "
+                        className="me-2"
+                        src={row?.user?.avatar}
+                      />
+                      <div> {row?.user?.fullName}</div>
+                    </div>
+                    <div className="fs14 mt-1">
+                      {" "}
+                      {formatTime(row?.createdAt)}
+                    </div>
                   </TableCell>
                   <TableCell align="right">
                     {row?.deliveryAddress || "_______"}

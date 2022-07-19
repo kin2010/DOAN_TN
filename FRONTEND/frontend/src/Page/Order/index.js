@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Col, Container, Row, Spinner } from "reactstrap";
 import { Alert, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,11 +15,24 @@ import {
 } from "../../Slice/OrderSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import "./index.scss";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { Divider, LinearProgress } from "@mui/material";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
+import { Box, Divider, LinearProgress, Modal, Typography } from "@mui/material";
+import axiosClient from "../../app/AxiosClient";
+import { apiURL } from "../../Context/constant";
+import { CategoryContext } from "../../Context/CategoryContext";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 const Order = () => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let [searchParams, setSearchParams] = useSearchParams();
   const { id } = useParams();
   const { data: user, refetch, error } = useUserQuery();
   const ORDER = useSelector((state) => state.orders.orderDetail);
@@ -28,45 +41,117 @@ const Order = () => {
   const isPaymentLoading = useSelector(
     (state) => state.orders.isPaymentLoading
   );
+  const { setShowToast } = useContext(CategoryContext);
   const [pd, setPd] = useState([]);
   const { data } = useUserQuery();
+  const [urlStripe, setUrlStripe] = useState("");
+  const [up, setUp] = useState([]);
   const dataMapping = useSelector((state) => state.orders?.mapping);
   // console.log(data);
   useEffect(() => {
     fetch();
-  }, [data]);
+  }, [data, id]);
+  // useEffect(() => {
+  //   if(!!ORDER){
+  //     setUp(ORDER)
+  //   }
+  // }, [ORDER]);
+  useEffect(() => {
+    console.log(searchParams.get("success"));
+    const isSuccess = searchParams.get("success");
+    if (isSuccess === "true") {
+      setOpen(true);
+      // upp();
+      setTimeout(() => {
+        setOpen(false);
+        fetch();
+      }, 3000);
+    } else if (isSuccess === "false") {
+      setOpen(true);
+      setTimeout(() => {
+        setOpen(false);
+      }, 3000);
+    }
+    // setSearchParams("success");
+  }, [searchParams]);
+  // const upp = async () => {
+  //   setTimeout(() => {
+  //     upOrder();
+  //   }, 3000);
+  // };
+  useEffect(() => {
+    if (!!ORDER && searchParams.get("success") === "true") {
+      upOrder();
+    }
+  }, [open]);
   const fetch = async () => {
     if (!data?._id) {
       return;
     }
-    const action = await dispatch(
-      myOrder({
-        userId: data?._id || "",
-      })
-    );
+    console.log("fetch", data?._id, id);
+    const action = myOrder({
+      userId: data?._id || "",
+    });
+    await dispatch(action);
     // const res = await unwrapResult(action);
     const action1 = await orderdetail(id);
-    console.log(id);
+    // console.log(id);
     dispatch(action1);
     const action2 = await mapping();
     dispatch(action2);
   };
   const handlePayment = async (id) => {
     console.log(id);
-    const action = await dispatch(payment({ id: id }));
-    const res = unwrapResult(action);
-    console.log(res.payUrl);
-    window.open(res.payUrl, "_blank")?.focus();
-    setTimeout(() => {
-      upOrder();
-    }, 6000);
+    if (!ORDER?.payment || ORDER?.payment === "momo") {
+      const action = await dispatch(payment({ id: id }));
+      const res = unwrapResult(action);
+      console.log(res.payUrl);
+      window.open(res.payUrl, "_blank")?.focus();
+      setTimeout(() => {
+        upOrder();
+      }, 6000);
+    } else if (ORDER?.payment === "paypal" || ORDER?.payment === "stripe") {
+      console.log(dataMapping);
+      stripeFetch();
+    }
+  };
+  const stripeFetch = async () => {
+    try {
+      const params = {
+        items: dataMapping.map((dt) => {
+          return {
+            name: dt?.product?.name,
+            price: dt?.product?.price,
+            quantity: dt?.quantity,
+          };
+        }),
+        id: ORDER?._id,
+      };
+      const res = await axiosClient.post(
+        `${apiURL}/create-checkout-session`,
+        params
+      );
+      window.open(res?.url, "_blank")?.focus();
+      // upOrder();
+      setUrlStripe(res?.url);
+    } catch (error) {
+      setShowToast({
+        show: true,
+        color: "e",
+        message: "Error !",
+      });
+    }
   };
   const upOrder = async () => {
     try {
+      console.log("myid", ORDER?._id, id);
       let params = {};
-      if (ORDER?.deliveryAddress === ORDER?.currentAddress) {
+      if (
+        !!ORDER?.deliveryAddress &&
+        ORDER?.deliveryAddress === ORDER?.currentAddress
+      ) {
         params = {
-          id: ORDER._id,
+          id: ORDER?._id,
           body: {
             isPaid: true,
             status: "done",
@@ -75,7 +160,7 @@ const Order = () => {
         };
       } else {
         params = {
-          id: ORDER._id,
+          id: ORDER?._id,
           body: {
             isPaid: true,
             status: "paid",
@@ -155,175 +240,63 @@ const Order = () => {
       }
     }
   };
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 700,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+
   return (
     <>
       <AbsoluteHeader></AbsoluteHeader>
       <Breadcrumb breadcrumb={"order"}></Breadcrumb>
-      {/* <div className="content">
-        <Row className="px-5">
-          <Col md={8} sm={6}>
-            <Row className="flex-column mx-0">
-              <div
-                className="text-success mb-4"
-                style={{ fontWeight: 800, marginTop: 30, fontSize: 30 }}
-              >
-                Shipping
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div
+            className={`text-center ${
+              searchParams.get("success") === "true"
+                ? "text-success"
+                : "text-danger"
+            }`}
+          >
+            <CheckCircleOutlineIcon fontSize="ok2" />
+          </div>
+          <div
+            className={`fs21 fw700 text-center modal-modal-description ${
+              searchParams.get("success") === "true"
+                ? "text-success"
+                : "text-danger"
+            }`}
+            sx={{ mt: 2 }}
+          >
+            THANH TOÁN{" "}
+            {searchParams.get("success") === "true" ? "THÀNH CÔNG" : "THẤT BẠI"}{" "}
+            !
+          </div>
+          {searchParams.get("success") === "true" && (
+            <>
+              <div className="fs17 mt-3 mb-3 fw700 text-center">
+                Đơn hàng : {ORDER?._id}
               </div>
-              <Row className=" flex-column mx-0 shadow  border-top p-5">
-                <Row>
-                  <div className="h5">Name : {user?.fullName}</div>
-                </Row>
-                <Row>
-                  <div className="h5">Address : {ORDER?.deliveryAddress}</div>
-                </Row>
-               
-                {ORDER?.status === "shipping" || ORDER?.status === "done" ? (
-                  <Alert variant="success">
-                    Delivered at {ORDER?.deliveryAddress} on{" "}
-                    {formatDate(ORDER.updatedAt)}
-                  </Alert>
-                ) : (
-                  <Alert variant="danger">Not Delivered</Alert>
-                )}
-              </Row>
-            </Row>
-            <Row className="flex-column mx-0">
-              <Row
-                className="text-success mb-4"
-                style={{ fontWeight: 800, marginTop: 30, fontSize: 30 }}
-              >
-                Payment
-              </Row>
-              <Row className="flex-column mx-0 shadow  border-top p-5">
-                <Row>
-                  <div className="h5">Method : MoMo</div>
-                </Row>
-
-                {ORDER?.status === "paid" || ORDER?.status === "done" ? (
-                  <Alert variant="success">
-                   
-                    Paid on {formatDate(ORDER.updatedAt)}
-                  </Alert>
-                ) : (
-                  <Alert variant="danger">Not Paid</Alert>
-                )}
-              </Row>
-            </Row>
-            <Row className="flex-column mx-0">
-              <Row
-                className="text-success mb-4"
-                style={{ fontWeight: 800, marginTop: 30, fontSize: 30 }}
-              >
-                Detail
-              </Row>
-              <Row className="flex-column mx-0 shadow  border-top p-5">
-                <Row className="h4 text-success font-weight-bold mb-3">
-                  Order Items
-                </Row>
-                {isLoading && (
-                  <Spinner className="d-flex align-items-center justify-content-center" />
-                )}
-                {!isLoading &&
-                  dataMapping?.length > 0 &&
-                  dataMapping?.map((a, index) => (
-                    <>
-                      <Row
-                        className="text-center mb-3"
-                        key={`index-${a.product._id}`}
-                      >
-                        <Col>
-                          <img
-                            src={a?.product?.avatar}
-                            alt=""
-                            className="img-order"
-                          />
-                        </Col>
-                        <Col className="d-flex align-items-center justify-content-center">
-                          <div
-                            className=" h6 text-primary"
-                            to={`/shop-single/${a?.product?._id}`}
-                            style={{ cursor: "pointer" }}
-                            onClick={() =>
-                              navigate.push(`/shop-single/${a?.product?._id}`)
-                            }
-                          >
-                            {a?.product?.name.toString().slice(0, 25)}
-                          </div>
-                        </Col>
-                        <Col className="d-flex align-items-center justify-content-center">
-                          {a.product.price}Đ x {a.quantity} ={" "}
-                          {new Intl.NumberFormat().format(
-                            a.product.price * a.quantity
-                          )}
-                          Đ
-                        </Col>
-                      </Row>
-                      <hr />
-                    </>
-                  ))}
-              </Row>
-            </Row>
-          </Col>
-          <Col md={4}>
-            <div
-              className="text-success mb-4"
-              style={{ fontWeight: 800, marginTop: 30, fontSize: 30 }}
-            >
-              ORDER SUMMARY
-            </div>
-            <Row className="shadow  border-top p-5">
-              <Row className="w-100">
-                <Col>
-                  <div className="h5">Items :</div>
-                </Col>
-                <Col>{new Intl.NumberFormat().format(ORDER?.totalPrice)}Đ</Col>
-              </Row>
-              <hr />
-              <Row className="w-100">
-                <Col>
-                  <div className="h5">Shipping :</div>
-                </Col>
-                <Col>Free Shipping</Col>
-              </Row>
-              <hr />
-              <Row className="w-100">
-                <Col>
-                  <div className="h5">Order Total :</div>
-                </Col>
-                <Col>
-                  <div className="h3 text-primary">
-                    {new Intl.NumberFormat().format(ORDER?.totalPrice)}Đ
-                  </div>
-                </Col>
-              </Row>
-
-              {ORDER?.status !== "paid" &&
-                ORDER?.status !== "over" &&
-                ORDER?.status !== "done" && (
-                  <Row className="mt-5 d-flex justify-content-center w-100  ">
-                    <Button
-                      variant="primary w-100"
-                        onClick={() => PayMent(ORDER?._id)}
-                    >
-                      Pay
-                    </Button>
-                    {true && <Spinner className=" mt-3 text-primary" />}
-                    {isLoadingPayment && (
-                      <Spinner className=" mt-3 text-primary" />
-                    )}
-                  </Row>
-                )}
-              {ORDER?.status === "paid" &&
-                ORDER?.status === "over" &&
-                ORDER?.status === "done" && (
-                  <Alert variant="success">
-                    {ORDER?.status?.toUpperCase()}
-                  </Alert>
-                )}
-            </Row>
-          </Col>
-        </Row>
-      </div> */}
+              <Divider className="mb-2" />
+              <div className="mb-2">Tổng hàng : {ORDER?.totalPrice} vnđ</div>
+              <div>Bank : {ORDER?.payment}</div>
+            </>
+          )}
+        </Box>
+      </Modal>
       <div class="fm d-flex px-5">
         <Col md={7} sm={6} className="mr-1">
           <div className="mb-2 mt-5 ">
@@ -343,7 +316,7 @@ const Order = () => {
             <h2 className="pl-5 mb-5">Payment</h2>
             {!isLoading ? (
               <div className="py-3 px-5 shadow ">
-                <p className="mb-3">Method: Momo</p>
+                <p className="mb-3">Method: {ORDER?.payment || "momo"}</p>
                 {mapPaid(ORDER)}{" "}
               </div>
             ) : (
@@ -407,19 +380,21 @@ const Order = () => {
               <Divider className="my-3"></Divider>
               <Row>
                 <Col>Shipping</Col>
-                <Col className="text-right">10000</Col>
+                <Col className="text-right">0</Col>
               </Row>
               <Divider className="my-3"></Divider>
               <Row>
                 <Col>Order Total</Col>
-                <Col className="text-right">10000</Col>
+                <Col className="text-right">
+                  {new Intl.NumberFormat().format(ORDER?.totalPrice)} đ
+                </Col>
               </Row>
               {!ORDER?.isPaid && ORDER?.user?._id === user?._id && (
                 <Button
-                  className="mt-5 py-3 w-100"
+                  className="mt-5 fw700 py-3 w-100"
                   onClick={() => handlePayment(ORDER?._id)}
                 >
-                  Pay
+                  Pay {formatNumber(ORDER?.totalPrice)} vnđ
                 </Button>
               )}
 

@@ -79,7 +79,7 @@ const Header = ({ className }) => {
     const action = searchProduct(value);
     dispatch(action);
   };
-  console.log("query user", data, error);
+  // console.log("query user", data, error);
   return (
     <>
       <header className={className}>
@@ -190,9 +190,9 @@ const Header = ({ className }) => {
                       </CDropdown>
                     )}
 
-                    <Nav.Link href="#link">
+                    {/* <Nav.Link href="#link">
                       <FavoriteIcon color="error" fontSize="large" />
-                    </Nav.Link>
+                    </Nav.Link> */}
                     <div
                       style={{
                         marginTop: 8,

@@ -110,21 +110,20 @@ export default class AuthService {
         status: httpStatus.BAD_REQUEST,
       });
     }
-    if (user && !user.isVerify) {
-      await User.findOneAndUpdate({ email }, { password: passwordEncode });
-      const otp = generateOTP();
-      const expiredAt = moment().add(30, "minutes").toDate();
-      await Verify.findOneAndUpdate(
-        { email },
-        {
-          otp: otp.toString(),
-          expiredAt: expiredAt,
-        }
-      );
-      // await sendMailNodeMaier(email, otp);
-      await sendEmail(email, otp);
-      return;
-    }
+    // if (user && !user.isVerify) {
+    //   await User.findOneAndUpdate({ email }, { password: passwordEncode });
+    //   const otp = generateOTP();
+    //   const expiredAt = moment().add(30, "minutes").toDate();
+    //   await Verify.findOneAndUpdate(
+    //     { email },
+    //     {
+    //       otp: otp.toString(),
+    //       expiredAt: expiredAt,
+    //     }
+    //   );
+    //   await sendEmail(email, otp);
+    //   return;
+    // }
 
     const role = await Role.findOne({ roleName: "User" });
     if (!role) {
@@ -140,10 +139,10 @@ export default class AuthService {
       role: role._id,
     };
     await User.create(newUser);
-    const otp = await generateOTP();
-    const expiredAt = moment().add(30, "minutes");
-    await Verify.create({ email, otp, expiredAt });
-    await sendEmail(email, otp);
+    // const otp = await generateOTP();
+    // const expiredAt = moment().add(30, "minutes");
+    // await Verify.create({ email, otp, expiredAt });
+    // await sendEmail(email, otp);
   };
 
   static verifyEmail = async ({ email, otp }: IVerifyParams): Promise<void> => {
@@ -202,12 +201,12 @@ export default class AuthService {
         status: httpStatus.NOT_FOUND,
       });
     }
-    if (!user.isVerify) {
-      throw new APIError({
-        message: "User is not verify",
-        status: httpStatus.BAD_REQUEST,
-      });
-    }
+    // if (!user.isVerify) {
+    //   throw new APIError({
+    //     message: "User is not verify",
+    //     status: httpStatus.BAD_REQUEST,
+    //   });
+    // }
     const isMatchPassword = await user.isMatchPassword(password);
     if (!isMatchPassword) {
       throw new APIError({

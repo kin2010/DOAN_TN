@@ -334,6 +334,17 @@ const ChangeProduct = () => {
                       id="img"
                       className="img-content"
                     />
+                    <div className="mt-4 label-image text-center">
+                      <label className="mb-3 image-upload" htmlFor="file">
+                        Pick product avatar
+                      </label>
+                    </div>
+                    <Form.Control.Feedback
+                      className="text-center"
+                      type="invalid"
+                    >
+                      Chọn ảnh cho sản phẩm
+                    </Form.Control.Feedback>
                   </div>
 
                   <Form.Control
@@ -344,15 +355,6 @@ const ChangeProduct = () => {
                     onChange={(e) => imageHandler(0, e)}
                     // defaultValue={pdUpdate?.avatar}
                   />
-
-                  <div className="mt-4 label-image text-center">
-                    <label className="mb-3 image-upload" htmlFor="file">
-                      Pick product avatar
-                    </label>
-                  </div>
-                  <Form.Control.Feedback className="text-center" type="invalid">
-                    Chọn ảnh cho sản phẩm
-                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
             </Row>

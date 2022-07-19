@@ -14,6 +14,7 @@ export interface IOrder extends Document {
   createdAt: Date;
   updatedAt: Date;
   paidTime: string;
+  payment: string;
   deliveryTime: string;
 }
 
@@ -44,6 +45,9 @@ const ProductSchema = new Schema(
       default: false,
     },
     deliveryAddress: {
+      type: String,
+    },
+    payment: {
       type: String,
     },
     product: [

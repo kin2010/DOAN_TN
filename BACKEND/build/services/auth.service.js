@@ -44,8 +44,6 @@ var models_1 = require("../models");
 var APIError_1 = __importDefault(require("../utils/APIError"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var appConfig_1 = __importDefault(require("../configs/appConfig"));
-var SendEmail_1 = __importDefault(require("../utils/SendEmail"));
-var otp_1 = require("../utils/otp");
 var moment_1 = __importDefault(require("moment"));
 var jwt_1 = __importDefault(require("../utils/jwt"));
 var sendPhone_1 = require("../utils/sendPhone");
@@ -121,7 +119,7 @@ var AuthService = /** @class */ (function () {
     AuthService.Register = function (_b) {
         var fullName = _b.fullName, email = _b.email, password = _b.password;
         return __awaiter(void 0, void 0, void 0, function () {
-            var passwordEncode, user, otp_2, expiredAt_1, role, newUser, otp, expiredAt;
+            var passwordEncode, user, role, newUser;
             return __generator(_a, function (_c) {
                 switch (_c.label) {
                     case 0: return [4 /*yield*/, bcrypt_1.default.hash(password, appConfig_1.default.bcryptSaltRounds)];
@@ -136,26 +134,8 @@ var AuthService = /** @class */ (function () {
                                 status: http_status_1.default.BAD_REQUEST,
                             });
                         }
-                        if (!(user && !user.isVerify)) return [3 /*break*/, 6];
-                        return [4 /*yield*/, models_1.User.findOneAndUpdate({ email: email }, { password: passwordEncode })];
+                        return [4 /*yield*/, models_1.Role.findOne({ roleName: "User" })];
                     case 3:
-                        _c.sent();
-                        otp_2 = (0, otp_1.generateOTP)();
-                        expiredAt_1 = (0, moment_1.default)().add(30, "minutes").toDate();
-                        return [4 /*yield*/, models_1.Verify.findOneAndUpdate({ email: email }, {
-                                otp: otp_2.toString(),
-                                expiredAt: expiredAt_1,
-                            })];
-                    case 4:
-                        _c.sent();
-                        // await sendMailNodeMaier(email, otp);
-                        return [4 /*yield*/, (0, SendEmail_1.default)(email, otp_2)];
-                    case 5:
-                        // await sendMailNodeMaier(email, otp);
-                        _c.sent();
-                        return [2 /*return*/];
-                    case 6: return [4 /*yield*/, models_1.Role.findOne({ roleName: "User" })];
-                    case 7:
                         role = _c.sent();
                         if (!role) {
                             throw new APIError_1.default({
@@ -170,17 +150,7 @@ var AuthService = /** @class */ (function () {
                             role: role._id,
                         };
                         return [4 /*yield*/, models_1.User.create(newUser)];
-                    case 8:
-                        _c.sent();
-                        return [4 /*yield*/, (0, otp_1.generateOTP)()];
-                    case 9:
-                        otp = _c.sent();
-                        expiredAt = (0, moment_1.default)().add(30, "minutes");
-                        return [4 /*yield*/, models_1.Verify.create({ email: email, otp: otp, expiredAt: expiredAt })];
-                    case 10:
-                        _c.sent();
-                        return [4 /*yield*/, (0, SendEmail_1.default)(email, otp)];
-                    case 11:
+                    case 4:
                         _c.sent();
                         return [2 /*return*/];
                 }
@@ -254,12 +224,6 @@ var AuthService = /** @class */ (function () {
                             throw new APIError_1.default({
                                 message: "User not found",
                                 status: http_status_1.default.NOT_FOUND,
-                            });
-                        }
-                        if (!user.isVerify) {
-                            throw new APIError_1.default({
-                                message: "User is not verify",
-                                status: http_status_1.default.BAD_REQUEST,
                             });
                         }
                         return [4 /*yield*/, user.isMatchPassword(password)];

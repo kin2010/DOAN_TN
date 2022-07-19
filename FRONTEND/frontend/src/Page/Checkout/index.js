@@ -11,6 +11,10 @@ import { createOrder } from "../../Slice/OrderSlice";
 import { formatNumber } from "../../Utils/func";
 import { AbsoluteHeader, ButtonPrimaryContained } from "../SingleProduct";
 import "./index.scss";
+import { CheckoutForm } from "./Stripp";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+const stripePromise = loadStripe("pk_test_oKhSR5nslBRnBZpjO6KuzZeX");
 export const LabelStyled = styled(Form.Label)((props) => ({
   color: `${props.theme.colors.main2}`,
   fontFamily: '"Lato", sans-serif',
@@ -36,6 +40,7 @@ const Checkout = () => {
     address: "",
     phone: "",
     note: "",
+    payment: "",
   });
   const handleFormChange = (e) => {
     setFormvalue({ ...formValue, [e.target.name]: e.target.value });
@@ -57,6 +62,7 @@ const Checkout = () => {
       // currentAddress: data?.address || "",
       status: "pending",
       note: formValue?.note || "",
+      payment: formValue?.payment,
     };
 
     const res = await dispatch(createOrder(req));
@@ -73,11 +79,18 @@ const Checkout = () => {
       phone: data?.phone || "",
     });
   }, [data]);
+  const options = {
+    // passing the client secret obtained from the server
+    clientSecret: "{{CLIENT_SECRET}}",
+  };
   return (
     <>
       <AbsoluteHeader></AbsoluteHeader>
       <Breadcrumb breadcrumb={"checkout"}></Breadcrumb>
       <Container>
+        {/* <Elements stripe={stripePromise} options={options}>
+          <CheckoutForm />
+        </Elements> */}
         <Row className="checkout mt-5">
           <Col md={7} sm={12}>
             <h2 className="mb-4 title">Billing Details</h2>
@@ -230,11 +243,21 @@ const Checkout = () => {
               <h3 className="mb-4">Payment Method</h3>
               <div>
                 <div className="d-flex align-items-center">
-                  <input type="radio" value="paypal" name="method" />
-                  <p style={{ height: "20px", marginLeft: "15px" }}>Paypal</p>
+                  <input
+                    type="radio"
+                    value="stripe"
+                    name="payment"
+                    onChange={handleFormChange}
+                  />
+                  <p style={{ height: "20px", marginLeft: "15px" }}>Stripe</p>
                 </div>
                 <div className="d-flex align-items-center">
-                  <input type="radio" value="momo" name="method" />
+                  <input
+                    type="radio"
+                    value="momo"
+                    name="payment"
+                    onChange={handleFormChange}
+                  />
                   <p style={{ height: "20px", marginLeft: "15px" }}>Momo</p>
                 </div>
               </div>

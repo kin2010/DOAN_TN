@@ -2,7 +2,10 @@ import { NextFunction, query, Response } from "express";
 import httpStatus from "http-status";
 import { Params, Query, Request } from "../configs/types";
 import { IProduct } from "../models";
-import { ProductService } from "../services/product.service";
+import {
+  ICreateProductParams,
+  ProductService,
+} from "../services/product.service";
 import log from "../utils/logger";
 type IRequestBodyUpdateProduct = Omit<IProduct, "createdAt" | "updatedAt">;
 export interface IRequestCreateBody {
@@ -24,7 +27,7 @@ export interface IRequestGetall {
 }
 export default class ProductController {
   static create = async (
-    req: Request<IRequestCreateBody, Query, Params>,
+    req: Request<ICreateProductParams, Query, Params>,
     res: Response,
     next: NextFunction
   ): Promise<void> => {

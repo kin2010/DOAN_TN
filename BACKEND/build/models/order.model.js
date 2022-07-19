@@ -22,6 +22,9 @@ var ProductSchema = new mongoose_1.Schema({
     deliveryAddress: {
         type: String,
     },
+    payment: {
+        type: String,
+    },
     product: [
         {
             type: "ObjectId",

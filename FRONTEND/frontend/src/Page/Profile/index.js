@@ -147,7 +147,7 @@ const Profile = () => {
                   </div>
                 </li>
 
-                <li className="mb-3">
+                {/* <li className="mb-3">
                   <div
                     style={{ gap: "0 33px" }}
                     className="d-flex align-items-center"
@@ -155,7 +155,7 @@ const Profile = () => {
                     <FavoriteIcon className="text-danger" />
                     <div className="fw500">Favorite</div>
                   </div>
-                </li>
+                </li> */}
 
                 <li className="mb-3">
                   <div

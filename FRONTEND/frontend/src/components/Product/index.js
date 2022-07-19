@@ -109,9 +109,9 @@ export const Product = React.forwardRef(({ product, className, chip }, ref) => {
       </CardContent>
       {showIcon && (
         <CardActions className="product-icons">
-          <IconProduct className="success ">
+          {/* <IconProduct className="success ">
             <FavoriteIcon className=""></FavoriteIcon>
-          </IconProduct>
+          </IconProduct> */}
           <IconProduct onClick={() => handleAddCart()} className="success ">
             <AddShoppingCartIcon></AddShoppingCartIcon>
           </IconProduct>

@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { AuthApi } from '../app/AuthApi';
-import { getToken } from '../Utils/Common';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { AuthApi } from "../app/AuthApi";
+import { getToken } from "../Utils/Common";
 const auths = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState: {
     user: [],
     token: getToken(),
@@ -24,7 +24,7 @@ const auths = createSlice({
     builder.addMatcher(
       AuthApi.endpoints.login.matchFulfilled,
       (state, action) => {
-        console.log('changing token', action.payload.token);
+        console.log("changing token", action.payload.token);
         // Lưu thông tin user vào state
         state.user = action.payload.user;
         state.token = action.payload.token;
@@ -33,7 +33,7 @@ const auths = createSlice({
       AuthApi.endpoints.register.matchPending,
       (state, action) => {
         console.log(action);
-      },
+      }
     );
     builder.addMatcher(
       AuthApi.endpoints.register.matchFulfilled,
@@ -43,7 +43,7 @@ const auths = createSlice({
         if (action.payload.status === 200) {
           state.showOTP = true;
         }
-      },
+      }
     );
     builder.addMatcher(
       AuthApi.endpoints.verify.matchFulfilled,
@@ -53,7 +53,7 @@ const auths = createSlice({
         if (action.payload.message) {
           state.isVerify = true;
         }
-      },
+      }
     );
   },
 });

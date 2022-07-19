@@ -48,6 +48,7 @@ const order = createSlice({
     isPaymentLoading: false,
     orderUpdate: [],
     delivery: [],
+    billCopy: [],
   },
   reducers: {
     deliveryAction: (state, action) => {
@@ -58,25 +59,21 @@ const order = createSlice({
       return;
     },
     orderdetail: (state, action) => {
-      if (getRoleID() === "Admin") {
-        const index = state.orders.findIndex((i) => i._id === action.payload);
-        if (index === -1) {
-          const index = state.orderHistory.findIndex(
-            (i) => i._id === action.payload
-          );
-          state.orderDetail = state.orderHistory[index];
-          return;
-        }
-        state.orderDetail = state.orders[index];
-        return;
-      }
+      // if (getRoleID() === "Admin") {
+      //   const index = state.orders.findIndex((i) => i._id === action.payload);
+      //   if (index === -1) {
+      //     const index = state.orderHistory.findIndex(
+      //       (i) => i._id === action.payload
+      //     );
+      //     state.orderDetail = state.orderHistory[index];
+      //     return;
+      //   }
+      //   state.orderDetail = state.orders[index];
+      //   return;
+      // }
       const index = state.allOrder.findIndex((i) => i._id === action.payload);
-      console.log(
-        typeof action.payload,
-        state.allOrder.findIndex((i) => i?._id === action.payload),
-        state.allOrder[0]
-      );
       state.orderDetail = state.allOrder[index];
+      console.log(index, action.payload, state.orderDetail);
     },
     mapping: (state, action) => {
       state.mapping = [];
@@ -91,13 +88,25 @@ const order = createSlice({
         });
       }
     },
+    fitterStatus: (state, action) => {
+      if (action.payload === "all") {
+        state.billCopy = state.bill;
+        return;
+      }
+
+      state.billCopy = state.bill.filter((bi) => bi?.status === action.payload);
+    },
   },
   extraReducers: {
     [updateOrder.fulfilled]: (state, action) => {
       state.orderUpdate = action.payload;
+      state.isLoading = false;
     },
     [updateOrder.pending]: (state, action) => {
       state.isLoading = true;
+    },
+    [updateOrder.rejected]: (state, action) => {
+      state.isLoading = false;
     },
     [createOrder.fulfilled]: (state, action) => {
       state.order = action.payload;
@@ -109,6 +118,7 @@ const order = createSlice({
       state.allOrder = action.payload;
       state.bill = action.payload;
       state.isLoading = false;
+      state.billCopy = action.payload;
     },
     [myOrder.pending]: (state, action) => {
       state.isLoading = true;
@@ -130,5 +140,5 @@ const order = createSlice({
   },
 });
 const { reducer, actions } = order;
-export const { orderdetail, mapping, deliveryAction } = actions;
+export const { orderdetail, mapping, deliveryAction, fitterStatus } = actions;
 export default reducer;

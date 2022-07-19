@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { faCashRegister, faChartLine } from "@fortawesome/free-solid-svg-icons";
 import { CounterWidget, SalesValueWidget } from "./Widgets";
 import Bar, { LineChart } from "./Chart.js";
@@ -161,7 +161,9 @@ const Overview = () => {
         </div>
 
         <Col xs={12} className="mb-4 d-none d-sm-block">
-          <LineChart date={dt} />
+          <Container>
+            <LineChart date={dt} />
+          </Container>
         </Col>
         <div className="fs21 mb-5"> Chi tiết doanh thu theo tuần :</div>
         <div className="fs20 fw500 mb-5">
@@ -219,33 +221,35 @@ const Overview = () => {
           style={{ borderBottom: "1px solid gray" }}
         />
         <Col xs={12} className="mb-4 d-none d-sm-block">
-          <div className="fs21 mb-5"> Doanh thu Năm :</div>
-          <div>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <div className="mb-5 d-flex align-items-center w-75 justify-content-between">
-                <DesktopDatePicker
-                  label="Chọn năm"
-                  inputFormat="dd/yyyy"
-                  value={date2}
-                  onChange={handleChange2}
-                  renderInput={(params) => <TextField {...params} />}
-                />{" "}
-                <DesktopDatePicker
-                  label="Chọn năm"
-                  inputFormat="dd/yyyy"
-                  value={date1}
-                  onChange={handleChange1}
-                  renderInput={(params) => <TextField {...params} />}
-                />{" "}
-              </div>
-            </LocalizationProvider>
-          </div>
-          <ChartMonth
-            year1={new Date(date1).getFullYear().toString()}
-            year2={new Date(date2).getFullYear().toString()}
-            dt1={year1}
-            dt2={year2}
-          />
+          <Container>
+            <div className="fs21 mb-5"> Doanh thu Năm :</div>
+            <div>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <div className="mb-5 d-flex align-items-center w-75 justify-content-between">
+                  <DesktopDatePicker
+                    label="Chọn năm"
+                    inputFormat="dd/yyyy"
+                    value={date2}
+                    onChange={handleChange2}
+                    renderInput={(params) => <TextField {...params} />}
+                  />{" "}
+                  <DesktopDatePicker
+                    label="Chọn năm"
+                    inputFormat="dd/yyyy"
+                    value={date1}
+                    onChange={handleChange1}
+                    renderInput={(params) => <TextField {...params} />}
+                  />{" "}
+                </div>
+              </LocalizationProvider>
+            </div>
+            <ChartMonth
+              year1={new Date(date1).getFullYear().toString()}
+              year2={new Date(date2).getFullYear().toString()}
+              dt1={year1}
+              dt2={year2}
+            />
+          </Container>
         </Col>
         <div className="fs21 mb-5">
           {" "}

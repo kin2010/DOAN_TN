@@ -69,12 +69,12 @@ const Admin = () => {
               Quản lí người dùng
             </Link>
           </CNavItem>
-          <CNavItem href="#">
+          {/* <CNavItem href="#">
             <CIcon customClassName="nav-icon" icon={cilSpeedometer} />
             <Link className="text-light" to="/admin/categories">
               Quản lí shop
             </Link>
-          </CNavItem>
+          </CNavItem> */}
           {/* <CNavGroup toggler="Nav dropdown">
               <CNavItem href="#">
                 <CIcon customClassName="nav-icon" icon={cilPuzzle} /> Nav dropdown
