@@ -150,13 +150,13 @@ const Header = ({ className }) => {
                         <CDropdownMenu className="pt-0" placement="bottom-end">
                           <CDropdownItem
                             style={{ cursor: "pointer" }}
-                            onClick={() => navigate("/profile")}
+                            onClick={() => navigate("/profile/change-profile")}
                             className="ava"
                           >
                             <PersonIcon
                               style={{ transform: "translate(-6px,6px)" }}
                             />
-                            <span as={Link} to="/profile">
+                            <span as={Link} to="/profile/change-profile">
                               Profile
                             </span>
                           </CDropdownItem>

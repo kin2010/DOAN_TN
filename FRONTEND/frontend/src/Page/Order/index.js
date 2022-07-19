@@ -256,7 +256,7 @@ const Order = () => {
   return (
     <>
       <AbsoluteHeader></AbsoluteHeader>
-      <Breadcrumb breadcrumb={"order"}></Breadcrumb>
+      <Breadcrumb breadcrumb={`/order/${id}`}></Breadcrumb>
       <Modal
         open={open}
         onClose={handleClose}

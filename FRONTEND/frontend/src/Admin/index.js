@@ -11,11 +11,24 @@ import {
 import { cilSpeedometer, cilPuzzle, cilHome } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { nullToken } from "../Slice/AuthSlice";
+import { removeUserSession } from "../Utils/Common";
+import { useUserQuery } from "../app/AuthApi";
 
 const Admin = () => {
+  const { data, refetch, error, currentData } = useUserQuery();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [unfoldable, setUfordable] = useState(false);
   const [sidebarShow, setSidebarshow] = useState(true);
+  const handleLogout = async () => {
+    await dispatch(nullToken());
+    removeUserSession();
+    refetch();
+    navigate("/login");
+  };
   return (
     <div>
       <CSidebar
@@ -67,6 +80,12 @@ const Admin = () => {
             <CIcon customClassName="nav-icon" icon={cilSpeedometer} />
             <Link className="text-light" to="/admin/user" as={Link}>
               Quản lí người dùng
+            </Link>
+          </CNavItem>
+          <CNavItem href="#" onClick={() => handleLogout()}>
+            <CIcon customClassName="nav-icon" icon={cilSpeedometer} />
+            <Link className="text-light" to="/admin/user" as={Link}>
+              Đăng xuất
             </Link>
           </CNavItem>
           {/* <CNavItem href="#">
